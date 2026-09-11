@@ -58,3 +58,6 @@ Exports/
 Reports/
 **/*.WebView2/
 ThumbDrive*/
+
+supabase/.temp/
+
