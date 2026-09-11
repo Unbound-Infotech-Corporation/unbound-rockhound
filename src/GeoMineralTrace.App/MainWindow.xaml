@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Window
+    x:Class="GeoMineralTrace_App.MainWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    Title="Unbound Rockhound"
+    mc:Ignorable="d">
+
+    <Window.SystemBackdrop>
+        <MicaBackdrop Kind="BaseAlt" />
+    </Window.SystemBackdrop>
+
+    <Grid Background="{ThemeResource GmtBrushBackgroundCanvas}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="44" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <TitleBar
+            x:Name="AppTitleBar"
+            Title="Unbound Rockhound"
+            BackRequested="TitleBar_BackRequested"
+            IsBackButtonVisible="{x:Bind NavFrame.CanGoBack, Mode=OneWay}"
+            IsPaneToggleButtonVisible="True"
+            PaneToggleRequested="TitleBar_PaneToggleRequested">
+            <TitleBar.IconSource>
+                <ImageIconSource ImageSource="Assets/AppIcon.ico" />
+            </TitleBar.IconSource>
+        </TitleBar>
+
+        <Border Grid.Row="1" Background="{ThemeResource GmtElevation2Brush}"
+            BorderBrush="{ThemeResource GmtBrushBorderSubtle}" BorderThickness="0,0,0,1"
+            Padding="16,8">
+            <Grid ColumnSpacing="12">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+                <TextBlock x:Name="ActiveCaseBreadcrumb" Style="{StaticResource GmtTextCaption}"
+                    VerticalAlignment="Center" Text="No case open" TextWrapping="Wrap" />
+                <Border Grid.Column="1" Style="{StaticResource GmtBadgePill}">
+                    <TextBlock x:Name="VersionBadge" Style="{StaticResource GmtTextCaption}"
+                        Foreground="{ThemeResource GmtBrushTextSecondary}" Text="v0.6.0" />
+                </Border>
+            </Grid>
+        </Border>
+
+        <StackPanel Grid.Row="2">
+            <InfoBar
+                x:Name="UpdateInfoBar"
+                IsOpen="False"
+                IsClosable="True"
+                Severity="Success"
+                Title="Update available"
+                CloseButtonClick="UpdateInfoBar_CloseButtonClick"
+                Margin="12,8,12,0">
+                <InfoBar.ActionButton>
+                    <Button x:Name="UpdateDownloadButton" Content="Download update"
+                        Click="UpdateDownload_Click" />
+                </InfoBar.ActionButton>
+            </InfoBar>
+
+            <InfoBar
+                x:Name="LicenseInfoBar"
+                IsOpen="False"
+                IsClosable="False"
+                Severity="Warning"
+                Title="License required"
+                Margin="12,8,12,0">
+                <InfoBar.ActionButton>
+                    <Button Content="Activate" Click="LicenseActivate_Click" />
+                </InfoBar.ActionButton>
+            </InfoBar>
+        </StackPanel>
+
+        <NavigationView
+            x:Name="NavView"
+            Grid.Row="3"
+            Background="{ThemeResource GmtBrushBackgroundBase}"
+            IsBackButtonVisible="Collapsed"
+            IsPaneToggleButtonVisible="False"
+            IsSettingsVisible="True"
+            OpenPaneLength="{StaticResource GmtNavWidthExpanded}"
+            CompactPaneLength="{StaticResource GmtNavWidthCompact}"
+            PaneDisplayMode="Left"
+            SelectionChanged="NavView_SelectionChanged">
+
+            <NavigationView.PaneHeader>
+                <Border Margin="12,8,12,4" Padding="12,10"
+                    Background="{ThemeResource GmtElevation3Brush}"
+                    BorderBrush="{ThemeResource GmtBrushBorderSubtle}" BorderThickness="1"
+                    CornerRadius="{StaticResource GmtRadiusPanel}">
+                    <StackPanel Spacing="3">
+                        <TextBlock Style="{StaticResource GmtTextLabel}" Text="UNBOUND ROCKHOUND" />
+                        <TextBlock Style="{StaticResource GmtTextBodySm}" Text="Forensic geolocation &amp; field research" Opacity="0.88" />
+                    </StackPanel>
+                </Border>
+            </NavigationView.PaneHeader>
+
+            <NavigationView.MenuItems>
+                <NavigationViewItem Content="Home" IsSelected="True" Tag="home">
+                    <NavigationViewItem.Icon><FontIcon Glyph="&#xE80F;" FontSize="18" /></NavigationViewItem.Icon>
+                </NavigationViewItem>
+                <NavigationViewItem Content="Analyze" Tag="analysis">
+                    <NavigationViewItem.Icon><FontIcon Glyph="&#xE714;" FontSize="18" /></NavigationViewItem.Icon>
+                </NavigationViewItem>
+                <NavigationViewItem Content="Cases" Tag="cases">
+                    <NavigationViewItem.Icon><FontIcon Glyph="&#xE8F1;" FontSize="18" /></NavigationViewItem.Icon>
+                </NavigationViewItem>
+                <NavigationViewItem Content="Evidence Board" Tag="evidence">
+                    <NavigationViewItem.Icon><FontIcon Glyph="&#xE8A5;" FontSize="18" /></NavigationViewItem.Icon>
+                </NavigationViewItem>
+                <NavigationViewItem Content="Hypotheses" Tag="hypotheses">
+                    <NavigationViewItem.Icon><FontIcon Glyph="&#xE9D9;" FontSize="18" /></NavigationViewItem.Icon>
+                </NavigationViewItem>
+                <NavigationViewItem Content="Analysis History" Tag="history">
+                    <NavigationViewItem.Icon><FontIcon Glyph="&#xE81C;" FontSize="18" /></NavigationViewItem.Icon>
+                </NavigationViewItem>
+                <NavigationViewItem Content="Trips" Tag="trips">
+                    <NavigationViewItem.Icon><FontIcon Glyph="&#xE707;" FontSize="18" /></NavigationViewItem.Icon>
+                </NavigationViewItem>
+                <NavigationViewItem Content="Solar / Shadow" Tag="solar">
+                    <NavigationViewItem.Icon><FontIcon Glyph="&#xE706;" FontSize="18" /></NavigationViewItem.Icon>
+                </NavigationViewItem>
+                <NavigationViewItem Content="Rockhounding" Tag="rockhounding">
+                    <NavigationViewItem.Icon><FontIcon Glyph="&#xE774;" FontSize="18" /></NavigationViewItem.Icon>
+                </NavigationViewItem>
+                <NavigationViewItem Content="Glossary" Tag="glossary">
+                    <NavigationViewItem.Icon><FontIcon Glyph="&#xE8F1;" FontSize="18" /></NavigationViewItem.Icon>
+                </NavigationViewItem>
+                <NavigationViewItem Content="Rivers" Tag="rivers">
+                    <NavigationViewItem.Icon><FontIcon Glyph="&#xE7C1;" FontSize="18" /></NavigationViewItem.Icon>
+                </NavigationViewItem>
+                <NavigationViewItem Content="Public Mines" Tag="publicmines">
+                    <NavigationViewItem.Icon><FontIcon Glyph="&#xE774;" FontSize="18" /></NavigationViewItem.Icon>
+                </NavigationViewItem>
+                <NavigationViewItem Content="Claims" Tag="claims">
+                    <NavigationViewItem.Icon><FontIcon Glyph="&#xE8EF;" FontSize="18" /></NavigationViewItem.Icon>
+                </NavigationViewItem>
+                <NavigationViewItem Content="Map" Tag="map">
+                    <NavigationViewItem.Icon><FontIcon Glyph="&#xE707;" FontSize="18" /></NavigationViewItem.Icon>
+                </NavigationViewItem>
+                <NavigationViewItem Content="Reports" Tag="reports">
+                    <NavigationViewItem.Icon><FontIcon Glyph="&#xE9F9;" FontSize="18" /></NavigationViewItem.Icon>
+                </NavigationViewItem>
+                <NavigationViewItem Content="Techniques KB" Tag="techniques">
+                    <NavigationViewItem.Icon><FontIcon Glyph="&#xE82D;" FontSize="18" /></NavigationViewItem.Icon>
+                </NavigationViewItem>
+                <NavigationViewItem Content="Forum" Tag="forum">
+                    <NavigationViewItem.Icon><FontIcon Glyph="&#xE8F2;" FontSize="18" /></NavigationViewItem.Icon>
+                </NavigationViewItem>
+                <NavigationViewItem Content="Profile" Tag="profile">
+                    <NavigationViewItem.Icon><FontIcon Glyph="&#xE77B;" FontSize="18" /></NavigationViewItem.Icon>
+                </NavigationViewItem>
+                <NavigationViewItem Content="Activate" Tag="activate">
+                    <NavigationViewItem.Icon><FontIcon Glyph="&#xE72E;" FontSize="18" /></NavigationViewItem.Icon>
+                </NavigationViewItem>
+                <NavigationViewItem Content="Sign in" Tag="signin">
+                    <NavigationViewItem.Icon><FontIcon Glyph="&#xE8D7;" FontSize="18" /></NavigationViewItem.Icon>
+                </NavigationViewItem>
+                <NavigationViewItem Content="About" Tag="about">
+                    <NavigationViewItem.Icon><FontIcon Glyph="&#xE946;" FontSize="18" /></NavigationViewItem.Icon>
+                </NavigationViewItem>
+            </NavigationView.MenuItems>
+
+            <Frame x:Name="NavFrame" Background="{ThemeResource GmtBrushBackgroundCanvas}" />
+        </NavigationView>
+    </Grid>
+</Window>

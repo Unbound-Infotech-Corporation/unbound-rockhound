@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Page
+    x:Class="GeoMineralTrace_App.Pages.HomePage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d">
+
+    <ScrollViewer Padding="{StaticResource GmtPagePaddingWide}">
+        <StackPanel x:Name="HomeRoot" Spacing="{StaticResource GmtStackGapSection}" MaxWidth="920" Opacity="0"
+            RenderTransformOrigin="0.5,0">
+            <StackPanel.RenderTransform>
+                <TranslateTransform x:Name="HomeRootTranslate" Y="12" />
+            </StackPanel.RenderTransform>
+
+            <StackPanel Spacing="{StaticResource GmtSpace2}">
+                <TextBlock Style="{StaticResource GmtTextDisplay}" Text="Unbound Rockhound" />
+                <TextBlock Style="{StaticResource GmtTextBody}" TextWrapping="Wrap"
+                    Text="Turn rockhounding videos and field clips into ranked location hypotheses — then cross-check claims, rivers, and public localities on the map." />
+            </StackPanel>
+
+            <InfoBar Style="{StaticResource GmtInfoBar}" IsOpen="True" IsClosable="False" Severity="Informational"
+                Title="Hypotheses, not GPS truth"
+                Message="Every result is a ranked lead with uncertainty. Use Deep Analysis to see why clues agree, reject weak evidence, and verify land access before you go." />
+
+            <Border Style="{StaticResource GmtCard}">
+                <StackPanel Spacing="{StaticResource GmtStackGapDefault}">
+                    <TextBlock Style="{StaticResource GmtTextLabel}" Text="QUICK START" />
+                    <StackPanel Orientation="Horizontal" Spacing="{StaticResource GmtToolbarGap}">
+                        <Button x:Name="BtnAnalyze" Click="GoAnalyze_Click" Style="{StaticResource GmtButtonPrimary}">
+                            <StackPanel Orientation="Horizontal" Spacing="8">
+                                <FontIcon Glyph="&#xE714;" FontSize="15" />
+                                <TextBlock Text="Analyze media" VerticalAlignment="Center" />
+                            </StackPanel>
+                        </Button>
+                        <Button x:Name="BtnPublicMines" Click="GoPublicMines_Click" Style="{StaticResource GmtButtonSecondary}">
+                            <StackPanel Orientation="Horizontal" Spacing="8">
+                                <FontIcon Glyph="&#xE774;" FontSize="14" />
+                                <TextBlock Text="Public Mines" VerticalAlignment="Center" />
+                            </StackPanel>
+                        </Button>
+                        <Button x:Name="BtnEvidence" Click="GoEvidence_Click" Style="{StaticResource GmtButtonSecondary}">
+                            <StackPanel Orientation="Horizontal" Spacing="8">
+                                <FontIcon Glyph="&#xE8A5;" FontSize="14" />
+                                <TextBlock Text="Evidence Board" VerticalAlignment="Center" />
+                            </StackPanel>
+                        </Button>
+                        <Button x:Name="BtnSolar" Click="GoSolar_Click" Style="{StaticResource GmtButtonSecondary}">
+                            <StackPanel Orientation="Horizontal" Spacing="8">
+                                <FontIcon Glyph="&#xE706;" FontSize="14" />
+                                <TextBlock Text="Solar / Shadow" VerticalAlignment="Center" />
+                            </StackPanel>
+                        </Button>
+                        <Button x:Name="BtnMap" Click="GoMap_Click" Style="{StaticResource GmtButtonGhost}">
+                            <StackPanel Orientation="Horizontal" Spacing="8">
+                                <FontIcon Glyph="&#xE707;" FontSize="14" />
+                                <TextBlock Text="Map" VerticalAlignment="Center" />
+                            </StackPanel>
+                        </Button>
+                    </StackPanel>
+                </StackPanel>
+            </Border>
+
+            <Border Style="{StaticResource GmtCard}">
+                <StackPanel Spacing="{StaticResource GmtStackGapDefault}">
+                    <TextBlock Style="{StaticResource GmtTextLabel}" Text="WORKFLOW" />
+                    <TextBlock Style="{StaticResource GmtTextBody}" TextWrapping="Wrap"
+                        Text="1. Analyze — paste a YouTube URL or open local media.&#x0a;2. Evidence Board — accept, reject, or re-weight every clue.&#x0a;3. Deep Analysis — score corroborating clusters and read the reasoning.&#x0a;4. Solar / Shadow — optional shadow measurements for a solar locus.&#x0a;5. Hypotheses + Map — fused places with rockhounding context.&#x0a;6. Reports — export an auditable research package." />
+                </StackPanel>
+            </Border>
+
+            <Border Style="{StaticResource GmtCard}">
+                <StackPanel Spacing="{StaticResource GmtStackGapTight}">
+                    <TextBlock Style="{StaticResource GmtTextLabel}" Text="BUILT FOR THE FIELD RESEARCHER" />
+                    <TextBlock Style="{StaticResource GmtTextBody}" TextWrapping="Wrap"
+                        Text="Local-first by default. Windows OCR in the app, optional Whisper for speech, offline localities, and map tiles only when you allow Online Enrichment in Settings. Your cases stay on this PC under LocalAppData." />
+                </StackPanel>
+            </Border>
+        </StackPanel>
+    </ScrollViewer>
+</Page>

@@ -1,0 +1,61 @@
+name,state_code,county,latitude,longitude,minerals,land_type,access_status,difficulty,access_notes,sources
+Crater of Diamonds State Park,AR,Pike,34.0328,-93.6728,diamond,StatePark,Open,Beginner,Public fee dig in Arkansas State Park — check hours and rules,Arkansas State Parks;Official site
+Emerald Hollow Mine,NC,Alexander,35.915,-81.145,emerald;quartz;hiddenite,Private,PermitRequired,Beginner,Private fee-to-dig mine — pay admission; follow operator rules,Operator site;Public guides
+Morefield Gem Mine,VA,Amelia,37.342,-77.978,amazonite;amethyst;mica,Private,PermitRequired,Intermediate,Private fee dig — verify open days,Operator site
+Gem Mountain Sapphire Mine,MT,Granite,46.318,-113.292,sapphire,Private,PermitRequired,Beginner,Private fee dig / gravel buckets,Operator site
+Spokane Bar Sapphire Mine,MT,Lewis and Clark,46.7,-111.75,sapphire,Private,PermitRequired,Beginner,Private fee dig,Operator site
+Rainbow Ridge Opal Mine,NV,Humboldt,41.85,-118.95,opal,Private,PermitRequired,Intermediate,Private claim / fee dig — permission required,Operator guides
+Royal Peacock Opal Mine,NV,Humboldt,41.82,-119.02,opal,Private,PermitRequired,Intermediate,Private fee dig,Operator site
+Bonanza Opal Mines area,NV,Humboldt,41.8,-119.05,opal,Private,PermitRequired,Intermediate,Private / claim fee digs — verify operator,Public guides
+Oceanview Mine,CA,San Diego,33.318,-116.901,tourmaline;kunzite;morganite,Private,PermitRequired,Intermediate,Private fee dig (Pala district),Operator site
+Himalaya Mine tours (Pala),CA,San Diego,33.36,-116.88,tourmaline,Private,Restricted,Advanced,Private mine — tours/fee dig only when offered,Operator site
+Cherokee Mining Company dig,CA,Calaveras,38.2,-120.5,gold,Private,PermitRequired,Beginner,Private fee dig for gold,Public guides
+Roaring Camp Mining Co.,CA,Tuolumne,37.95,-120.4,gold,Private,PermitRequired,Beginner,Private fee dig,Operator site
+Gold Prospectors Association of America claims (demo),CA,Kern,35.4,-118.6,gold,Claim,Restricted,Intermediate,Club claims — members only; not open public,GPAA guidance
+Jackson Crossroads Amethyst Mine,GA,Wilkes,33.8,-82.75,amethyst,Private,PermitRequired,Intermediate,Private fee dig,Operator guides
+Graves Mountain,GA,Lincoln,33.75,-82.55,rutile;kyanite;lazuli,Private,PermitRequired,Intermediate,Private / scheduled digs — permission required,Public guides
+Diamond Hill Mine,SC,Abbeville,34.25,-82.45,amethyst;quartz,Private,PermitRequired,Intermediate,Private fee dig (amethyst),Operator site;Public reports
+Hiddenite Gem Mines area,NC,Alexander,35.9,-81.09,hiddenite;emerald,Private,PermitRequired,Intermediate,Private digs — verify operator access,Public guides
+William Holland School dig area (demo),GA,Towns,34.9,-83.55,sapphire;garnet,Private,PermitRequired,Beginner,School/private collecting context,Attribution demo
+Herkimer Diamond Mines (Ace of Diamonds),NY,Herkimer,43.03,-74.98,quartz;herkimer,Private,PermitRequired,Beginner,Private fee dig for Herkimer quartz,Operator site
+Herkimer Diamond Mines (Herkiner Diamond Mines),NY,Herkimer,43.02,-74.99,quartz;herkimer,Private,PermitRequired,Beginner,Private fee dig,Operator site
+Crystal Grove Diamond Mine,NY,Montgomery,42.95,-74.65,quartz;herkimer,Private,PermitRequired,Beginner,Private fee dig,Operator site
+Wegner Quartz Crystal Mines,AR,Montgomery,34.55,-93.65,quartz,Private,PermitRequired,Beginner,Private fee dig,Operator site
+Ron Coleman Mining,AR,Garland,34.55,-93.1,quartz,Private,PermitRequired,Beginner,Private fee dig / crystal mine,Operator site
+Sweet Surrender Crystal Mine,AR,Garland,34.52,-93.15,quartz,Private,PermitRequired,Beginner,Private fee dig,Operator site
+Dig Arkansas (crystal area),AR,Montgomery,34.5,-93.7,quartz,Private,PermitRequired,Beginner,Private fee dig operators,Public guides
+Mammoth Mine (tourist),AZ,Pinal,32.72,-110.64,copper;minerals,Private,Restricted,Beginner,Historic/private tourist context — not free collecting,Public tourism
+Bisbee Queen Mine Tour,AZ,Cochise,31.44,-109.91,copper,Private,Restricted,Beginner,Underground tour only — not a collecting dig,Queen Mine Tours
+Kennecott / Bingham Canyon overlook,UT,Salt Lake,40.52,-112.15,copper,Private,Restricted,Beginner,Active private mine — viewing only from public overlooks,Public tourism
+Morenci Mine overlook area,AZ,Greenlee,33.05,-109.33,copper,Private,Restricted,Beginner,Active private mine — no public collecting,Public tourism
+Berkshire Museum / Chester emery (demo),MA,Hampden,42.28,-72.98,emery,Private,Restricted,Advanced,Historic private — no open collecting,Attribution demo
+Franklin Mineral Museum vicinity,NJ,Sussex,41.12,-74.58,zinc;franklinite;willemite,Private,Restricted,Advanced,Museum/private — not open collecting without permission,Attribution demo
+Sterling Hill Mining Museum,NJ,Sussex,41.08,-74.6,zinc;franklinite,Private,PermitRequired,Beginner,Museum fee collecting dump when offered,Museum site
+Wax Museum / Cape May diamonds (beach),NJ,Cape May,38.93,-74.91,quartz,StateLand,Open,Beginner,Beach collecting of quartz — check local rules,Public guides
+Lake Superior agate beaches (public),MN,Lake,47.2,-91.3,agate,StateLand,Open,Beginner,Public shoreline collecting — verify park rules,MN DNR guidance
+Rockhound State Park,NM,Luna,32.2,-107.65,agate;jasper;geode,StatePark,Open,Beginner,New Mexico State Park rockhounding area — follow park limits,NM State Parks
+Blanchard Rock Shop / mining claim tours,NM,Socorro,33.75,-106.85,fluorite;galena,Private,PermitRequired,Intermediate,Private claim tours / fee collecting when offered,Operator site
+Mason County topaz area (public lands mix),TX,Mason,30.75,-99.23,topaz,Mixed,PermitRequired,Intermediate,Mix of private and public — never dig without permission,TX guides
+Topaz Mountain (UT public),UT,Juab,39.7,-113.1,topaz;bixbyite,PublicBlm,Open,Intermediate,BLM / public collecting area — verify current notices and claims,BLM;Public guides
+Thomas Range topaz (public),UT,Juab,39.72,-113.12,topaz,PublicBlm,Open,Intermediate,Public land collecting — check claims,BLM guidance
+Dugway geode beds,UT,Tooele,39.9,-113.2,geode,PublicBlm,Open,Intermediate,BLM area — verify closure/claim status,BLM;Public guides
+House Range trilobite beds,UT,Millard,39.2,-113.4,fossils,PublicBlm,PermitRequired,Beginner,BLM fossil collecting rules apply,BLM guidance
+Glass Buttes Obsidian,OR,Lake,43.56,-120.07,obsidian,PublicBlm,Open,Beginner,BLM collecting area — verify current notices,BLM;Public compilations
+Prineville Agate Beds area,OR,Crook,44.2,-120.7,agate;jasper,PublicBlm,Open,Intermediate,Dispersed public lands — confirm claim status,Public compilations
+Succor Creek State Natural Area,OR,Malheur,43.45,-117.15,thunderegg;agate,StateLand,Open,Intermediate,State natural area — follow posted rules,Oregon Parks
+Richardson Ranch thundereggs,OR,Morrow,45.35,-119.55,thunderegg,Private,PermitRequired,Beginner,Private fee dig ranch,Operator site
+Spectrum Mine / Oregon sunstone,OR,Lake,42.3,-120.1,sunstone,Private,PermitRequired,Beginner,Private fee dig for sunstone,Operator site
+Dust Devil Mine sunstone,OR,Lake,42.35,-120.05,sunstone,Private,PermitRequired,Beginner,Private fee dig,Operator site
+Davis Creek obsidian,CA,Modoc,41.75,-120.35,obsidian,PublicBlm,Open,Beginner,Public / BLM collecting — verify notices,BLM guidance
+Black Rock Desert collecting areas,NV,Pershing,40.9,-119.05,jasper;agate,PublicBlm,Open,Intermediate,BLM desert — check OHV and claim maps,BLM guidance
+Virgin Valley opal public claims mix,NV,Humboldt,41.85,-119.0,opal,Mixed,PermitRequired,Advanced,Heavy private/claim mix — do not dig without permission,BLM;Public guides
+Maury Mountain thundereggs,OR,Crook,44.1,-120.4,thunderegg,PublicBlm,Open,Intermediate,Public land — verify claims,Public guides
+Graveyard Point plume agate,ID,Owyhee,43.45,-117.15,agate,Mixed,PermitRequired,Intermediate,Check access and private parcels,Idaho guides
+Spencer opal mines,ID,Clark,44.35,-112.18,opal,Private,PermitRequired,Intermediate,Private fee digs / claims,Operator guides
+Rock Creek blue sapphire area,MT,Granite,46.25,-113.5,sapphire,Mixed,PermitRequired,Intermediate,Public and private mix — verify before digging,MT guides
+Missouri River sapphire bars (public mix),MT,Lewis and Clark,46.7,-111.8,sapphire,Mixed,PermitRequired,Intermediate,River bars — ownership varies; get permission,Public guides
+Florissant Fossil Beds (no collecting),CO,Teller,38.92,-105.27,fossils,Other,Closed,Beginner,National Monument — collecting prohibited,NPS
+Petrified Forest NP (no collecting),AZ,Apache,34.9,-109.8,petrified wood,Other,Closed,Beginner,National Park — collecting prohibited,NPS
+Yogo Gulch sapphire (private/historic),MT,Judith Basin,46.95,-110.3,sapphire,Private,Restricted,Advanced,Historic private / claim area — not open public dig,Public history
+Murfreesboro diamond vicinity (private parcels),AR,Pike,34.06,-93.69,diamond,Mixed,PermitRequired,Intermediate,Outside state park many parcels are private,Public guides
+Pala Chief / Tourmaline Queen historic,CA,San Diego,33.365,-116.895,tourmaline,Private,Restricted,Advanced,Private historic mines — tours/permission only,Mining history

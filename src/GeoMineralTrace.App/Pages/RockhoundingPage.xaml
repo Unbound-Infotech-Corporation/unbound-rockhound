@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Page
+    x:Class="GeoMineralTrace_App.Pages.RockhoundingPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:controls="using:GeoMineralTrace_App.Controls"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d">
+
+    <Grid Style="{StaticResource GmtPageRoot}" RowSpacing="{StaticResource GmtStackGapDefault}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <StackPanel Spacing="4">
+            <TextBlock Style="{StaticResource GmtTextTitle}" Text="Mine &amp; Locality Registry" />
+            <TextBlock Style="{StaticResource GmtTextBody}"
+                Text="National USGS mine/occurrence database plus curated public and private sites. Filter by ownership when known; verify before any visit." />
+        </StackPanel>
+
+        <InfoBar Grid.Row="1" Style="{StaticResource GmtInfoBar}" IsOpen="True" IsClosable="False" Severity="Warning" Title="Legal disclaimer"
+            Message="Ownership labels are best-effort (curated sites, text hints, nearby BLM claims). Parcel boundaries are not complete — always verify land status before visiting." />
+
+        <Border Grid.Row="2" Style="{StaticResource GmtToolbarStrip}">
+            <StackPanel Orientation="Horizontal" Spacing="{StaticResource GmtToolbarGap}">
+                <TextBox x:Name="StateBox" Style="{StaticResource GmtTextBox}" Width="88" PlaceholderText="All / near home" Text="" />
+                <TextBox x:Name="MineralBox" Style="{StaticResource GmtTextBox}" Width="160" PlaceholderText="Mineral filter" />
+                <ComboBox x:Name="OwnershipBox" Width="200" VerticalAlignment="Center"
+                    SelectedIndex="0" SelectionChanged="OwnershipBox_SelectionChanged">
+                    <ComboBoxItem Content="All ownership" Tag="" />
+                    <ComboBoxItem Content="Public only" Tag="public" />
+                    <ComboBoxItem Content="Private only" Tag="private" />
+                    <ComboBoxItem Content="Claim vicinity" Tag="claim" />
+                    <ComboBoxItem Content="Unknown ownership" Tag="unknown" />
+                </ComboBox>
+                <Button Content="Search" Click="Search_Click" Style="{StaticResource GmtButtonPrimary}" />
+                <CheckBox x:Name="BeginnerOnly" Content="Beginner-friendly" VerticalAlignment="Center" />
+                <Button Content="Import CSV…" Click="ImportCsv_Click" Style="{StaticResource GmtButtonSecondary}" />
+                <Button Content="Import USGS MRDS…" Click="ImportUsgs_Click" Style="{StaticResource GmtButtonSecondary}" />
+                <Button Content="Classify ownership…" Click="ClassifyOwnership_Click" Style="{StaticResource GmtButtonSecondary}"
+                    ToolTipService.ToolTip="Tag Unknown sites near active BLM claims and apply text ownership hints (offline)" />
+            </StackPanel>
+        </Border>
+
+        <Border Grid.Row="3" Style="{StaticResource GmtToolbarStripSubtle}">
+            <StackPanel Orientation="Horizontal" Spacing="{StaticResource GmtToolbarGap}">
+                <NumberBox x:Name="StarsBox" Style="{StaticResource GmtNumberBox}" Header="Your stars (0–5)" Value="4" Minimum="0" Maximum="5" Width="140" />
+                <TextBox x:Name="NotesBox" Style="{StaticResource GmtTextBox}" Header="Notes" Width="280" />
+                <Button Content="Rate selected" Click="Rate_Click" Style="{StaticResource GmtButtonSecondary}" VerticalAlignment="Bottom" />
+                <Button Content="Open in Google Earth" Click="OpenEarth_Click" Style="{StaticResource GmtButtonSecondary}" VerticalAlignment="Bottom"
+                    ToolTipService.ToolTip="Export the selected locality as KML for Google Earth" />
+            </StackPanel>
+        </Border>
+
+        <Border Grid.Row="4" Style="{StaticResource GmtCard}">
+            <Grid>
+                <ListView x:Name="LocalityList" Style="{StaticResource GmtListView}" SelectionMode="Single"
+                    SelectionChanged="LocalityList_SelectionChanged" ItemContainerStyle="{StaticResource GmtListViewItem}">
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <StackPanel Padding="4,6" Spacing="2">
+                                <TextBlock Style="{StaticResource GmtTextBody}" FontWeight="SemiBold" Text="{Binding Title}" />
+                                <TextBlock Style="{StaticResource GmtTextBodySm}" Text="{Binding Meta}" TextWrapping="Wrap" />
+                                <TextBlock Style="{StaticResource GmtTextCaption}" Text="{Binding Access}" TextWrapping="Wrap" />
+                            </StackPanel>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+                <controls:EmptyState x:Name="LocalityEmpty" Icon="&#xE774;" Title="No localities"
+                    Description="Search by state and mineral, or import CSV / USGS MRDS seed files." />
+            </Grid>
+        </Border>
+
+        <Border Grid.Row="5" Style="{StaticResource GmtPanel}">
+            <Grid ColumnSpacing="{StaticResource GmtToolbarGap}" RowSpacing="8">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+                <TextBlock x:Name="ResultStats" Style="{StaticResource GmtTextCaption}" VerticalAlignment="Center" TextWrapping="Wrap" />
+                <StackPanel Grid.Column="1" Orientation="Horizontal" Spacing="8">
+                    <Button x:Name="PrevPageButton" Content="Previous" Click="PrevPage_Click" Style="{StaticResource GmtButtonSecondary}" IsEnabled="False" />
+                    <Button x:Name="NextPageButton" Content="Next" Click="NextPage_Click" Style="{StaticResource GmtButtonSecondary}" IsEnabled="False" />
+                </StackPanel>
+                <StackPanel Grid.Row="1" Grid.ColumnSpan="2" Spacing="4">
+                    <TextBlock Style="{StaticResource GmtTextLabel}" Text="MINERALS (SELECTED)" />
+                    <ItemsControl x:Name="MineralChips">
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <ItemsWrapGrid Orientation="Horizontal" MaximumRowsOrColumns="8" />
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Button Content="{Binding}" Click="MineralChip_Click" Tag="{Binding}"
+                                    Style="{StaticResource GmtButtonGhost}" Margin="0,0,8,4"
+                                    ToolTipService.ToolTip="Open in Glossary" />
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </StackPanel>
+            </Grid>
+        </Border>
+    </Grid>
+</Page>

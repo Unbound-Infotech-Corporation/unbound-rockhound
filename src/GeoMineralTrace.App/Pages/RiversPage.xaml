@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Page
+    x:Class="GeoMineralTrace_App.Pages.RiversPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:controls="using:GeoMineralTrace_App.Controls"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d">
+
+    <Grid Style="{StaticResource GmtPageRoot}" RowSpacing="{StaticResource GmtStackGapDefault}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <StackPanel Spacing="4">
+            <TextBlock Style="{StaticResource GmtTextTitle}" Text="Rivers &amp; Waterways" />
+            <TextBlock Style="{StaticResource GmtTextBody}" TextWrapping="Wrap"
+                Text="UnboundRockhound — named U.S. rivers and creeks with documented and nearby-reported gems and minerals. Curated finds include citations; inferred links come from USGS MRDS localities within the river corridor." />
+        </StackPanel>
+
+        <InfoBar Grid.Row="1" Style="{StaticResource GmtInfoBar}" IsOpen="True" IsClosable="False"
+            Severity="Informational" Title="Hybrid mineral data"
+            Message="Documented = curated citation. Nearby = USGS or locality within ~3 km of the river line — not a guarantee of in-river collecting." />
+
+        <Border Grid.Row="2" Style="{StaticResource GmtToolbarStrip}">
+            <StackPanel Spacing="8">
+                <StackPanel Orientation="Horizontal" Spacing="{StaticResource GmtToolbarGap}">
+                    <TextBox x:Name="StateBox" Style="{StaticResource GmtTextBox}" Width="88" PlaceholderText="All ST" />
+                    <TextBox x:Name="NameBox" Style="{StaticResource GmtTextBox}" Width="180" PlaceholderText="River name" />
+                    <TextBox x:Name="MineralBox" Style="{StaticResource GmtTextBox}" Width="140" PlaceholderText="Mineral" />
+                    <CheckBox x:Name="CuratedOnlyBox" Content="Curated finds only" />
+                    <Button Content="Search" Click="Search_Click" Style="{StaticResource GmtButtonPrimary}" />
+                    <Button Content="Import NHD…" Click="Import_Click" Style="{StaticResource GmtButtonSecondary}" />
+                    <Button Content="Enrich proximity" Click="Enrich_Click" Style="{StaticResource GmtButtonSecondary}"
+                        ToolTipService.ToolTip="Re-link nearby locality minerals to rivers (offline, uses localities.db)" />
+                </StackPanel>
+                <TextBlock x:Name="StatsText" Style="{StaticResource GmtTextCaption}" TextWrapping="Wrap" />
+            </StackPanel>
+        </Border>
+
+        <Grid Grid.Row="3" ColumnSpacing="12">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="1.15*" />
+            </Grid.ColumnDefinitions>
+
+            <Border Style="{StaticResource GmtCard}">
+                <Grid>
+                    <ListView x:Name="RiverList" Style="{StaticResource GmtListView}" SelectionMode="Single"
+                        SelectionChanged="RiverList_SelectionChanged"
+                        ItemContainerStyle="{StaticResource GmtListViewItem}">
+                        <ListView.ItemTemplate>
+                            <DataTemplate>
+                                <StackPanel Spacing="2" Padding="4,6">
+                                    <TextBlock Style="{StaticResource GmtTextBody}" FontWeight="SemiBold" Text="{Binding Title}" />
+                                    <TextBlock Style="{StaticResource GmtTextBodySm}" Text="{Binding Meta}" TextWrapping="Wrap" />
+                                </StackPanel>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                    </ListView>
+                    <controls:EmptyState x:Name="RiverEmpty" Icon="&#xE7C1;" Title="No rivers match"
+                        Description="Import NHD GeoJSON or rely on the bundled seed rivers (Arkansas, Rogue, Missouri)." />
+                </Grid>
+            </Border>
+
+            <Border Grid.Column="1" Style="{StaticResource GmtCard}">
+                <ScrollViewer>
+                    <StackPanel x:Name="DetailPanel" Spacing="10" Padding="4">
+                        <TextBlock x:Name="DetailTitle" Style="{StaticResource GmtTextSubtitle}" Text="Select a river" />
+                        <TextBlock x:Name="DetailMeta" Style="{StaticResource GmtTextBodySm}" TextWrapping="Wrap" />
+                        <TextBlock Style="{StaticResource GmtTextLabel}" Text="DOCUMENTED FINDS" />
+                        <TextBlock x:Name="DetailCurated" Style="{StaticResource GmtTextBody}" TextWrapping="Wrap" />
+                        <TextBlock Style="{StaticResource GmtTextLabel}" Text="NEARBY REPORTED (INFERRED)" />
+                        <TextBlock x:Name="DetailInferred" Style="{StaticResource GmtTextBody}" TextWrapping="Wrap" />
+                        <TextBlock Style="{StaticResource GmtTextLabel}" Text="NEARBY COLLECTING SITES" />
+                        <TextBlock x:Name="DetailLocalities" Style="{StaticResource GmtTextBodySm}" TextWrapping="Wrap" />
+                        <TextBlock Style="{StaticResource GmtTextLabel}" Text="SOURCES" />
+                        <TextBlock x:Name="DetailSources" Style="{StaticResource GmtTextCaption}" TextWrapping="Wrap" />
+                    </StackPanel>
+                </ScrollViewer>
+            </Border>
+        </Grid>
+    </Grid>
+</Page>

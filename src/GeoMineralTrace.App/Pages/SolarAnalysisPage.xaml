@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<Page
+
+    x:Class="GeoMineralTrace_App.Pages.SolarAnalysisPage"
+
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+
+    xmlns:controls="using:GeoMineralTrace_App.Controls"
+
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+
+    mc:Ignorable="d">
+
+
+
+    <Grid Style="{StaticResource GmtPageRoot}" RowSpacing="{StaticResource GmtStackGapDefault}">
+
+        <Grid.RowDefinitions>
+
+            <RowDefinition Height="Auto" />
+
+            <RowDefinition Height="*" />
+
+            <RowDefinition Height="Auto" />
+
+        </Grid.RowDefinitions>
+
+
+
+        <StackPanel Spacing="4">
+
+            <TextBlock Style="{StaticResource GmtTextTitle}" Text="Solar / Shadow Analysis" />
+
+            <TextBlock Style="{StaticResource GmtTextBody}" TextWrapping="Wrap"
+
+                Text="Click object top, base, and shadow tip on a keyframe. Pixel ratio h/L drives solar elevation constraints." />
+
+        </StackPanel>
+
+
+
+        <Grid Grid.Row="1" ColumnSpacing="{StaticResource GmtGridGap}">
+
+            <Grid.ColumnDefinitions>
+
+                <ColumnDefinition Width="260" />
+
+                <ColumnDefinition Width="*" />
+
+                <ColumnDefinition Width="280" />
+
+            </Grid.ColumnDefinitions>
+
+
+
+            <!-- Keyframe list -->
+
+            <Border Style="{StaticResource GmtCard}">
+
+                <StackPanel Spacing="{StaticResource GmtStackGapDefault}">
+
+                    <TextBlock Style="{StaticResource GmtTextLabel}" Text="KEYFRAMES" />
+
+                    <ListView x:Name="KeyframeList" Style="{StaticResource GmtListView}" MaxHeight="240"
+
+                        SelectionChanged="KeyframeList_SelectionChanged" ItemContainerStyle="{StaticResource GmtListViewItem}" />
+
+                    <Button Content="Refresh" Click="RefreshKeyframes_Click" Style="{StaticResource GmtButtonGhost}" HorizontalAlignment="Stretch" />
+
+                    <TextBlock x:Name="KeyframeMetaText" Style="{StaticResource GmtTextCaption}" TextWrapping="Wrap" />
+
+                </StackPanel>
+
+            </Border>
+
+
+
+            <!-- Measurement canvas -->
+
+            <Border Grid.Column="1" Style="{StaticResource GmtPreviewViewport}" Padding="0">
+
+                <controls:ShadowMeasureCanvas x:Name="MeasureCanvas" MeasurementChanged="MeasureCanvas_MeasurementChanged" />
+
+            </Border>
+
+
+
+            <!-- Inspector panel -->
+
+            <Border Grid.Column="2" Style="{StaticResource GmtInspectorPanel}">
+
+                <ScrollViewer VerticalScrollBarVisibility="Auto">
+
+                    <StackPanel Spacing="{StaticResource GmtSpace2}">
+
+                        <TextBlock Style="{StaticResource GmtTextLabel}" Text="MEASUREMENT" />
+
+                        <controls:InspectorPropertyRow x:Name="RowHeight" Label="Height" Value="—" />
+
+                        <controls:InspectorPropertyRow x:Name="RowShadow" Label="Shadow" Value="—" />
+
+                        <controls:InspectorPropertyRow x:Name="RowRatio" Label="Ratio h/L" Value="—" />
+
+                        <controls:InspectorPropertyRow x:Name="RowAzimuth" Label="Screen az" Value="—" />
+
+
+
+                        <Border Style="{StaticResource GmtDivider}" Margin="0,8" />
+
+
+
+                        <TextBlock Style="{StaticResource GmtTextLabel}" Text="PARAMETERS" />
+
+                        <NumberBox x:Name="ObjectHeightBox" Style="{StaticResource GmtNumberBox}" Header="Object height" Value="1" Minimum="0.01" SpinButtonPlacementMode="Inline" />
+
+                        <NumberBox x:Name="ShadowLengthBox" Style="{StaticResource GmtNumberBox}" Header="Shadow length" Value="1.2" Minimum="0.01" SpinButtonPlacementMode="Inline" />
+
+                        <NumberBox x:Name="AzimuthBox" Style="{StaticResource GmtNumberBox}" Header="Azimuth °" Value="180" Minimum="0" Maximum="360" />
+
+                        <CalendarDatePicker x:Name="DatePicker" Header="Date (UTC)" />
+
+                        <TimePicker x:Name="TimePicker" Header="Time (UTC)" ClockIdentifier="24HourClock" />
+
+                        <CheckBox x:Name="UseAzimuthCheck" Content="Include azimuth in locus" />
+
+                        <NumberBox x:Name="ToleranceBox" Style="{StaticResource GmtNumberBox}" Header="Elevation tol. °" Value="1.5" Minimum="0.1" Maximum="10" />
+
+
+
+                        <StackPanel Spacing="{StaticResource GmtSpace2}" Margin="0,8,0,0">
+
+                            <Button Content="Use canvas ratio" Click="ApplyCanvasRatio_Click" Style="{StaticResource GmtButtonSecondary}" />
+
+                            <Button Content="Compute elevation" Click="ComputeElevation_Click" Style="{StaticResource GmtButtonSecondary}" />
+
+                            <Button Content="Save as evidence" Click="SaveEvidence_Click" Style="{StaticResource GmtButtonGhost}" />
+
+                            <Button Content="Add to trajectory" Click="AddTrajectory_Click" Style="{StaticResource GmtButtonGhost}" />
+
+                            <Button Content="Build locus" Click="BuildLocus_Click" Style="{StaticResource GmtButtonPrimary}" />
+
+                        </StackPanel>
+
+                    </StackPanel>
+
+                </ScrollViewer>
+
+            </Border>
+
+        </Grid>
+
+
+
+        <!-- Results -->
+
+        <Border Grid.Row="2" Style="{StaticResource GmtToolbarStrip}">
+
+            <StackPanel Spacing="{StaticResource GmtSpace2}">
+
+                <TextBlock Style="{StaticResource GmtTextLabel}" Text="RESULTS" />
+
+                <ListView x:Name="TrajectoryList" Style="{StaticResource GmtListView}" MaxHeight="100" ItemContainerStyle="{StaticResource GmtListViewItem}" />
+
+                <TextBlock x:Name="ResultBlock" Style="{StaticResource GmtTextMono}" TextWrapping="Wrap" IsTextSelectionEnabled="True" />
+
+                <InfoBar Style="{StaticResource GmtInfoBar}" IsOpen="True" IsClosable="False" Severity="Warning" Title="Uncertainty"
+
+                    Message="Elevation-only loci are geographic bands. Screen azimuth ≠ geographic azimuth without camera bearing calibration." />
+
+            </StackPanel>
+
+        </Border>
+
+    </Grid>
+
+</Page>
+
+

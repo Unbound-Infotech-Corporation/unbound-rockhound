@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Page
+    x:Class="GeoMineralTrace_App.Pages.ClaimsPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:controls="using:GeoMineralTrace_App.Controls"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d">
+
+    <Grid Style="{StaticResource GmtPageRoot}" RowSpacing="{StaticResource GmtStackGapDefault}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <StackPanel Spacing="4">
+            <TextBlock Style="{StaticResource GmtTextTitle}" Text="Mining Claims" />
+            <TextBlock Style="{StaticResource GmtTextBody}" TextWrapping="Wrap"
+                Text="Offline BLM MLRS records for research and land-status checks. Active claims are not for sale from BLM — only private transfers or new staking on lapsed ground." />
+        </StackPanel>
+
+        <InfoBar Grid.Row="1" Style="{StaticResource GmtInfoBar}" IsOpen="True" IsClosable="False"
+            Severity="Warning" Title="Not a claims marketplace"
+            Message="Use Expiring Soon for maintenance-fee risk windows. Import a BLM MLRS GeoJSON/CSV extract for full coverage — the bundled sample is only a handful of rows for UI practice." />
+
+        <Border Grid.Row="2" Style="{StaticResource GmtToolbarStrip}">
+            <StackPanel Spacing="8">
+                <StackPanel Orientation="Horizontal" Spacing="{StaticResource GmtToolbarGap}">
+                    <TextBox x:Name="StateBox" Style="{StaticResource GmtTextBox}" Width="88" PlaceholderText="All ST" />
+                    <TextBox x:Name="MineralBox" Style="{StaticResource GmtTextBox}" Width="140" PlaceholderText="Mineral" />
+                    <ComboBox x:Name="StatusFilter" Width="220" SelectedIndex="0">
+                        <ComboBoxItem Content="All statuses" />
+                        <ComboBoxItem Content="Expiring Soon (fee risk)" />
+                        <ComboBoxItem Content="Active" />
+                        <ComboBoxItem Content="Lapsed / Reopenable" />
+                        <ComboBoxItem Content="Closed" />
+                        <ComboBoxItem Content="Sept 1 fee check (advisory)" />
+                    </ComboBox>
+                    <Button Content="Search" Click="Search_Click" Style="{StaticResource GmtButtonPrimary}" />
+                    <Button Content="Import BLM…" Click="Import_Click" Style="{StaticResource GmtButtonSecondary}" />
+                    <Button x:Name="OpenEarthToolbarButton" Content="Open in Google Earth" Click="OpenEarth_Click"
+                        Style="{StaticResource GmtButtonSecondary}" IsEnabled="False"
+                        ToolTipService.ToolTip="Export the selected claim as KML (select a row first)" />
+                </StackPanel>
+                <TextBlock x:Name="StatsText" Style="{StaticResource GmtTextCaption}" TextWrapping="Wrap" />
+                <Expander Header="What do these statuses mean?" HorizontalAlignment="Stretch">
+                    <TextBlock Style="{StaticResource GmtTextBodySm}" TextWrapping="Wrap" LineHeight="20"
+                        Text="Active — claim of record; contact the claimant for any transfer.&#x0a;Expiring Soon — maintenance fee may be unpaid for the current year; verify in MLRS.&#x0a;Lapsed / Reopenable — BLM shows closed; ground may be open for a new claim if land is not withdrawn.&#x0a;Sept 1 fee check — advisory flag when fee payment history is missing near the deadline.&#x0a;&#x0a;Serial number — BLM case ID for MLRS lookup. PLSS (Township/Range/Section) — legal land description. Claimant of record — current holder on file (when present in extract)." />
+                </Expander>
+            </StackPanel>
+        </Border>
+
+        <Grid Grid.Row="3" ColumnSpacing="12">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="1.1*" />
+            </Grid.ColumnDefinitions>
+
+            <Border Style="{StaticResource GmtCard}">
+                <Grid>
+                    <ListView x:Name="ClaimList" Style="{StaticResource GmtListView}" SelectionMode="Single"
+                        SelectionChanged="ClaimList_SelectionChanged"
+                        ItemContainerStyle="{StaticResource GmtListViewItem}">
+                        <ListView.ItemTemplate>
+                            <DataTemplate>
+                                <Grid Padding="4,6" ColumnSpacing="8">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="Auto" />
+                                    </Grid.ColumnDefinitions>
+                                    <StackPanel Spacing="2">
+                                        <TextBlock Style="{StaticResource GmtTextBody}" FontWeight="SemiBold" Text="{Binding Title}" />
+                                        <TextBlock Style="{StaticResource GmtTextBodySm}" Text="{Binding Meta}" TextWrapping="Wrap" />
+                                    </StackPanel>
+                                    <Button Grid.Column="1" Content="Earth" Click="RowEarth_Click" Tag="{Binding Id}"
+                                        Style="{StaticResource GmtButtonCompact}" VerticalAlignment="Center"
+                                        ToolTipService.ToolTip="Open this claim in Google Earth" />
+                                </Grid>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                    </ListView>
+                    <controls:EmptyState x:Name="ClaimEmpty" Icon="&#xE8EF;" Title="No claims match"
+                        Description="Try All statuses with an empty state filter, or import a BLM MLRS GeoJSON/CSV extract." />
+                </Grid>
+            </Border>
+
+            <Border Grid.Column="1" Style="{StaticResource GmtCard}">
+                <Grid>
+                    <StackPanel x:Name="DetailPlaceholder" Spacing="8" Padding="12" VerticalAlignment="Center" HorizontalAlignment="Center">
+                        <FontIcon Glyph="&#xE76C;" FontSize="28" Opacity="0.55" />
+                        <TextBlock Style="{StaticResource GmtTextSubtitle}" Text="Claim detail" HorizontalAlignment="Center" />
+                        <TextBlock Style="{StaticResource GmtTextBodySm}" TextWrapping="Wrap" TextAlignment="Center" MaxWidth="300"
+                            Text="Select a claim to see status, legal meaning, location, and nearby sites. Use Earth on any row to jump straight into Google Earth." />
+                    </StackPanel>
+                    <ScrollViewer x:Name="DetailPanel" Visibility="Collapsed">
+                        <StackPanel Spacing="10" Padding="4">
+                            <TextBlock x:Name="DetailTitle" Style="{StaticResource GmtTextSubtitle}" TextWrapping="Wrap" />
+                            <TextBlock x:Name="DetailBadge" Style="{StaticResource GmtTextLabel}" />
+
+                            <TextBlock Style="{StaticResource GmtTextCaption}" Text="WHAT THIS MEANS" />
+                            <TextBlock x:Name="DetailExplainer" Style="{StaticResource GmtTextBody}" TextWrapping="Wrap" />
+
+                            <TextBlock Style="{StaticResource GmtTextCaption}" Text="LOCATION &amp; LEGAL" />
+                            <TextBlock x:Name="DetailLocation" Style="{StaticResource GmtTextBody}" TextWrapping="Wrap" />
+
+                            <TextBlock Style="{StaticResource GmtTextCaption}" Text="CLAIM HOLDER &amp; FEES" />
+                            <TextBlock x:Name="DetailHolder" Style="{StaticResource GmtTextBody}" TextWrapping="Wrap" />
+
+                            <TextBlock Style="{StaticResource GmtTextCaption}" Text="MINERALS &amp; SOURCE" />
+                            <TextBlock x:Name="DetailMinerals" Style="{StaticResource GmtTextBodySm}" TextWrapping="Wrap" />
+
+                            <StackPanel Orientation="Horizontal" Spacing="8" VerticalAlignment="Bottom">
+                                <NumberBox x:Name="NearbyRadiusBox" Style="{StaticResource GmtNumberBox}"
+                                    Header="Nearby radius (km)" Value="25" Minimum="1" Maximum="200" Width="140"
+                                    ValueChanged="NearbyRadius_Changed" />
+                                <Button Content="Refresh nearby" Click="RefreshNearby_Click"
+                                    Style="{StaticResource GmtButtonGhost}" VerticalAlignment="Bottom" />
+                            </StackPanel>
+
+                            <TextBlock Style="{StaticResource GmtTextCaption}" Text="OTHER CLAIMS NEARBY" />
+                            <TextBlock x:Name="NearbyClaims" Style="{StaticResource GmtTextBodySm}" TextWrapping="Wrap" />
+
+                            <TextBlock Style="{StaticResource GmtTextCaption}" Text="ROCKHOUNDING LOCALITIES NEARBY" />
+                            <TextBlock x:Name="NearbyLocalities" Style="{StaticResource GmtTextBodySm}" TextWrapping="Wrap" />
+
+                            <TextBlock Style="{StaticResource GmtTextCaption}" Text="TECHNICAL RECORD" />
+                            <TextBlock x:Name="DetailMeta" Style="{StaticResource GmtTextBodySm}" TextWrapping="Wrap" FontFamily="Consolas" />
+
+                            <Button Content="Open in Google Earth" Click="OpenEarth_Click"
+                                Style="{StaticResource GmtButtonSecondary}" HorizontalAlignment="Left"
+                                ToolTipService.ToolTip="Export this claim as KML and open in Google Earth Pro" />
+                        </StackPanel>
+                    </ScrollViewer>
+                </Grid>
+            </Border>
+        </Grid>
+    </Grid>
+</Page>

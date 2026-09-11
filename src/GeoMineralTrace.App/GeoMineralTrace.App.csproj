@@ -1,0 +1,86 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net8.0-windows10.0.19041.0</TargetFramework>
+    <TargetPlatformMinVersion>10.0.17763.0</TargetPlatformMinVersion>
+    <RootNamespace>GeoMineralTrace_App</RootNamespace>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
+    <Platforms>x86;x64;ARM64</Platforms>
+    <!-- Align RID with Platform so solution "Any CPU → x86" builds don't conflict with host-arch RID. -->
+    <RuntimeIdentifier Condition="'$(RuntimeIdentifier)' == '' and '$(Platform)' == 'x86'">win-x86</RuntimeIdentifier>
+    <RuntimeIdentifier Condition="'$(RuntimeIdentifier)' == '' and '$(Platform)' == 'ARM64'">win-arm64</RuntimeIdentifier>
+    <RuntimeIdentifier Condition="'$(RuntimeIdentifier)' == ''">win-x64</RuntimeIdentifier>
+    <UseWinUI>true</UseWinUI>
+    <WinUISDKReferences>false</WinUISDKReferences>
+    <!-- Unpackaged portable exe (zip distribution). -->
+    <WindowsPackageType>None</WindowsPackageType>
+    <!-- Needed for WinUI resource plumbing even when not producing an MSIX. -->
+    <EnableMsixTooling>true</EnableMsixTooling>
+    <!-- App does not use Main/Singleton (push notifications, etc.). -->
+    <WindowsAppSdkDeploymentManagerInitialize>false</WindowsAppSdkDeploymentManagerInitialize>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <Version>0.6.0</Version>
+    <AssemblyVersion>0.6.0.0</AssemblyVersion>
+    <FileVersion>0.6.0.0</FileVersion>
+    <AssemblyName>UnboundRockhound</AssemblyName>
+    <Product>Unbound Rockhound</Product>
+    <Company>Unbound Infotech Corporation</Company>
+    <Authors>Unbound Infotech Corporation</Authors>
+    <Description>Forensic video geolocation fused with U.S. rockhounding research tools.</Description>
+    <ApplicationIcon>Assets\AppIcon.ico</ApplicationIcon>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Content Include="Assets\SplashScreen.scale-200.png" />
+    <Content Include="Assets\LockScreenLogo.scale-200.png" />
+    <Content Include="Assets\Square150x150Logo.scale-200.png" />
+    <Content Include="Assets\Square44x44Logo.scale-200.png" />
+    <Content Include="Assets\Square44x44Logo.targetsize-24_altform-unplated.png" />
+    <Content Include="Assets\Square44x44Logo.targetsize-48_altform-lightunplated.png" />
+    <Content Include="Assets\StoreLogo.png" />
+    <Content Include="Assets\AppIcon.ico" />
+    <Content Include="Assets\Wide310x150Logo.scale-200.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Manifest Include="$(ApplicationManifest)" />
+  </ItemGroup>
+
+  <ItemGroup Condition="'$(DisableMsixProjectCapabilityAddedByProject)'!='true' and '$(EnableMsixTooling)'=='true'">
+    <ProjectCapability Include="Msix" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.2" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="10.0.11" />
+    <PackageReference Include="Microsoft.Windows.SDK.BuildTools" Version="10.0.28000.2526" />
+    <!-- Stable unpackaged WinUI + self-contained Windows App Runtime for portable zips. -->
+    <PackageReference Include="Microsoft.WindowsAppSDK" Version="1.7.260224002" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\GeoMineralTrace.Core\GeoMineralTrace.Core.csproj" />
+    <ProjectReference Include="..\GeoMineralTrace.Solar\GeoMineralTrace.Solar.csproj" />
+    <ProjectReference Include="..\GeoMineralTrace.Evidence\GeoMineralTrace.Evidence.csproj" />
+    <ProjectReference Include="..\GeoMineralTrace.Hypothesis\GeoMineralTrace.Hypothesis.csproj" />
+    <ProjectReference Include="..\GeoMineralTrace.Rockhounding\GeoMineralTrace.Rockhounding.csproj" />
+    <ProjectReference Include="..\GeoMineralTrace.Claims\GeoMineralTrace.Claims.csproj" />
+    <ProjectReference Include="..\GeoMineralTrace.Hydrology\GeoMineralTrace.Hydrology.csproj" />
+    <ProjectReference Include="..\GeoMineralTrace.Pipeline\GeoMineralTrace.Pipeline.csproj" />
+    <ProjectReference Include="..\GeoMineralTrace.Reporting\GeoMineralTrace.Reporting.csproj" />
+    <ProjectReference Include="..\GeoMineralTrace.Infrastructure\GeoMineralTrace.Infrastructure.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="..\..\knowledge\techniques\**\*" Link="knowledge\techniques\%(RecursiveDir)%(Filename)%(Extension)" CopyToOutputDirectory="PreserveNewest" />
+    <Content Include="..\..\data\seed\**\*" Link="data\seed\%(RecursiveDir)%(Filename)%(Extension)" CopyToOutputDirectory="PreserveNewest" Condition="Exists('..\..\data\seed')" />
+  </ItemGroup>
+
+  <PropertyGroup Condition="'$(DisableHasPackageAndPublishMenuAddedByProject)'!='true' and '$(EnableMsixTooling)'=='true'">
+    <HasPackageAndPublishMenu>true</HasPackageAndPublishMenu>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <PublishReadyToRun>False</PublishReadyToRun>
+    <PublishTrimmed>False</PublishTrimmed>
+  </PropertyGroup>
+</Project>

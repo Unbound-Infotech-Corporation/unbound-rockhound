@@ -1,0 +1,38 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!--
+  GeoMineral Trace Design System — Master Theme
+
+  LOAD ORDER (do not reorder):
+    1. Colors      — palette + semantic brushes (ThemeDictionaries)
+    2. Elevation   — surface layers + shadow constants
+    3. Spacing     — layout grid
+    4. Radius      — corner radii
+    5. Motion      — durations + easing
+    6. Analysis    — NLE / overlay / confidence tokens
+    7. Typography  — font families + text styles (depends on color brushes)
+-->
+<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <ResourceDictionary.MergedDictionaries>
+        <!-- Paths are relative to this file (Themes/). -->
+        <ResourceDictionary Source="Tokens/Colors.xaml" />
+        <ResourceDictionary Source="Tokens/Elevation.xaml" />
+        <ResourceDictionary Source="Tokens/Spacing.xaml" />
+        <ResourceDictionary Source="Tokens/Radius.xaml" />
+        <ResourceDictionary Source="Tokens/Motion.xaml" />
+        <ResourceDictionary Source="Tokens/Analysis.xaml" />
+        <ResourceDictionary Source="Tokens/Typography.xaml" />
+        <ResourceDictionary Source="Components/Buttons.xaml" />
+        <ResourceDictionary Source="Components/Inputs.xaml" />
+        <ResourceDictionary Source="Components/Cards.xaml" />
+        <ResourceDictionary Source="Components/Lists.xaml" />
+        <ResourceDictionary Source="Components/Chrome.xaml" />
+        <ResourceDictionary Source="Components/AnalysisPlayer.xaml" />
+    </ResourceDictionary.MergedDictionaries>
+
+    <!-- Default app chrome background -->
+    <SolidColorBrush x:Key="GmtBrushAppBackground" Color="{ThemeResource GmtColorBackgroundBase}" />
+
+</ResourceDictionary>

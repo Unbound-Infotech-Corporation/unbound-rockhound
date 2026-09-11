@@ -1,0 +1,246 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  GeoMineral Trace — Color tokens (Light / Dark ThemeDictionaries)
+
+  Palette philosophy: cool charcoal surfaces + Adobe-blue primary (creative-suite chrome)
+  + amber/cyan accents for solar/geo measurement overlays.
+
+  Gray scale (9+ steps):
+    950 Canvas · 900 Base · 850 Sidebar · 800 Panel · 750 Raised · 700 Hover
+    600 BorderStrong · 500 Border · 400 Tertiary · 300 Secondary · 100 Primary · 50 Emphasis
+
+  WCAG AA: primary text on surfaces ≥ 4.5:1; large text / UI chrome ≥ 3:1.
+-->
+<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <ResourceDictionary.ThemeDictionaries>
+
+        <!-- ═══════════════════════════════════════════════════════════
+             DARK THEME (default pro-tool baseline)
+             ═══════════════════════════════════════════════════════════ -->
+        <ResourceDictionary x:Key="Dark">
+
+            <!-- Raw palette -->
+            <Color x:Key="GmtGray950">#FF09090B</Color>
+            <Color x:Key="GmtGray900">#FF0F0F12</Color>
+            <Color x:Key="GmtGray850">#FF141418</Color>
+            <Color x:Key="GmtGray800">#FF1A1A1F</Color>
+            <Color x:Key="GmtGray750">#FF222228</Color>
+            <Color x:Key="GmtGray700">#FF2A2A32</Color>
+            <Color x:Key="GmtGray600">#FF3F3F48</Color>
+            <Color x:Key="GmtGray500">#FF52525C</Color>
+            <Color x:Key="GmtGray400">#FF71717A</Color>
+            <Color x:Key="GmtGray300">#FFA1A1AA</Color>
+            <Color x:Key="GmtGray200">#FFD4D4D8</Color>
+            <Color x:Key="GmtGray100">#FFE4E4E7</Color>
+            <Color x:Key="GmtGray50">#FFFAFAFA</Color>
+
+            <Color x:Key="GmtPrimary500">#FF1473E6</Color>
+            <Color x:Key="GmtPrimary400">#FF378EF0</Color>
+            <Color x:Key="GmtPrimary600">#FF0D66D0</Color>
+            <Color x:Key="GmtPrimary700">#FF095ABA</Color>
+
+            <Color x:Key="GmtSecondary500">#FF2C2C2C</Color>
+            <Color x:Key="GmtSecondary400">#FF3E3E3E</Color>
+
+            <Color x:Key="GmtAccentSolar">#FFF59E0B</Color>
+            <Color x:Key="GmtAccentGeo">#FF06B6D4</Color>
+            <Color x:Key="GmtAccentMeasure">#FF34D399</Color>
+
+            <Color x:Key="GmtSuccess">#FF22C55E</Color>
+            <Color x:Key="GmtSuccessMuted">#FF166534</Color>
+            <Color x:Key="GmtWarning">#FFEAB308</Color>
+            <Color x:Key="GmtWarningMuted">#FF854D0E</Color>
+            <Color x:Key="GmtError">#FFEF4444</Color>
+            <Color x:Key="GmtErrorMuted">#FF991B1B</Color>
+            <Color x:Key="GmtInfo">#FF3B82F6</Color>
+            <Color x:Key="GmtInfoMuted">#FF1E40AF</Color>
+
+            <!-- Surfaces (elevation via lighter layers, not shadows) -->
+            <Color x:Key="GmtColorBackgroundCanvas">#FF09090B</Color>
+            <Color x:Key="GmtColorBackgroundBase">#FF0F0F12</Color>
+            <Color x:Key="GmtColorBackgroundSidebar">#FF141418</Color>
+            <Color x:Key="GmtColorBackgroundPanel">#FF1A1A1F</Color>
+            <Color x:Key="GmtColorBackgroundRaised">#FF222228</Color>
+            <Color x:Key="GmtColorBackgroundHover">#FF2A2A32</Color>
+            <Color x:Key="GmtColorBackgroundInput">#FF141418</Color>
+            <Color x:Key="GmtColorBackgroundOverlay">#CC09090B</Color>
+
+            <!-- Borders -->
+            <Color x:Key="GmtColorBorderSubtle">#FF222228</Color>
+            <Color x:Key="GmtColorBorderDefault">#FF3F3F48</Color>
+            <Color x:Key="GmtColorBorderStrong">#FF52525C</Color>
+            <Color x:Key="GmtColorBorderFocus">#FF1473E6</Color>
+
+            <!-- Text hierarchy -->
+            <Color x:Key="GmtColorTextPrimary">#FFE4E4E7</Color>
+            <Color x:Key="GmtColorTextSecondary">#FFA1A1AA</Color>
+            <Color x:Key="GmtColorTextTertiary">#FF71717A</Color>
+            <Color x:Key="GmtColorTextDisabled">#FF52525C</Color>
+            <Color x:Key="GmtColorTextEmphasis">#FFFAFAFA</Color>
+            <Color x:Key="GmtColorTextData">#FF06B6D4</Color>
+            <Color x:Key="GmtColorTextInverse">#FF0F0F12</Color>
+            <Color x:Key="GmtColorTextLink">#FF378EF0</Color>
+
+            <!-- Interactive -->
+            <Color x:Key="GmtColorPrimary">#FF1473E6</Color>
+            <Color x:Key="GmtColorPrimaryHover">#FF378EF0</Color>
+            <Color x:Key="GmtColorPrimaryPressed">#FF0D66D0</Color>
+            <Color x:Key="GmtColorPrimarySubtle">#331473E6</Color>
+
+            <!-- Brushes -->
+            <SolidColorBrush x:Key="GmtBrushBackgroundCanvas" Color="{StaticResource GmtColorBackgroundCanvas}" />
+            <SolidColorBrush x:Key="GmtBrushBackgroundBase" Color="{StaticResource GmtColorBackgroundBase}" />
+            <SolidColorBrush x:Key="GmtBrushBackgroundSidebar" Color="{StaticResource GmtColorBackgroundSidebar}" />
+            <SolidColorBrush x:Key="GmtBrushBackgroundPanel" Color="{StaticResource GmtColorBackgroundPanel}" />
+            <SolidColorBrush x:Key="GmtBrushBackgroundRaised" Color="{StaticResource GmtColorBackgroundRaised}" />
+            <SolidColorBrush x:Key="GmtBrushBackgroundHover" Color="{StaticResource GmtColorBackgroundHover}" />
+            <SolidColorBrush x:Key="GmtBrushBackgroundInput" Color="{StaticResource GmtColorBackgroundInput}" />
+
+            <SolidColorBrush x:Key="GmtBrushBorderSubtle" Color="{StaticResource GmtColorBorderSubtle}" />
+            <SolidColorBrush x:Key="GmtBrushBorderDefault" Color="{StaticResource GmtColorBorderDefault}" />
+            <SolidColorBrush x:Key="GmtBrushBorderStrong" Color="{StaticResource GmtColorBorderStrong}" />
+            <SolidColorBrush x:Key="GmtBrushBorderFocus" Color="{StaticResource GmtColorBorderFocus}" />
+
+            <SolidColorBrush x:Key="GmtBrushTextPrimary" Color="{StaticResource GmtColorTextPrimary}" />
+            <SolidColorBrush x:Key="GmtBrushTextSecondary" Color="{StaticResource GmtColorTextSecondary}" />
+            <SolidColorBrush x:Key="GmtBrushTextTertiary" Color="{StaticResource GmtColorTextTertiary}" />
+            <SolidColorBrush x:Key="GmtBrushTextDisabled" Color="{StaticResource GmtColorTextDisabled}" />
+            <SolidColorBrush x:Key="GmtBrushTextEmphasis" Color="{StaticResource GmtColorTextEmphasis}" />
+            <SolidColorBrush x:Key="GmtBrushTextData" Color="{StaticResource GmtColorTextData}" />
+            <SolidColorBrush x:Key="GmtBrushTextLink" Color="{StaticResource GmtColorTextLink}" />
+
+            <SolidColorBrush x:Key="GmtBrushPrimary" Color="{StaticResource GmtColorPrimary}" />
+            <SolidColorBrush x:Key="GmtBrushPrimaryHover" Color="{StaticResource GmtColorPrimaryHover}" />
+            <SolidColorBrush x:Key="GmtBrushPrimaryPressed" Color="{StaticResource GmtColorPrimaryPressed}" />
+            <SolidColorBrush x:Key="GmtBrushPrimarySubtle" Color="{StaticResource GmtColorPrimarySubtle}" />
+
+            <SolidColorBrush x:Key="GmtBrushSuccess" Color="{StaticResource GmtSuccess}" />
+            <SolidColorBrush x:Key="GmtBrushSuccessSubtle" Color="{StaticResource GmtSuccessMuted}" />
+            <SolidColorBrush x:Key="GmtBrushWarning" Color="{StaticResource GmtWarning}" />
+            <SolidColorBrush x:Key="GmtBrushWarningSubtle" Color="{StaticResource GmtWarningMuted}" />
+            <SolidColorBrush x:Key="GmtBrushError" Color="{StaticResource GmtError}" />
+            <SolidColorBrush x:Key="GmtBrushErrorSubtle" Color="{StaticResource GmtErrorMuted}" />
+            <SolidColorBrush x:Key="GmtBrushInfo" Color="{StaticResource GmtInfo}" />
+            <SolidColorBrush x:Key="GmtBrushInfoSubtle" Color="{StaticResource GmtInfoMuted}" />
+
+            <SolidColorBrush x:Key="GmtBrushAccentSolar" Color="{StaticResource GmtAccentSolar}" />
+            <SolidColorBrush x:Key="GmtBrushAccentGeo" Color="{StaticResource GmtAccentGeo}" />
+            <SolidColorBrush x:Key="GmtBrushAccentMeasure" Color="{StaticResource GmtAccentMeasure}" />
+
+        </ResourceDictionary>
+
+        <!-- ═══════════════════════════════════════════════════════════
+             LIGHT THEME
+             ═══════════════════════════════════════════════════════════ -->
+        <ResourceDictionary x:Key="Light">
+
+            <Color x:Key="GmtGray950">#FFFAFAFA</Color>
+            <Color x:Key="GmtGray900">#FFF4F4F5</Color>
+            <Color x:Key="GmtGray850">#FFECECEF</Color>
+            <Color x:Key="GmtGray800">#FFE4E4E7</Color>
+            <Color x:Key="GmtGray750">#FFD4D4D8</Color>
+            <Color x:Key="GmtGray700">#FFC4C4CC</Color>
+            <Color x:Key="GmtGray600">#FFA1A1AA</Color>
+            <Color x:Key="GmtGray500">#FF71717A</Color>
+            <Color x:Key="GmtGray400">#FF52525C</Color>
+            <Color x:Key="GmtGray300">#FF3F3F48</Color>
+            <Color x:Key="GmtGray200">#FF27272A</Color>
+            <Color x:Key="GmtGray100">#FF18181B</Color>
+            <Color x:Key="GmtGray50">#FF09090B</Color>
+
+            <Color x:Key="GmtPrimary500">#FF0D66D0</Color>
+            <Color x:Key="GmtPrimary400">#FF1473E6</Color>
+            <Color x:Key="GmtPrimary600">#FF095ABA</Color>
+            <Color x:Key="GmtPrimary700">#FF004E98</Color>
+
+            <Color x:Key="GmtSecondary500">#FF6E6E6E</Color>
+            <Color x:Key="GmtSecondary400">#FF8E8E8E</Color>
+
+            <Color x:Key="GmtAccentSolar">#FFD97706</Color>
+            <Color x:Key="GmtAccentGeo">#FF0891B2</Color>
+            <Color x:Key="GmtAccentMeasure">#FF059669</Color>
+
+            <Color x:Key="GmtSuccess">#FF16A34A</Color>
+            <Color x:Key="GmtSuccessMuted">#FFDCFCE7</Color>
+            <Color x:Key="GmtWarning">#FFCA8A04</Color>
+            <Color x:Key="GmtWarningMuted">#FFFEF9C3</Color>
+            <Color x:Key="GmtError">#FFDC2626</Color>
+            <Color x:Key="GmtErrorMuted">#FFFEE2E2</Color>
+            <Color x:Key="GmtInfo">#FF2563EB</Color>
+            <Color x:Key="GmtInfoMuted">#FFDBEAFE</Color>
+
+            <Color x:Key="GmtColorBackgroundCanvas">#FFF4F4F5</Color>
+            <Color x:Key="GmtColorBackgroundBase">#FFFAFAFA</Color>
+            <Color x:Key="GmtColorBackgroundSidebar">#FFECECEF</Color>
+            <Color x:Key="GmtColorBackgroundPanel">#FFFFFFFF</Color>
+            <Color x:Key="GmtColorBackgroundRaised">#FFFFFFFF</Color>
+            <Color x:Key="GmtColorBackgroundHover">#FFE4E4E7</Color>
+            <Color x:Key="GmtColorBackgroundInput">#FFFFFFFF</Color>
+            <Color x:Key="GmtColorBackgroundOverlay">#9909090B</Color>
+
+            <Color x:Key="GmtColorBorderSubtle">#FFE4E4E7</Color>
+            <Color x:Key="GmtColorBorderDefault">#FFD4D4D8</Color>
+            <Color x:Key="GmtColorBorderStrong">#FFA1A1AA</Color>
+            <Color x:Key="GmtColorBorderFocus">#FF0D66D0</Color>
+
+            <Color x:Key="GmtColorTextPrimary">#FF18181B</Color>
+            <Color x:Key="GmtColorTextSecondary">#FF3F3F48</Color>
+            <Color x:Key="GmtColorTextTertiary">#FF71717A</Color>
+            <Color x:Key="GmtColorTextDisabled">#FFA1A1AA</Color>
+            <Color x:Key="GmtColorTextEmphasis">#FF09090B</Color>
+            <Color x:Key="GmtColorTextData">#FF0891B2</Color>
+            <Color x:Key="GmtColorTextInverse">#FFFAFAFA</Color>
+            <Color x:Key="GmtColorTextLink">#FF0D66D0</Color>
+
+            <Color x:Key="GmtColorPrimary">#FF0D66D0</Color>
+            <Color x:Key="GmtColorPrimaryHover">#FF1473E6</Color>
+            <Color x:Key="GmtColorPrimaryPressed">#FF095ABA</Color>
+            <Color x:Key="GmtColorPrimarySubtle">#330D66D0</Color>
+
+            <SolidColorBrush x:Key="GmtBrushBackgroundCanvas" Color="{StaticResource GmtColorBackgroundCanvas}" />
+            <SolidColorBrush x:Key="GmtBrushBackgroundBase" Color="{StaticResource GmtColorBackgroundBase}" />
+            <SolidColorBrush x:Key="GmtBrushBackgroundSidebar" Color="{StaticResource GmtColorBackgroundSidebar}" />
+            <SolidColorBrush x:Key="GmtBrushBackgroundPanel" Color="{StaticResource GmtColorBackgroundPanel}" />
+            <SolidColorBrush x:Key="GmtBrushBackgroundRaised" Color="{StaticResource GmtColorBackgroundRaised}" />
+            <SolidColorBrush x:Key="GmtBrushBackgroundHover" Color="{StaticResource GmtColorBackgroundHover}" />
+            <SolidColorBrush x:Key="GmtBrushBackgroundInput" Color="{StaticResource GmtColorBackgroundInput}" />
+
+            <SolidColorBrush x:Key="GmtBrushBorderSubtle" Color="{StaticResource GmtColorBorderSubtle}" />
+            <SolidColorBrush x:Key="GmtBrushBorderDefault" Color="{StaticResource GmtColorBorderDefault}" />
+            <SolidColorBrush x:Key="GmtBrushBorderStrong" Color="{StaticResource GmtColorBorderStrong}" />
+            <SolidColorBrush x:Key="GmtBrushBorderFocus" Color="{StaticResource GmtColorBorderFocus}" />
+
+            <SolidColorBrush x:Key="GmtBrushTextPrimary" Color="{StaticResource GmtColorTextPrimary}" />
+            <SolidColorBrush x:Key="GmtBrushTextSecondary" Color="{StaticResource GmtColorTextSecondary}" />
+            <SolidColorBrush x:Key="GmtBrushTextTertiary" Color="{StaticResource GmtColorTextTertiary}" />
+            <SolidColorBrush x:Key="GmtBrushTextDisabled" Color="{StaticResource GmtColorTextDisabled}" />
+            <SolidColorBrush x:Key="GmtBrushTextEmphasis" Color="{StaticResource GmtColorTextEmphasis}" />
+            <SolidColorBrush x:Key="GmtBrushTextData" Color="{StaticResource GmtColorTextData}" />
+            <SolidColorBrush x:Key="GmtBrushTextLink" Color="{StaticResource GmtColorTextLink}" />
+
+            <SolidColorBrush x:Key="GmtBrushPrimary" Color="{StaticResource GmtColorPrimary}" />
+            <SolidColorBrush x:Key="GmtBrushPrimaryHover" Color="{StaticResource GmtColorPrimaryHover}" />
+            <SolidColorBrush x:Key="GmtBrushPrimaryPressed" Color="{StaticResource GmtColorPrimaryPressed}" />
+            <SolidColorBrush x:Key="GmtBrushPrimarySubtle" Color="{StaticResource GmtColorPrimarySubtle}" />
+
+            <SolidColorBrush x:Key="GmtBrushSuccess" Color="{StaticResource GmtSuccess}" />
+            <SolidColorBrush x:Key="GmtBrushSuccessSubtle" Color="{StaticResource GmtSuccessMuted}" />
+            <SolidColorBrush x:Key="GmtBrushWarning" Color="{StaticResource GmtWarning}" />
+            <SolidColorBrush x:Key="GmtBrushWarningSubtle" Color="{StaticResource GmtWarningMuted}" />
+            <SolidColorBrush x:Key="GmtBrushError" Color="{StaticResource GmtError}" />
+            <SolidColorBrush x:Key="GmtBrushErrorSubtle" Color="{StaticResource GmtErrorMuted}" />
+            <SolidColorBrush x:Key="GmtBrushInfo" Color="{StaticResource GmtInfo}" />
+            <SolidColorBrush x:Key="GmtBrushInfoSubtle" Color="{StaticResource GmtInfoMuted}" />
+
+            <SolidColorBrush x:Key="GmtBrushAccentSolar" Color="{StaticResource GmtAccentSolar}" />
+            <SolidColorBrush x:Key="GmtBrushAccentGeo" Color="{StaticResource GmtAccentGeo}" />
+            <SolidColorBrush x:Key="GmtBrushAccentMeasure" Color="{StaticResource GmtAccentMeasure}" />
+
+        </ResourceDictionary>
+
+    </ResourceDictionary.ThemeDictionaries>
+
+</ResourceDictionary>

@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Page
+    x:Class="GeoMineralTrace_App.Pages.AboutPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d">
+
+    <ScrollViewer Padding="{StaticResource GmtPagePaddingWide}">
+        <StackPanel Spacing="{StaticResource GmtStackGapSection}" MaxWidth="880">
+            <StackPanel Spacing="6">
+                <TextBlock Style="{StaticResource GmtTextDisplay}" Text="Unbound Rockhound" />
+                <TextBlock x:Name="VersionText" Style="{StaticResource GmtTextTitle}" />
+                <TextBlock Style="{StaticResource GmtTextBody}" TextWrapping="Wrap"
+                    Text="Desktop research software for forensic video geolocation, fused with a local-first U.S. rockhounding and mineral locality knowledge base." />
+            </StackPanel>
+
+            <InfoBar Style="{StaticResource GmtInfoBar}" IsOpen="True" IsClosable="False" Severity="Informational"
+                Title="Licensed research instrument"
+                Message="Sold and supported as professional desktop software. Outputs remain probabilistic hypotheses — corroborate on the Evidence Board and verify land access before any field visit." />
+
+            <Border Style="{StaticResource GmtCard}">
+                <StackPanel Spacing="{StaticResource GmtStackGapTight}">
+                    <TextBlock Style="{StaticResource GmtTextLabel}" Text="WHAT YOU GET" />
+                    <TextBlock Style="{StaticResource GmtTextBody}" TextWrapping="Wrap"
+                        Text="• YouTube / local media analysis (keyframes, OCR, optional Whisper ASR, place &amp; mineral NER)&#x0a;• Evidence Board with accept / reject / re-weight&#x0a;• Deep Analysis — scored corroborating clusters with inspectable reasoning&#x0a;• Solar / shadow locus tools&#x0a;• Hypothesis fusion, Map, Rockhounding, Rivers, Claims, and exportable reports&#x0a;• Optional cloud account for shared profiles (Settings → Cloud account)&#x0a;• Local-first data under %LocalAppData%\UnboundRockhound\" />
+                </StackPanel>
+            </Border>
+
+            <Border Style="{StaticResource GmtCard}">
+                <StackPanel Spacing="{StaticResource GmtStackGapTight}">
+                    <TextBlock Style="{StaticResource GmtTextLabel}" Text="IMPORTANT DISCLAIMERS" />
+                    <TextBlock Style="{StaticResource GmtTextBody}" TextWrapping="Wrap"
+                        Text="Results are ranked hypotheses with uncertainty — not definitive locations, legal advice, or permission to collect. Respect private property, mining claims, park regulations, and collecting limits. Closed or restricted sites are flagged and must never be treated as visit recommendations. You are responsible for complying with YouTube / Instagram terms when using optional stream ingest." />
+                </StackPanel>
+            </Border>
+
+            <Border Style="{StaticResource GmtCard}">
+                <StackPanel Spacing="{StaticResource GmtStackGapTight}">
+                    <TextBlock Style="{StaticResource GmtTextLabel}" Text="LICENSE" />
+                    <TextBlock x:Name="LicenseStatusText" Style="{StaticResource GmtTextBody}" TextWrapping="Wrap" />
+                    <Button Content="Activate / manage license" Click="Activate_Click"
+                        Style="{StaticResource GmtButtonSecondary}" HorizontalAlignment="Left" />
+                </StackPanel>
+            </Border>
+
+            <Border Style="{StaticResource GmtCard}">
+                <StackPanel Spacing="{StaticResource GmtStackGapTight}">
+                    <TextBlock Style="{StaticResource GmtTextLabel}" Text="SUPPORT" />
+                    <TextBlock x:Name="SupportText" Style="{StaticResource GmtTextBody}" TextWrapping="Wrap" />
+                    <TextBlock Style="{StaticResource GmtTextCaption}" TextWrapping="Wrap"
+                        Text="Crash and diagnostic reports stay on this PC until you choose Copy, Zip, or Send email from Settings." />
+                </StackPanel>
+            </Border>
+
+            <Border Style="{StaticResource GmtCard}">
+                <StackPanel Spacing="{StaticResource GmtStackGapTight}">
+                    <TextBlock Style="{StaticResource GmtTextLabel}" Text="DOCUMENTATION (IN INSTALL FOLDER)" />
+                    <TextBlock Style="{StaticResource GmtTextMono}" TextWrapping="Wrap"
+                        Text="INSTALL.txt · EULA-DISCLAIMER.md · README.md · docs\limitations.md · docs\scoring-methodology.md · knowledge\techniques\" />
+                </StackPanel>
+            </Border>
+        </StackPanel>
+    </ScrollViewer>
+</Page>

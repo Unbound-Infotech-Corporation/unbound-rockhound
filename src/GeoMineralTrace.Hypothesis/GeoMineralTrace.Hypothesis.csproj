@@ -1,0 +1,15 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <ItemGroup>
+    <ProjectReference Include="..\GeoMineralTrace.Core\GeoMineralTrace.Core.csproj" />
+    <ProjectReference Include="..\GeoMineralTrace.Solar\GeoMineralTrace.Solar.csproj" />
+    <ProjectReference Include="..\GeoMineralTrace.Evidence\GeoMineralTrace.Evidence.csproj" />
+  </ItemGroup>
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+</Project>

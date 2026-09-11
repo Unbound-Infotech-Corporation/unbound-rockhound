@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  GeoMineral Trace — Border radius scale
+  Adobe-like: tighter corners on controls (4px).
+-->
+<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <CornerRadius x:Key="GmtRadiusNone">0</CornerRadius>
+    <CornerRadius x:Key="GmtRadiusXs">2</CornerRadius>
+    <CornerRadius x:Key="GmtRadiusSm">4</CornerRadius>
+    <CornerRadius x:Key="GmtRadiusMd">6</CornerRadius>
+    <CornerRadius x:Key="GmtRadiusLg">8</CornerRadius>
+    <CornerRadius x:Key="GmtRadiusXl">12</CornerRadius>
+    <CornerRadius x:Key="GmtRadius2Xl">16</CornerRadius>
+    <CornerRadius x:Key="GmtRadiusFull">9999</CornerRadius>
+
+    <!-- Semantic -->
+    <CornerRadius x:Key="GmtRadiusButton">4</CornerRadius>
+    <CornerRadius x:Key="GmtRadiusInput">4</CornerRadius>
+    <CornerRadius x:Key="GmtRadiusCard">6</CornerRadius>
+    <CornerRadius x:Key="GmtRadiusChip">6</CornerRadius>
+    <CornerRadius x:Key="GmtRadiusPanel">6</CornerRadius>
+    <CornerRadius x:Key="GmtRadiusOverlay">2</CornerRadius>
+    <CornerRadius x:Key="GmtRadiusPill">9999</CornerRadius>
+
+</ResourceDictionary>

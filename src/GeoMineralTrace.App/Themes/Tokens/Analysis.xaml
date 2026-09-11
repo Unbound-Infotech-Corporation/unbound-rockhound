@@ -1,0 +1,219 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  GeoMineral Trace — Analysis / NLE-specific tokens
+  Video preview overlays, timeline chrome, confidence panel, processing stages,
+  Analyze player transport / scrubber / decorative waveform.
+-->
+<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <ResourceDictionary.ThemeDictionaries>
+
+        <ResourceDictionary x:Key="Dark">
+            <!-- Preview viewport -->
+            <Color x:Key="GmtPreviewLetterbox">#FF000000</Color>
+            <Color x:Key="GmtPreviewGridLine">#33FFFFFF</Color>
+            <Color x:Key="GmtPreviewSafeArea">#66F59E0B</Color>
+            <SolidColorBrush x:Key="GmtBrushPreviewLetterbox" Color="{StaticResource GmtPreviewLetterbox}" />
+            <SolidColorBrush x:Key="GmtBrushPreviewGridLine" Color="{StaticResource GmtPreviewGridLine}" />
+
+            <!-- Measurement overlays (Figma-style thin vectors) -->
+            <Color x:Key="GmtOverlayShadowVector">#FFF59E0B</Color>
+            <Color x:Key="GmtOverlayObjectHeight">#FF34D399</Color>
+            <Color x:Key="GmtOverlaySunRay">#FF06B6D4</Color>
+            <Color x:Key="GmtOverlayLabelBg">#CC09090B</Color>
+            <Color x:Key="GmtOverlayHandle">#FFFFFFFF</Color>
+
+            <x:Double x:Key="GmtOverlayLineThin">1</x:Double>
+            <x:Double x:Key="GmtOverlayLineDefault">1.5</x:Double>
+            <x:Double x:Key="GmtOverlayLineEmphasis">2</x:Double>
+            <x:Double x:Key="GmtOverlayHandleSize">6</x:Double>
+
+            <!-- Timeline / scrubber -->
+            <Color x:Key="GmtTimelineTrack">#FF222228</Color>
+            <Color x:Key="GmtTimelineTrackFill">#FF3F3F48</Color>
+            <Color x:Key="GmtTimelinePlayhead">#FFE4E4E7</Color>
+            <Color x:Key="GmtTimelinePlayheadGlow">#66F59E0B</Color>
+            <Color x:Key="GmtTimelineKeyframe">#FFF59E0B</Color>
+            <Color x:Key="GmtTimelineWaveform">#FF3F3F48</Color>
+            <Color x:Key="GmtTimelineWaveformActive">#FF5E6AD2</Color>
+            <Color x:Key="GmtTimelineSelection">#405E6AD2</Color>
+            <Color x:Key="GmtTimelineSelectionBorder">#FF7C85DB</Color>
+            <Color x:Key="GmtTimelineProgress">#FF5E6AD2</Color>
+            <Color x:Key="GmtColorEvidenceSolar">#FFF59E0B</Color>
+            <Color x:Key="GmtColorEvidenceKeyframe">#FF5E6AD2</Color>
+            <Color x:Key="GmtColorEvidenceGps">#FF22C55E</Color>
+            <Color x:Key="GmtColorEvidenceNer">#FF34D399</Color>
+            <Color x:Key="GmtColorEvidenceGeneric">#FF71717A</Color>
+            <SolidColorBrush x:Key="GmtBrushTimelineTrack" Color="{StaticResource GmtTimelineTrack}" />
+            <SolidColorBrush x:Key="GmtBrushTimelineTrackFill" Color="{StaticResource GmtTimelineTrackFill}" />
+            <SolidColorBrush x:Key="GmtBrushTimelinePlayhead" Color="{StaticResource GmtTimelinePlayhead}" />
+            <SolidColorBrush x:Key="GmtBrushTimelinePlayheadGlow" Color="{StaticResource GmtTimelinePlayheadGlow}" />
+            <SolidColorBrush x:Key="GmtBrushTimelineKeyframe" Color="{StaticResource GmtTimelineKeyframe}" />
+            <SolidColorBrush x:Key="GmtBrushTimelineWaveform" Color="{StaticResource GmtTimelineWaveform}" />
+            <SolidColorBrush x:Key="GmtBrushTimelineWaveformActive" Color="{StaticResource GmtTimelineWaveformActive}" />
+            <SolidColorBrush x:Key="GmtBrushTimelineSelection" Color="{StaticResource GmtTimelineSelection}" />
+            <SolidColorBrush x:Key="GmtBrushTimelineSelectionBorder" Color="{StaticResource GmtTimelineSelectionBorder}" />
+            <SolidColorBrush x:Key="GmtBrushTimelineProgress" Color="{StaticResource GmtTimelineProgress}" />
+            <x:Double x:Key="GmtTimelineHeight">48</x:Double>
+            <x:Double x:Key="GmtTimelineRulerHeight">20</x:Double>
+            <x:Double x:Key="GmtTimelinePlayheadWidth">2</x:Double>
+            <x:Double x:Key="GmtTimelineScrubberHeight">12</x:Double>
+            <x:Double x:Key="GmtTimelineWaveformHeight">52</x:Double>
+            <x:Double x:Key="GmtTimelineWaveformOpacity">0.72</x:Double>
+
+            <!-- Player transport chrome -->
+            <Color x:Key="GmtTransportSurface">#E6141418</Color>
+            <Color x:Key="GmtTransportBorder">#FF3F3F48</Color>
+            <Color x:Key="GmtTransportIcon">#FFE4E4E7</Color>
+            <Color x:Key="GmtTransportIconMuted">#FF71717A</Color>
+            <Color x:Key="GmtTransportHover">#FF2A2A32</Color>
+            <Color x:Key="GmtTransportPressed">#FF3F3F48</Color>
+            <Color x:Key="GmtTransportDisabledFill">#FF1A1A1F</Color>
+            <Color x:Key="GmtTransportDisabledBorder">#FF3F3F48</Color>
+            <SolidColorBrush x:Key="GmtBrushTransportSurface" Color="{StaticResource GmtTransportSurface}" />
+            <SolidColorBrush x:Key="GmtBrushTransportBorder" Color="{StaticResource GmtTransportBorder}" />
+            <SolidColorBrush x:Key="GmtBrushTransportIcon" Color="{StaticResource GmtTransportIcon}" />
+            <SolidColorBrush x:Key="GmtBrushTransportIconMuted" Color="{StaticResource GmtTransportIconMuted}" />
+            <SolidColorBrush x:Key="GmtBrushTransportHover" Color="{StaticResource GmtTransportHover}" />
+            <SolidColorBrush x:Key="GmtBrushTransportPressed" Color="{StaticResource GmtTransportPressed}" />
+            <SolidColorBrush x:Key="GmtBrushTransportDisabledFill" Color="{StaticResource GmtTransportDisabledFill}" />
+            <SolidColorBrush x:Key="GmtBrushTransportDisabledBorder" Color="{StaticResource GmtTransportDisabledBorder}" />
+            <x:Double x:Key="GmtTransportButtonSize">32</x:Double>
+            <x:Double x:Key="GmtTransportIconSize">14</x:Double>
+            <x:Double x:Key="GmtTransportDisabledOpacity">0.72</x:Double>
+
+            <!-- Confidence / results inspector -->
+            <Color x:Key="GmtConfidenceHigh">#FF22C55E</Color>
+            <Color x:Key="GmtConfidenceMedium">#FFEAB308</Color>
+            <Color x:Key="GmtConfidenceLow">#FFEF4444</Color>
+            <Color x:Key="GmtConfidenceMuted">#FF71717A</Color>
+            <SolidColorBrush x:Key="GmtBrushConfidenceHigh" Color="{StaticResource GmtConfidenceHigh}" />
+            <SolidColorBrush x:Key="GmtBrushConfidenceMedium" Color="{StaticResource GmtConfidenceMedium}" />
+            <SolidColorBrush x:Key="GmtBrushConfidenceLow" Color="{StaticResource GmtConfidenceLow}" />
+            <SolidColorBrush x:Key="GmtBrushConfidenceMuted" Color="{StaticResource GmtConfidenceMuted}" />
+            <Color x:Key="GmtInspectorDivider">#FF222228</Color>
+            <Color x:Key="GmtInspectorRowHover">#FF2A2A32</Color>
+            <SolidColorBrush x:Key="GmtBrushInspectorDivider" Color="{StaticResource GmtInspectorDivider}" />
+            <SolidColorBrush x:Key="GmtBrushInspectorRowHover" Color="{StaticResource GmtInspectorRowHover}" />
+
+            <!-- Processing stage colors -->
+            <Color x:Key="GmtStagePending">#FF52525C</Color>
+            <Color x:Key="GmtStageActive">#FF5E6AD2</Color>
+            <Color x:Key="GmtStageComplete">#FF22C55E</Color>
+            <Color x:Key="GmtStageError">#FFEF4444</Color>
+            <SolidColorBrush x:Key="GmtBrushStagePending" Color="{StaticResource GmtStagePending}" />
+            <SolidColorBrush x:Key="GmtBrushStageActive" Color="{StaticResource GmtStageActive}" />
+            <SolidColorBrush x:Key="GmtBrushStageComplete" Color="{StaticResource GmtStageComplete}" />
+            <SolidColorBrush x:Key="GmtBrushStageError" Color="{StaticResource GmtStageError}" />
+        </ResourceDictionary>
+
+        <ResourceDictionary x:Key="Light">
+            <Color x:Key="GmtPreviewLetterbox">#FF18181B</Color>
+            <Color x:Key="GmtPreviewGridLine">#33000000</Color>
+            <Color x:Key="GmtPreviewSafeArea">#66D97706</Color>
+            <SolidColorBrush x:Key="GmtBrushPreviewLetterbox" Color="{StaticResource GmtPreviewLetterbox}" />
+            <SolidColorBrush x:Key="GmtBrushPreviewGridLine" Color="{StaticResource GmtPreviewGridLine}" />
+
+            <Color x:Key="GmtOverlayShadowVector">#FFD97706</Color>
+            <Color x:Key="GmtOverlayObjectHeight">#FF059669</Color>
+            <Color x:Key="GmtOverlaySunRay">#FF0891B2</Color>
+            <Color x:Key="GmtOverlayLabelBg">#CCFFFFFF</Color>
+            <Color x:Key="GmtOverlayHandle">#FF18181B</Color>
+
+            <x:Double x:Key="GmtOverlayLineThin">1</x:Double>
+            <x:Double x:Key="GmtOverlayLineDefault">1.5</x:Double>
+            <x:Double x:Key="GmtOverlayLineEmphasis">2</x:Double>
+            <x:Double x:Key="GmtOverlayHandleSize">6</x:Double>
+
+            <Color x:Key="GmtTimelineTrack">#FFE4E4E7</Color>
+            <Color x:Key="GmtTimelineTrackFill">#FFD4D4D8</Color>
+            <Color x:Key="GmtTimelinePlayhead">#FF18181B</Color>
+            <Color x:Key="GmtTimelinePlayheadGlow">#66D97706</Color>
+            <Color x:Key="GmtTimelineKeyframe">#FFD97706</Color>
+            <Color x:Key="GmtTimelineWaveform">#FFD4D4D8</Color>
+            <Color x:Key="GmtTimelineWaveformActive">#FF4E59C4</Color>
+            <Color x:Key="GmtTimelineSelection">#404E59C4</Color>
+            <Color x:Key="GmtTimelineSelectionBorder">#FF5E6AD2</Color>
+            <Color x:Key="GmtTimelineProgress">#FF4E59C4</Color>
+            <Color x:Key="GmtColorEvidenceSolar">#FFD97706</Color>
+            <Color x:Key="GmtColorEvidenceKeyframe">#FF4E59C4</Color>
+            <Color x:Key="GmtColorEvidenceGps">#FF059669</Color>
+            <Color x:Key="GmtColorEvidenceNer">#FF10B981</Color>
+            <Color x:Key="GmtColorEvidenceGeneric">#FF71717A</Color>
+            <SolidColorBrush x:Key="GmtBrushTimelineTrack" Color="{StaticResource GmtTimelineTrack}" />
+            <SolidColorBrush x:Key="GmtBrushTimelineTrackFill" Color="{StaticResource GmtTimelineTrackFill}" />
+            <SolidColorBrush x:Key="GmtBrushTimelinePlayhead" Color="{StaticResource GmtTimelinePlayhead}" />
+            <SolidColorBrush x:Key="GmtBrushTimelinePlayheadGlow" Color="{StaticResource GmtTimelinePlayheadGlow}" />
+            <SolidColorBrush x:Key="GmtBrushTimelineKeyframe" Color="{StaticResource GmtTimelineKeyframe}" />
+            <SolidColorBrush x:Key="GmtBrushTimelineWaveform" Color="{StaticResource GmtTimelineWaveform}" />
+            <SolidColorBrush x:Key="GmtBrushTimelineWaveformActive" Color="{StaticResource GmtTimelineWaveformActive}" />
+            <SolidColorBrush x:Key="GmtBrushTimelineSelection" Color="{StaticResource GmtTimelineSelection}" />
+            <SolidColorBrush x:Key="GmtBrushTimelineSelectionBorder" Color="{StaticResource GmtTimelineSelectionBorder}" />
+            <SolidColorBrush x:Key="GmtBrushTimelineProgress" Color="{StaticResource GmtTimelineProgress}" />
+            <x:Double x:Key="GmtTimelineHeight">48</x:Double>
+            <x:Double x:Key="GmtTimelineRulerHeight">20</x:Double>
+            <x:Double x:Key="GmtTimelinePlayheadWidth">2</x:Double>
+            <x:Double x:Key="GmtTimelineScrubberHeight">12</x:Double>
+            <x:Double x:Key="GmtTimelineWaveformHeight">52</x:Double>
+            <x:Double x:Key="GmtTimelineWaveformOpacity">0.72</x:Double>
+
+            <Color x:Key="GmtTransportSurface">#F0FFFFFF</Color>
+            <Color x:Key="GmtTransportBorder">#FFD4D4D8</Color>
+            <Color x:Key="GmtTransportIcon">#FF18181B</Color>
+            <Color x:Key="GmtTransportIconMuted">#FF71717A</Color>
+            <Color x:Key="GmtTransportHover">#FFF4F4F5</Color>
+            <Color x:Key="GmtTransportPressed">#FFE4E4E7</Color>
+            <Color x:Key="GmtTransportDisabledFill">#FFF4F4F5</Color>
+            <Color x:Key="GmtTransportDisabledBorder">#FFD4D4D8</Color>
+            <SolidColorBrush x:Key="GmtBrushTransportSurface" Color="{StaticResource GmtTransportSurface}" />
+            <SolidColorBrush x:Key="GmtBrushTransportBorder" Color="{StaticResource GmtTransportBorder}" />
+            <SolidColorBrush x:Key="GmtBrushTransportIcon" Color="{StaticResource GmtTransportIcon}" />
+            <SolidColorBrush x:Key="GmtBrushTransportIconMuted" Color="{StaticResource GmtTransportIconMuted}" />
+            <SolidColorBrush x:Key="GmtBrushTransportHover" Color="{StaticResource GmtTransportHover}" />
+            <SolidColorBrush x:Key="GmtBrushTransportPressed" Color="{StaticResource GmtTransportPressed}" />
+            <SolidColorBrush x:Key="GmtBrushTransportDisabledFill" Color="{StaticResource GmtTransportDisabledFill}" />
+            <SolidColorBrush x:Key="GmtBrushTransportDisabledBorder" Color="{StaticResource GmtTransportDisabledBorder}" />
+            <x:Double x:Key="GmtTransportButtonSize">32</x:Double>
+            <x:Double x:Key="GmtTransportIconSize">14</x:Double>
+            <x:Double x:Key="GmtTransportDisabledOpacity">0.72</x:Double>
+
+            <Color x:Key="GmtConfidenceHigh">#FF16A34A</Color>
+            <Color x:Key="GmtConfidenceMedium">#FFCA8A04</Color>
+            <Color x:Key="GmtConfidenceLow">#FFDC2626</Color>
+            <Color x:Key="GmtConfidenceMuted">#FF71717A</Color>
+            <SolidColorBrush x:Key="GmtBrushConfidenceHigh" Color="{StaticResource GmtConfidenceHigh}" />
+            <SolidColorBrush x:Key="GmtBrushConfidenceMedium" Color="{StaticResource GmtConfidenceMedium}" />
+            <SolidColorBrush x:Key="GmtBrushConfidenceLow" Color="{StaticResource GmtConfidenceLow}" />
+            <SolidColorBrush x:Key="GmtBrushConfidenceMuted" Color="{StaticResource GmtConfidenceMuted}" />
+            <Color x:Key="GmtInspectorDivider">#FFE4E4E7</Color>
+            <Color x:Key="GmtInspectorRowHover">#FFF4F4F5</Color>
+            <SolidColorBrush x:Key="GmtBrushInspectorDivider" Color="{StaticResource GmtInspectorDivider}" />
+            <SolidColorBrush x:Key="GmtBrushInspectorRowHover" Color="{StaticResource GmtInspectorRowHover}" />
+
+            <Color x:Key="GmtStagePending">#FFA1A1AA</Color>
+            <Color x:Key="GmtStageActive">#FF4E59C4</Color>
+            <Color x:Key="GmtStageComplete">#FF16A34A</Color>
+            <Color x:Key="GmtStageError">#FFDC2626</Color>
+            <SolidColorBrush x:Key="GmtBrushStagePending" Color="{StaticResource GmtStagePending}" />
+            <SolidColorBrush x:Key="GmtBrushStageActive" Color="{StaticResource GmtStageActive}" />
+            <SolidColorBrush x:Key="GmtBrushStageComplete" Color="{StaticResource GmtStageComplete}" />
+            <SolidColorBrush x:Key="GmtBrushStageError" Color="{StaticResource GmtStageError}" />
+        </ResourceDictionary>
+
+    </ResourceDictionary.ThemeDictionaries>
+
+    <!-- Processing stage labels — used in AnalysisPage progress UI -->
+    <x:String x:Key="GmtStageLabelMetadata">Extracting metadata</x:String>
+    <x:String x:Key="GmtStageLabelKeyframes">Detecting keyframes</x:String>
+    <x:String x:Key="GmtStageLabelOcr">Running OCR</x:String>
+    <x:String x:Key="GmtStageLabelTranscription">Transcribing audio</x:String>
+    <x:String x:Key="GmtStageLabelNer">Extracting entities</x:String>
+    <x:String x:Key="GmtStageLabelScene">Tagging scenes</x:String>
+    <x:String x:Key="GmtStageLabelFusion">Fusing hypotheses</x:String>
+    <x:String x:Key="GmtStageLabelShadow">Detecting shadows</x:String>
+    <x:String x:Key="GmtStageLabelSolar">Cross-referencing solar position</x:String>
+    <x:String x:Key="GmtStageLabelLocation">Estimating location</x:String>
+
+</ResourceDictionary>

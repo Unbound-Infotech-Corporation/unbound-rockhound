@@ -1,0 +1,8 @@
+# Unbound Rockhound Supabase (optional CLI)
+project_id = "YOUR_PROJECT_REF"
+
+[api]
+enabled = true
+
+[db]
+major_version = 15

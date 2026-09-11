@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<UserControl
+    x:Class="GeoMineralTrace_App.Controls.YouTubeClipWorkbench"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:muxc="using:Microsoft.UI.Xaml.Controls">
+
+    <Grid RowSpacing="{StaticResource GmtStackGapDefault}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" MinHeight="220" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <Border x:Name="PlayerFrame" CornerRadius="{StaticResource GmtRadiusSm}" BorderBrush="{ThemeResource GmtBrushBorderDefault}" BorderThickness="1"
+            Background="{ThemeResource GmtBrushBackgroundPanel}">
+            <Grid>
+                <muxc:WebView2 x:Name="PlayerWebView" />
+                <StackPanel x:Name="LoadingPanel" HorizontalAlignment="Center" VerticalAlignment="Center" Spacing="8">
+                    <ProgressRing IsActive="True" Width="32" Height="32" />
+                    <TextBlock x:Name="LoadingText" Style="{StaticResource GmtTextCaption}" Text="Loading YouTube player…" />
+                </StackPanel>
+                <StackPanel x:Name="ErrorPanel" Visibility="Collapsed" HorizontalAlignment="Center" VerticalAlignment="Center"
+                    Spacing="8" MaxWidth="420" Padding="16">
+                    <FontIcon Glyph="&#xE783;" FontSize="28" Foreground="{ThemeResource GmtBrushAccentSolar}" HorizontalAlignment="Center" />
+                    <TextBlock x:Name="ErrorText" Style="{StaticResource GmtTextBody}" TextWrapping="Wrap" TextAlignment="Center" />
+                </StackPanel>
+            </Grid>
+        </Border>
+
+        <StackPanel Grid.Row="1" Spacing="{StaticResource GmtSpace2}">
+            <TextBlock x:Name="VideoTitleText" Style="{StaticResource GmtTextCaption}" TextWrapping="Wrap" Text="Paste a YouTube URL to load" />
+
+            <Grid Height="36" x:Name="ClipTimelineHost" Background="Transparent"
+                PointerPressed="ClipTimelineHost_PointerPressed" PointerMoved="ClipTimelineHost_PointerMoved" PointerReleased="ClipTimelineHost_PointerReleased">
+                <Border x:Name="ClipTrack" CornerRadius="{StaticResource GmtRadiusSm}" Height="28" VerticalAlignment="Center"
+                    Background="{ThemeResource GmtBrushBorderSubtle}" BorderBrush="{ThemeResource GmtBrushBorderDefault}" BorderThickness="1" />
+                <Border x:Name="ClipSelectionFill" Height="28" VerticalAlignment="Center" HorizontalAlignment="Left" Width="0"
+                    Background="{ThemeResource GmtBrushPrimary}" Opacity="0.35" CornerRadius="{StaticResource GmtRadiusSm}" IsHitTestVisible="False" />
+                <Rectangle x:Name="ClipPlayhead" Width="2" Height="28" VerticalAlignment="Center" HorizontalAlignment="Left"
+                    Fill="{ThemeResource GmtBrushAccentSolar}" IsHitTestVisible="False" />
+                <Border x:Name="InHandle" Width="10" Height="32" VerticalAlignment="Center" HorizontalAlignment="Left"
+                    Background="{ThemeResource GmtBrushPrimary}" CornerRadius="2" />
+                <Border x:Name="OutHandle" Width="10" Height="32" VerticalAlignment="Center" HorizontalAlignment="Left"
+                    Background="{ThemeResource GmtBrushPrimary}" CornerRadius="2" />
+            </Grid>
+
+            <Grid ColumnSpacing="{StaticResource GmtToolbarGap}">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+                <StackPanel Spacing="4">
+                    <TextBlock Style="{StaticResource GmtTextLabel}" Text="IN" />
+                    <TextBox x:Name="InTimeBox" Style="{StaticResource GmtTextBox}" PlaceholderText="00:00" LostFocus="TimeBox_LostFocus" />
+                </StackPanel>
+                <StackPanel Grid.Column="1" Spacing="4">
+                    <TextBlock Style="{StaticResource GmtTextLabel}" Text="OUT" />
+                    <TextBox x:Name="OutTimeBox" Style="{StaticResource GmtTextBox}" PlaceholderText="00:30" LostFocus="TimeBox_LostFocus" />
+                </StackPanel>
+                <TextBlock Grid.Column="2" x:Name="SelectionDurationText" Style="{StaticResource GmtTextMono}" VerticalAlignment="Bottom"
+                    Text="Selected: —" />
+            </Grid>
+
+            <StackPanel Orientation="Horizontal" Spacing="{StaticResource GmtToolbarGap}">
+                <Button x:Name="SetInButton" Content="Set In" Click="SetIn_Click" Style="{StaticResource GmtButtonGhost}" IsEnabled="False" />
+                <Button x:Name="SetOutButton" Content="Set Out" Click="SetOut_Click" Style="{StaticResource GmtButtonGhost}" IsEnabled="False" />
+                <Button x:Name="PreviewSelectionButton" Content="Preview selection" Click="PreviewSelection_Click"
+                    Style="{StaticResource GmtButtonGhost}" IsEnabled="False" />
+            </StackPanel>
+        </StackPanel>
+
+        <Border Grid.Row="2" Style="{StaticResource GmtPanel}" Padding="{StaticResource GmtPanelPaddingCompact}">
+            <StackPanel Spacing="{StaticResource GmtSpace2}">
+                <TextBlock Style="{StaticResource GmtTextLabel}" Text="SCREEN CAPTURE (OBS-STYLE)" />
+                <TextBlock Style="{StaticResource GmtTextCaption}" TextWrapping="Wrap"
+                    Text="Records what the browser renders — pick this app window when prompted. Play the shadow segment while recording; audio is captured when the browser allows it." />
+                <StackPanel Orientation="Horizontal" Spacing="{StaticResource GmtToolbarGap}" VerticalAlignment="Center">
+                    <Border x:Name="RecIndicator" Width="10" Height="10" CornerRadius="5" Background="#C0392B" Opacity="0.35" VerticalAlignment="Center" />
+                    <TextBlock x:Name="RecordingStatusText" Style="{StaticResource GmtTextMono}" VerticalAlignment="Center" Text="Not recording" />
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" Spacing="{StaticResource GmtToolbarGap}">
+                    <Button x:Name="StartRecordingButton" Content="Start recording" Click="StartRecording_Click"
+                        Style="{StaticResource GmtButtonSecondary}" IsEnabled="False" />
+                    <Button x:Name="PauseRecordingButton" Content="Pause" Click="PauseRecording_Click"
+                        Style="{StaticResource GmtButtonGhost}" IsEnabled="False" />
+                    <Button x:Name="StopRecordingButton" Content="Stop" Click="StopRecording_Click"
+                        Style="{StaticResource GmtButtonGhost}" IsEnabled="False" />
+                    <Button x:Name="RecordAndAnalyzeButton" Content="Record &amp; analyze selection" Click="RecordAndAnalyze_Click"
+                        Style="{StaticResource GmtButtonPrimary}" IsEnabled="False" />
+                </StackPanel>
+                <Button x:Name="DownloadSegmentButton" Content="Download segment (yt-dlp fallback)…" Click="DownloadSegment_Click"
+                    Style="{StaticResource GmtButtonGhost}" IsEnabled="False" HorizontalAlignment="Left" />
+            </StackPanel>
+        </Border>
+    </Grid>
+</UserControl>

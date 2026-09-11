@@ -1,0 +1,22 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <ItemGroup>
+    <ProjectReference Include="..\GeoMineralTrace.Core\GeoMineralTrace.Core.csproj" />
+    <ProjectReference Include="..\GeoMineralTrace.Rockhounding\GeoMineralTrace.Rockhounding.csproj" />
+    <ProjectReference Include="..\GeoMineralTrace.Claims\GeoMineralTrace.Claims.csproj" />
+    <ProjectReference Include="..\GeoMineralTrace.Hydrology\GeoMineralTrace.Hydrology.csproj" />
+    <ProjectReference Include="..\GeoMineralTrace.Pipeline\GeoMineralTrace.Pipeline.csproj" />
+    <ProjectReference Include="..\GeoMineralTrace.Hypothesis\GeoMineralTrace.Hypothesis.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="10.0.11" />
+  </ItemGroup>
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+</Project>

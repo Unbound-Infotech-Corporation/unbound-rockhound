@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<UserControl
+    x:Class="GeoMineralTrace_App.Controls.InspectorPropertyRow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <Grid Padding="0,6" ColumnSpacing="{StaticResource GmtSpace2}">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="Auto" />
+        </Grid.ColumnDefinitions>
+        <TextBlock x:Name="LabelText" Style="{StaticResource GmtTextLabel}" VerticalAlignment="Center" />
+        <TextBlock
+            x:Name="ValueText"
+            Grid.Column="1"
+            Style="{StaticResource GmtTextMonoValue}"
+            VerticalAlignment="Center"
+            TextAlignment="Right" />
+    </Grid>
+</UserControl>

@@ -1,0 +1,103 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "id": "seed-feature-arkansas",
+      "properties": {
+        "gnis_name": "Arkansas River",
+        "permanent_identifier": "seed-arkansas-river-co",
+        "state": "CO",
+        "county": "Chaffee",
+        "ftype": 460
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [-106.18, 38.90],
+          [-106.14, 38.87],
+          [-106.12, 38.85],
+          [-106.08, 38.80]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "seed-feature-rogue",
+      "properties": {
+        "gnis_name": "Rogue River",
+        "permanent_identifier": "seed-rogue-river-or",
+        "state": "OR",
+        "county": "Jackson",
+        "ftype": 460
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [-123.40, 42.50],
+          [-123.37, 42.47],
+          [-123.35, 42.45],
+          [-123.30, 42.40]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "seed-feature-missouri",
+      "properties": {
+        "gnis_name": "Missouri River",
+        "permanent_identifier": "seed-missouri-river-mt",
+        "state": "MT",
+        "county": "Cascade",
+        "ftype": 460
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [-111.35, 47.55],
+          [-111.32, 47.52],
+          [-111.30, 47.50],
+          [-111.25, 47.45]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "seed-feature-clear-creek",
+      "properties": {
+        "gnis_name": "Clear Creek",
+        "permanent_identifier": "seed-clear-creek-co",
+        "state": "CO",
+        "county": "Jefferson",
+        "ftype": 460
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [-105.25, 39.78],
+          [-105.20, 39.75],
+          [-105.15, 39.72]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "seed-feature-san-pedro",
+      "properties": {
+        "gnis_name": "San Pedro River",
+        "permanent_identifier": "seed-san-pedro-az",
+        "state": "AZ",
+        "county": "Cochise",
+        "ftype": 460
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [-110.30, 31.55],
+          [-110.25, 31.50],
+          [-110.20, 31.45]
+        ]
+      }
+    }
+  ]
+}

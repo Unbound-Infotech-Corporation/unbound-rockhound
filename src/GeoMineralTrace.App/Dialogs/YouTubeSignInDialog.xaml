@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentDialog
+    x:Class="GeoMineralTrace_App.Dialogs.YouTubeSignInDialog"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
+    Title="Sign in to YouTube"
+    PrimaryButtonText="Save session"
+    CloseButtonText="Cancel"
+    DefaultButton="Primary"
+    PrimaryButtonClick="ContentDialog_PrimaryButtonClick">
+
+    <Grid Width="720" Height="520" RowSpacing="8">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <TextBlock Style="{StaticResource GmtTextCaption}" TextWrapping="Wrap"
+            Text="Sign in with the Premium account holder's Google account. Session cookies stay on this PC for yt-dlp. Sign out anytime in Settings. Only use an account you are allowed to operate." />
+
+        <Border Grid.Row="1" BorderBrush="{ThemeResource GmtBrushBorderDefault}" BorderThickness="1"
+            CornerRadius="{StaticResource GmtRadiusSm}" Background="{ThemeResource GmtBrushBackgroundPanel}">
+            <muxc:WebView2 x:Name="AuthWebView" />
+        </Border>
+
+        <TextBlock x:Name="StatusLabel" Grid.Row="2" Style="{StaticResource GmtTextMono}" Text="Loading sign-in…" />
+    </Grid>
+</ContentDialog>

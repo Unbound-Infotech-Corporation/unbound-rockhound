@@ -1,0 +1,45 @@
+<Page
+    x:Class="GeoMineralTrace_App.Pages.ActivatePage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d">
+
+    <ScrollViewer Padding="{StaticResource GmtPagePaddingWide}">
+        <StackPanel Spacing="{StaticResource GmtStackGapSection}" MaxWidth="520">
+            <StackPanel Spacing="4">
+                <TextBlock Style="{StaticResource GmtTextTitle}" Text="Activate license" />
+                <TextBlock Style="{StaticResource GmtTextBody}" TextWrapping="Wrap"
+                    Text="After purchasing on Stripe you receive a key shaped like UR-XXXX-XXXX-XXXX-XXXX. Paste it below to unlock this PC (up to 3 devices per license)." />
+            </StackPanel>
+
+            <InfoBar x:Name="StatusBar" IsOpen="True" IsClosable="False" Severity="Informational"
+                Title="License status" Message="Checking…" />
+
+            <Border Style="{StaticResource GmtCard}">
+                <StackPanel Spacing="{StaticResource GmtStackGapDefault}">
+                    <TextBlock Style="{StaticResource GmtTextLabel}" Text="LICENSE KEY" />
+                    <TextBox x:Name="KeyBox" Style="{StaticResource GmtTextBox}"
+                        Header="Key"
+                        PlaceholderText="UR-XXXX-XXXX-XXXX-XXXX"
+                        FontFamily="Consolas"
+                        CharacterCasing="Upper" />
+                    <Button x:Name="ActivateButton" Content="Activate on this PC"
+                        Click="Activate_Click" Style="{StaticResource GmtButtonPrimary}" />
+                    <HyperlinkButton Content="Buy Unbound Rockhound"
+                        NavigateUri="https://unboundinfotech.com/products/unbound-rockhound" />
+                    <TextBlock x:Name="DetailText" Style="{StaticResource GmtTextCaption}" TextWrapping="Wrap" />
+                </StackPanel>
+            </Border>
+
+            <Border Style="{StaticResource GmtCard}">
+                <StackPanel Spacing="{StaticResource GmtStackGapTight}">
+                    <TextBlock Style="{StaticResource GmtTextLabel}" Text="UPDATES" />
+                    <TextBlock Style="{StaticResource GmtTextBody}" TextWrapping="Wrap"
+                        Text="Licensed installs check for new versions automatically (Settings → Software updates). When we publish a build we update the public feed JSON and you get an in-app banner with a download link — your cases stay in LocalAppData." />
+                </StackPanel>
+            </Border>
+        </StackPanel>
+    </ScrollViewer>
+</Page>

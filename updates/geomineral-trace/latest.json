@@ -1,0 +1,10 @@
+{
+  "productId": "geomineral-trace",
+  "version": "0.5.0",
+  "releasedAtUtc": "2026-09-02T21:00:00Z",
+  "title": "GeoMineral Trace 0.5.0",
+  "notes": "Deep Analysis, Yellowstone River gazetteer fixes, commercial packaging, and in-app update checks.",
+  "downloadUrl": "https://updates.geomineraltrace.app/downloads/GeoMineralTrace-Windows-x64-v0.5.0.zip",
+  "releaseNotesUrl": "https://updates.geomineraltrace.app/geomineral-trace/changelog",
+  "mandatory": false
+}

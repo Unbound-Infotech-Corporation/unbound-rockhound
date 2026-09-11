@@ -1,0 +1,10 @@
+{
+  "productId": "unbound-rockhound",
+  "version": "0.6.0",
+  "releasedAtUtc": "2026-09-03T10:00:00Z",
+  "title": "Unbound Rockhound 0.6.0",
+  "notes": "Licensing (Stripe keys + Activate), branded Setup, Deep Analysis, trips, optional cloud accounts.",
+  "downloadUrl": "https://unboundinfotech.com/downloads/UnboundRockhound-Windows-x64-v0.6.0.zip",
+  "releaseNotesUrl": "https://unboundinfotech.com/products/unbound-rockhound/changelog",
+  "mandatory": false
+}

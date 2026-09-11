@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<UserControl
+    x:Class="GeoMineralTrace_App.Controls.EmptyState"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <StackPanel
+        HorizontalAlignment="Center"
+        VerticalAlignment="Center"
+        Spacing="{StaticResource GmtSpace3}"
+        MaxWidth="360"
+        Margin="32">
+        <FontIcon
+            x:Name="StateIcon"
+            Glyph="&#xE946;"
+            FontSize="28"
+            Foreground="{ThemeResource GmtBrushTextTertiary}"
+            HorizontalAlignment="Center" />
+        <TextBlock
+            x:Name="TitleText"
+            Style="{StaticResource GmtTextHeadline}"
+            TextAlignment="Center"
+            Text="Nothing here yet" />
+        <TextBlock
+            x:Name="DescriptionText"
+            Style="{StaticResource GmtTextBody}"
+            TextAlignment="Center"
+            TextWrapping="Wrap"
+            Text="Add content to get started." />
+        <Button
+            x:Name="ActionButton"
+            Content="Take action"
+            Style="{StaticResource GmtButtonPrimary}"
+            HorizontalAlignment="Center"
+            Visibility="Collapsed"
+            Click="ActionButton_Click" />
+    </StackPanel>
+</UserControl>

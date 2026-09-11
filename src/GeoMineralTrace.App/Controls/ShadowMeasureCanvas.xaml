@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<UserControl
+    x:Class="GeoMineralTrace_App.Controls.ShadowMeasureCanvas"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d">
+
+    <Grid MaxWidth="900" MaxHeight="560">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <Border
+            Grid.Row="0"
+            Background="#FF000000"
+            BorderBrush="{ThemeResource GmtBrushBorderDefault}"
+            BorderThickness="1"
+            CornerRadius="{StaticResource GmtRadiusMd}">
+            <Grid x:Name="HostGrid" Background="Transparent">
+                <Image x:Name="KeyframeImage" Stretch="Uniform" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                <Canvas x:Name="OverlayCanvas" Background="Transparent" IsHitTestVisible="True" />
+            </Grid>
+        </Border>
+
+        <StackPanel Grid.Row="1" Spacing="{StaticResource GmtSpace1}" Margin="0,8,0,0">
+            <TextBlock x:Name="InstructionText" Style="{StaticResource GmtTextCaption}" TextWrapping="Wrap"
+                Text="Load a keyframe, then click: (1) object top, (2) object base, (3) shadow tip." />
+            <Grid ColumnSpacing="{StaticResource GmtToolbarGap}">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <Button x:Name="ResetButton" Content="Reset points" Click="ResetButton_Click" Style="{StaticResource GmtButtonGhost}" />
+                <TextBlock x:Name="MetricsText" Grid.Column="1" Style="{StaticResource GmtTextMono}" VerticalAlignment="Center" />
+            </Grid>
+        </StackPanel>
+    </Grid>
+</UserControl>
+

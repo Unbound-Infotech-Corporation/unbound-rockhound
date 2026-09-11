@@ -1,0 +1,28 @@
+GeoMineral Trace — where to run the app
+========================================
+
+PRIMARY install on this PC:
+
+  F:\GeoMineralTrace
+  Double-click: Launch GeoMineral Trace.bat
+  Or run:       F:\GeoMineralTrace\App\GeoMineralTrace.App.exe
+
+PORTABLE copy for your other PC (USB / G: drive):
+
+  G:\GeoMineralTrace
+  Copy the whole folder to the other machine, then run Launch GeoMineral Trace.bat
+  Zip also available at: G:\GeoMineralTrace-Windows-x64-v0.4.1.zip
+
+Source code (development only — not a second copy of the app):
+
+  C:\Users\akind\Documents\GeoMineralTrace
+
+After code changes, refresh all installs:
+
+  powershell -File scripts\Package-Release.ps1
+
+Your data (localities, claims, rivers, sessions) lives in:
+
+  %LocalAppData%\GeoMineralTrace\
+
+That folder is shared no matter which build you used last.

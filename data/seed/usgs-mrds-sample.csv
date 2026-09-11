@@ -1,0 +1,5 @@
+dep_id,site_name,state,county,latitude,longitude,commod1,commod2,dep_type,oper_status
+OR000001,Demo Obsidian Flow,OR,Lake,43.560,-120.070,obsidian,,Occurrence,
+ID000001,Demo Garnet Occurrence,ID,Benewah,47.020,-116.330,garnet,almandine,Occurrence,
+NV000001,Demo Gold Past Producer,NV,Nye,38.950,-117.220,gold,silver,Vein,Past Producer
+CA000001,Demo Tourmaline Prospect,CA,San Diego,33.080,-116.610,tourmaline,,Prospect,

@@ -1,0 +1,5 @@
+name,state_code,county,latitude,longitude,minerals,land_type,access_status,difficulty,access_notes,sources
+Glass Buttes Obsidian,OR,Lake,43.56,-120.07,obsidian,PublicBlm,Open,Beginner,BLM collecting area — verify current notices,BLM;Public compilations
+Prineville Agate Beds area,OR,Crook,44.2,-120.7,agate;jasper,PublicBlm,Open,Intermediate,Dispersed public lands — confirm claim status,Public compilations
+Graveyard Point Plume Agate (demo),ID,Owyhee,43.45,-117.15,agate,Mixed,PermitRequired,Intermediate,Check access and private parcels,Idaho guides
+Franklin Mineral Museum vicinity (demo),NJ,Sussex,41.12,-74.58,zinc;franklinite,Private,Restricted,Advanced,Museum/private — not open collecting,Attribution demo

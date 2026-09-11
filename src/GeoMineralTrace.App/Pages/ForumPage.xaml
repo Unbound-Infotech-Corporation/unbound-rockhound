@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Page
+    x:Class="GeoMineralTrace_App.Pages.ForumPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d">
+
+    <ScrollViewer Padding="{StaticResource GmtPagePaddingWide}">
+        <StackPanel Spacing="{StaticResource GmtStackGapSection}" MaxWidth="720">
+            <StackPanel Spacing="4">
+                <TextBlock Style="{StaticResource GmtTextTitle}" Text="Forum" />
+                <TextBlock Style="{StaticResource GmtTextBody}" TextWrapping="Wrap"
+                    Text="Shared community discussion across desktop and Android. World, USA, Local, General, and From Reddit." />
+            </StackPanel>
+
+            <Border x:Name="SignedOutPanel" Style="{StaticResource GmtCard}" Visibility="Collapsed">
+                <StackPanel Spacing="{StaticResource GmtStackGapDefault}">
+                    <TextBlock Style="{StaticResource GmtTextBody}" Text="Sign in to browse and post in the forum." />
+                    <Button Content="Sign in / create account" Click="GoSignIn_Click" Style="{StaticResource GmtButtonPrimary}" />
+                </StackPanel>
+            </Border>
+
+            <!-- Categories -->
+            <StackPanel x:Name="CategoriesPanel" Spacing="{StaticResource GmtStackGapDefault}" Visibility="Collapsed">
+                <TextBlock Style="{StaticResource GmtTextLabel}" Text="CATEGORIES" />
+                <ListView x:Name="CategoriesList" SelectionMode="Single" IsItemClickEnabled="True"
+                    ItemClick="CategoriesList_ItemClick">
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <Border Style="{StaticResource GmtCard}" Margin="0,0,0,8" Padding="16,12">
+                                <StackPanel Spacing="4">
+                                    <TextBlock Text="{Binding Name}" Style="{StaticResource GmtTextBody}" FontWeight="SemiBold" />
+                                    <TextBlock Text="{Binding Description}" Style="{StaticResource GmtTextCaption}" TextWrapping="Wrap" />
+                                </StackPanel>
+                            </Border>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+                <TextBlock x:Name="CategoriesStatus" Style="{StaticResource GmtTextCaption}" TextWrapping="Wrap" />
+
+                <TextBlock Style="{StaticResource GmtTextLabel}" Text="FACEBOOK DIRECTORY" Margin="0,12,0,0" />
+                <TextBlock Style="{StaticResource GmtTextCaption}" TextWrapping="Wrap"
+                    Text="Public rockhounding group links (not affiliated). Open in browser." />
+                <ListView x:Name="FacebookList" SelectionMode="None" IsItemClickEnabled="True"
+                    ItemClick="FacebookList_ItemClick">
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <Border Style="{StaticResource GmtCard}" Margin="0,0,0,8" Padding="16,12">
+                                <StackPanel Spacing="4">
+                                    <TextBlock Text="{Binding Name}" Style="{StaticResource GmtTextBody}" FontWeight="SemiBold" />
+                                    <TextBlock Text="{Binding Url}" Style="{StaticResource GmtTextCaption}" TextWrapping="Wrap" />
+                                    <TextBlock Text="{Binding Notes}" Style="{StaticResource GmtTextCaption}" TextWrapping="Wrap"
+                                        Opacity="0.85" />
+                                </StackPanel>
+                            </Border>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+                <TextBlock x:Name="FacebookStatus" Style="{StaticResource GmtTextCaption}" TextWrapping="Wrap" />
+            </StackPanel>
+
+            <!-- Thread list / Reddit discoveries -->
+            <StackPanel x:Name="ThreadsPanel" Spacing="{StaticResource GmtStackGapDefault}" Visibility="Collapsed">
+                <StackPanel Orientation="Horizontal" Spacing="{StaticResource GmtToolbarGap}">
+                    <Button Content="Back" Click="BackToCategories_Click" Style="{StaticResource GmtButtonSecondary}" />
+                    <Button x:Name="NewThreadButton" Content="New thread" Click="ShowNewThread_Click" Style="{StaticResource GmtButtonPrimary}" />
+                    <Button x:Name="ProcessNerButton" Content="Process community NER"
+                        Click="ProcessNer_Click" Style="{StaticResource GmtButtonSecondary}" Visibility="Collapsed"
+                        ToolTipService.ToolTip="Preview US-state centroids from titles. Writes are done by the reddit-discover edge job (service role)." />
+                </StackPanel>
+                <TextBlock x:Name="ThreadsTitle" Style="{StaticResource GmtTextTitle}" TextWrapping="Wrap" />
+                <TextBlock x:Name="RegionNoteText" Style="{StaticResource GmtTextCaption}" TextWrapping="Wrap" Visibility="Collapsed" />
+                <ListView x:Name="ThreadsList" SelectionMode="Single" IsItemClickEnabled="True"
+                    ItemClick="ThreadsList_ItemClick" Visibility="Visible">
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <Border Style="{StaticResource GmtCard}" Margin="0,0,0,8" Padding="16,12">
+                                <StackPanel Spacing="4">
+                                    <TextBlock Text="{Binding Title}" Style="{StaticResource GmtTextBody}" FontWeight="SemiBold" TextWrapping="Wrap" />
+                                    <TextBlock Style="{StaticResource GmtTextCaption}">
+                                        <Run Text="{Binding ReplyCount}" /><Run Text=" replies · " />
+                                        <Run Text="{Binding LikeCount}" /><Run Text=" likes" />
+                                    </TextBlock>
+                                </StackPanel>
+                            </Border>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+                <ListView x:Name="RedditList" SelectionMode="None" IsItemClickEnabled="True"
+                    ItemClick="RedditList_ItemClick" Visibility="Collapsed">
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <Border Style="{StaticResource GmtCard}" Margin="0,0,0,8" Padding="16,12">
+                                <StackPanel Spacing="4">
+                                    <TextBlock Text="{Binding Title}" Style="{StaticResource GmtTextBody}" FontWeight="SemiBold" TextWrapping="Wrap" />
+                                    <TextBlock Style="{StaticResource GmtTextCaption}" TextWrapping="Wrap">
+                                        <Run Text="r/" /><Run Text="{Binding Subreddit}" /><Run Text=" · score " />
+                                        <Run Text="{Binding Score}" />
+                                    </TextBlock>
+                                    <TextBlock Text="{Binding Snippet}" Style="{StaticResource GmtTextCaption}" TextWrapping="Wrap"
+                                        MaxLines="3" TextTrimming="CharacterEllipsis" />
+                                </StackPanel>
+                            </Border>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+                <TextBlock x:Name="ThreadsStatus" Style="{StaticResource GmtTextCaption}" TextWrapping="Wrap" />
+            </StackPanel>
+
+            <!-- New thread composer -->
+            <Border x:Name="NewThreadPanel" Style="{StaticResource GmtCard}" Visibility="Collapsed">
+                <StackPanel Spacing="{StaticResource GmtStackGapDefault}">
+                    <TextBlock Style="{StaticResource GmtTextLabel}" Text="NEW THREAD" />
+                    <TextBox x:Name="NewTitleBox" Style="{StaticResource GmtTextBox}" PlaceholderText="Title" MaxLength="200" />
+                    <TextBox x:Name="NewBodyBox" Style="{StaticResource GmtTextBox}" PlaceholderText="Opening post"
+                        AcceptsReturn="True" TextWrapping="Wrap" Height="120" />
+                    <TextBox x:Name="NewRegionBox" Style="{StaticResource GmtTextBox}"
+                        PlaceholderText="Region tag (for Local)" Visibility="Collapsed" MaxLength="80" />
+                    <StackPanel Orientation="Horizontal" Spacing="{StaticResource GmtToolbarGap}">
+                        <Button Content="Attach image" Click="AttachNewThreadImage_Click" Style="{StaticResource GmtButtonSecondary}" />
+                        <Button Content="Post thread" Click="CreateThread_Click" Style="{StaticResource GmtButtonPrimary}" />
+                        <Button Content="Cancel" Click="CancelNewThread_Click" Style="{StaticResource GmtButtonSecondary}" />
+                    </StackPanel>
+                    <TextBlock x:Name="NewThreadAttachStatus" Style="{StaticResource GmtTextCaption}" TextWrapping="Wrap" />
+                </StackPanel>
+            </Border>
+
+            <!-- Thread detail -->
+            <StackPanel x:Name="DetailPanel" Spacing="{StaticResource GmtStackGapDefault}" Visibility="Collapsed">
+                <Button Content="Back to threads" Click="BackToThreads_Click" Style="{StaticResource GmtButtonSecondary}"
+                    HorizontalAlignment="Left" />
+                <Border Style="{StaticResource GmtCard}">
+                    <StackPanel Spacing="{StaticResource GmtStackGapDefault}">
+                        <TextBlock x:Name="DetailTitle" Style="{StaticResource GmtTextTitle}" TextWrapping="Wrap" />
+                        <TextBlock x:Name="DetailMeta" Style="{StaticResource GmtTextCaption}" TextWrapping="Wrap" />
+                        <TextBlock x:Name="DetailBody" Style="{StaticResource GmtTextBody}" TextWrapping="Wrap" />
+                        <ItemsControl x:Name="DetailImages">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <Image Source="{Binding}" MaxHeight="220" Stretch="Uniform" Margin="0,4,0,0"
+                                        HorizontalAlignment="Left" />
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                        <StackPanel Orientation="Horizontal" Spacing="{StaticResource GmtToolbarGap}">
+                            <Button x:Name="LikeButton" Content="Like" Click="Like_Click" Style="{StaticResource GmtButtonSecondary}" />
+                            <TextBlock x:Name="LikeStatus" Style="{StaticResource GmtTextCaption}" VerticalAlignment="Center" />
+                        </StackPanel>
+                    </StackPanel>
+                </Border>
+
+                <TextBlock Style="{StaticResource GmtTextLabel}" Text="REPLIES" />
+                <ItemsControl x:Name="PostsList">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Border Style="{StaticResource GmtCard}" Margin="0,0,0,8" Padding="16,12">
+                                <StackPanel Spacing="4">
+                                    <TextBlock Text="{Binding Body}" Style="{StaticResource GmtTextBody}" TextWrapping="Wrap" />
+                                    <TextBlock Style="{StaticResource GmtTextCaption}">
+                                        <Run Text="{Binding CreatedAt}" />
+                                    </TextBlock>
+                                </StackPanel>
+                            </Border>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+
+                <Border Style="{StaticResource GmtCard}">
+                    <StackPanel Spacing="{StaticResource GmtStackGapDefault}">
+                        <TextBlock Style="{StaticResource GmtTextLabel}" Text="REPLY" />
+                        <TextBox x:Name="ReplyBox" Style="{StaticResource GmtTextBox}" PlaceholderText="Write a reply…"
+                            AcceptsReturn="True" TextWrapping="Wrap" Height="100" />
+                        <StackPanel Orientation="Horizontal" Spacing="{StaticResource GmtToolbarGap}">
+                            <Button Content="Attach image" Click="AttachReplyImage_Click" Style="{StaticResource GmtButtonSecondary}" />
+                            <Button Content="Post reply" Click="CreateReply_Click" Style="{StaticResource GmtButtonPrimary}" />
+                        </StackPanel>
+                        <TextBlock x:Name="ReplyAttachStatus" Style="{StaticResource GmtTextCaption}" TextWrapping="Wrap" />
+                    </StackPanel>
+                </Border>
+                <TextBlock x:Name="DetailStatus" Style="{StaticResource GmtTextCaption}" TextWrapping="Wrap" />
+            </StackPanel>
+        </StackPanel>
+    </ScrollViewer>
+</Page>

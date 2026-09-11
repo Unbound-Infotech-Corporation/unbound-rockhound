@@ -1,0 +1,21 @@
+name,state_code,latitude,longitude,minerals,source_type,source_url,source_label,notes,confidence,external_id
+Old tailings pile near Randsburg wash,CA,35.368,-117.655,gold;quartz,Forum,,Mindat regional forum thread,Reported placer color in wash — verify claim overlays before digging,0.42,rumour:forum:randsburg-tailings
+Crystal pocket rumor — Pala district bench,CA,33.355,-116.872,tourmaline;quartz,Blog,,Rockhound blog field note,Unverified pocket mention — private land mix in Pala,0.38,rumour:blog:pala-bench-pocket
+Fire agate float near Saddle Mountain,AZ,33.42,-113.18,fire agate,MessageBoard,,Arizona rockhounding board,Scattered float reported — BLM dispersed area check required,0.48,rumour:board:saddle-mtn-fire-agate
+Garnet schist roadcut — Blue Ridge Parkway vicinity,NC,35.78,-82.25,garnet;staurolite,Forum,,Eastern US collecting forum,Roadcut mention — NPS/FS jurisdiction likely,0.35,rumour:forum:blue-ridge-garnet-cut
+Lake Superior agate beach tip — Grand Marais,MN,47.75,-90.33,agate,Social,,Public rockhounding group post,Beach collecting tip — verify MN shore rules,0.55,rumour:social:grand-marais-agate
+Sunstone float — Rabbit Hills area,OR,42.28,-120.12,sunstone,Forum,,Oregon sunstone collectors forum,Loose material rumor — claim checker essential,0.44,rumour:forum:rabbit-hills-sunstone
+Old copper dump — Keweenaw peninsula roadside,MI,47.28,-88.42,copper;silver,FieldReport,,Club trip write-up,Historic dump mention — may be posted no-trespass,0.40,rumour:fieldreport:keweenaw-dump
+Turquoise float — Cerrillos hills fringe,NM,35.42,-106.08,turquoise,MessageBoard,,Southwest turquoise board,Surface float rumor — Pueblo/private land sensitivity,0.36,rumour:board:cerrillos-turquoise
+Benitoite area rumor — New Idria district,CA,36.41,-120.59,benitoite,Forum,,California mineral forum,Old district chatter — active claims and private patents,0.33,rumour:forum:new-idria-chatter
+Petrified wood scatter — Escalante bench,UT,37.78,-111.60,petrified wood,Blog,,Desert blog trip report,Scattered pieces — GSENM / closure rules apply,0.41,rumour:blog:escalante-wood
+Wulfenite mention — Red Cloud mine vicinity,AZ,32.88,-113.58,wulfenite;vanadinite,Forum,,Mineral collector forum,Historic mine area — no underground entry,0.39,rumour:forum:red-cloud-vicinity
+Smoky quartz pegmatite rumor — Mount Antero approach,CO,38.67,-106.25,quartz;topaz,MessageBoard,,Colorado pegmatite board,High altitude pegmatite rumor — FS permit/claim check,0.37,rumour:board:antero-pegmatite
+Fairburn agate wash — Cheyenne River gravel,SD,43.55,-102.35,agate,VideoComment,,YouTube field video comments,Gravel bar mention — tribal/private land risk,0.34,rumour:video:cheyenne-fairburn
+Old mica pit — Spruce Pine district,NC,35.92,-82.07,mica;quartz,Forum,,Appalachian collecting forum,Abandoned pit rumor — posted property likely,0.43,rumour:forum:spruce-pine-mica
+Thompsonite zeolite beach — North Shore MN,MN,47.05,-91.68,thompsonite;agate,Social,,Great Lakes rockhounding post,Lake shore zeolite — winter access only in some spots,0.46,rumour:social:north-shore-thompsonite
+Beryl pegmatite cut — Haddam CT historic district,CT,41.45,-72.52,beryl;feldspar,Blog,,New England field blog,Roadcut / old dig rumor — suburban posted land,0.32,rumour:blog:haddam-beryl
+Opalized wood rumor — Virgin Valley bench,NV,41.82,-117.65,opal,Forum,,Nevada opal forum,Near fee mines — claim boundaries critical,0.45,rumour:forum:virgin-valley-bench
+Lapis lazuli mention — Sawtooth Range talus,ID,44.05,-114.72,lazuli,FieldReport,,Idaho mineral society trip note,Talus slope rumor — FS wilderness restrictions,0.38,rumour:fieldreport:sawtooth-lapis
+Diamond bearing kimberlite rumor — Pike County creek,AR,34.05,-93.62,diamond,MessageBoard,,Arkansas diamond board,Creek gravel mention — not Crater of Diamonds park,0.40,rumour:board:pike-kimberlite-creek
+Old fluorite dump — Cave-in-Rock district,KY,37.83,-88.17,fluorite;barite,Forum,,Illinois-Kentucky fluorspar forum,Historic district dump — collapse hazard,0.42,rumour:forum:cave-in-rock-dump

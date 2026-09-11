@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Page
+    x:Class="GeoMineralTrace_App.Pages.MapPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:controls="using:Microsoft.UI.Xaml.Controls"
+    xmlns:mapcontrols="using:GeoMineralTrace_App.Controls"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d">
+
+    <Grid Style="{StaticResource GmtPageRoot}" RowSpacing="{StaticResource GmtStackGapDefault}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <Border Style="{StaticResource GmtToolbarStrip}">
+            <Grid ColumnSpacing="{StaticResource GmtToolbarGap}">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+                <StackPanel Style="{StaticResource GmtPageHeader}">
+                    <TextBlock Style="{StaticResource GmtTextTitle}" Text="Live Geospatial Map" />
+                    <TextBlock x:Name="MapScopeCaption" Style="{StaticResource GmtTextBody}"
+                        Text="Claims, curated sites, USGS records, rivers, trails, and rumoured leads within your home search radius. Set location in Settings." />
+                </StackPanel>
+                <StackPanel Grid.Column="1" Style="{StaticResource GmtCommandRow}">
+                    <Button Content="Import trails…" Click="ImportTrails_Click" Style="{StaticResource GmtButtonGhost}"
+                        ToolTipService.ToolTip="Import USGS National Map / USFS / seed trail GeoJSON into the local trails database" />
+                    <Button Content="Export visible" Click="ExportVisible_Click" Style="{StaticResource GmtButtonSecondary}"
+                        ToolTipService.ToolTip="Export currently visible layers to KML and open in Google Earth" />
+                    <Button Content="Refresh map" Click="Refresh_Click" Style="{StaticResource GmtButtonPrimary}" />
+                </StackPanel>
+            </Grid>
+        </Border>
+
+        <Grid Grid.Row="1">
+            <Border Style="{StaticResource GmtCard}" Padding="0">
+                <controls:WebView2 x:Name="MapView" />
+            </Border>
+
+            <!-- Layer toggles -->
+            <Border
+                HorizontalAlignment="Left"
+                VerticalAlignment="Top"
+                Margin="16,16,0,0"
+                MaxWidth="280"
+                Background="{StaticResource GmtBrushBackgroundRaised}"
+                BorderBrush="{StaticResource GmtBrushBorderSubtle}"
+                BorderThickness="1"
+                CornerRadius="{StaticResource GmtRadiusMd}"
+                Padding="14,12">
+                <StackPanel Spacing="8">
+                    <TextBlock FontWeight="SemiBold" Text="Map layers" />
+                    <TextBlock
+                        FontSize="11"
+                        Foreground="{StaticResource GmtBrushTextSecondary}"
+                        Text="Turn source types on or off. Rumoured = unverified leads."
+                        TextWrapping="Wrap" />
+                    <ToggleSwitch x:Name="LayerHypothesis" Header="Analysis hypotheses" Toggled="LayerToggled" />
+                    <ToggleSwitch x:Name="LayerSolar" Header="Solar locus" Toggled="LayerToggled" />
+                    <ToggleSwitch x:Name="LayerCurated" Header="Curated mines &amp; sites" Toggled="LayerToggled" />
+                    <ToggleSwitch x:Name="LayerUsgs" Header="USGS / official records" Toggled="LayerToggled" />
+                    <ToggleSwitch x:Name="LayerClaimActive" Header="BLM claims (active)" Toggled="LayerToggled" />
+                    <ToggleSwitch x:Name="LayerClaimExpiring" Header="BLM claims (expiring)" Toggled="LayerToggled" />
+                    <ToggleSwitch x:Name="LayerClaimOther" Header="BLM claims (other status)" Toggled="LayerToggled" />
+                    <ToggleSwitch x:Name="LayerRumoured" Header="Rumoured (forums / blogs)" Toggled="LayerToggled" />
+                    <ToggleSwitch x:Name="LayerCommunityReddit" Header="Community Reddit (unverified)" Toggled="LayerToggled" />
+                    <ToggleSwitch x:Name="LayerRivers" Header="Named rivers &amp; creeks" Toggled="LayerToggled" />
+                    <ToggleSwitch x:Name="LayerTrails" Header="Access &amp; hiking trails" Toggled="LayerToggled" />
+                    <ToggleSwitch x:Name="LayerPersonal" Header="Personal finds" Toggled="LayerToggled" />
+                    <ToggleSwitch x:Name="LayerLidar" Header="LiDAR terrain hillshade"
+                        Toggled="LayerToggled"
+                        ToolTipService.ToolTip="USGS 3DEP / Esri shaded relief from elevation models (includes airborne LiDAR where collected). Also pick “LiDAR terrain” in the map’s layer control (top-right)." />
+                    <TextBlock
+                        FontSize="11"
+                        Foreground="{StaticResource GmtBrushTextSecondary}"
+                        TextWrapping="Wrap"
+                        Text="LiDAR tip: turn this on for a translucent relief overlay, or choose “LiDAR terrain (USGS 3DEP)” / “Satellite + relief” in the map control (top-right)." />
+                </StackPanel>
+            </Border>
+
+            <!-- Selected pin actions -->
+            <Border
+                x:Name="SelectionBar"
+                HorizontalAlignment="Stretch"
+                VerticalAlignment="Bottom"
+                Margin="16,0,16,16"
+                Background="{StaticResource GmtBrushBackgroundRaised}"
+                BorderBrush="{StaticResource GmtBrushBorderSubtle}"
+                BorderThickness="1"
+                CornerRadius="{StaticResource GmtRadiusLg}"
+                Padding="14,12"
+                Visibility="Collapsed">
+                <Grid ColumnSpacing="12" RowSpacing="8">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+                    <StackPanel Spacing="2">
+                        <TextBlock x:Name="SelectedTitle" FontWeight="SemiBold" Text="Selected location" TextWrapping="Wrap" />
+                        <TextBlock
+                            x:Name="SelectedSubtitle"
+                            FontSize="12"
+                            Foreground="{StaticResource GmtBrushTextSecondary}"
+                            TextWrapping="Wrap" />
+                    </StackPanel>
+                    <Button
+                        Grid.Column="1"
+                        VerticalAlignment="Top"
+                        Click="DismissSelection_Click"
+                        Content="✕"
+                        Style="{StaticResource GmtButtonGhost}" />
+                    <ScrollViewer Grid.Row="1" Grid.ColumnSpan="2" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled">
+                        <StackPanel Orientation="Horizontal" Spacing="10">
+                            <mapcontrols:MapActionButton
+                                x:Name="BtnGoogleEarth"
+                                AccentBrush="#FF2563EB"
+                                IconGlyph="&#xE8A5;"
+                                Subtitle="3D globe view"
+                                Title="Google Earth" />
+                            <mapcontrols:MapActionButton
+                                x:Name="BtnMapsView"
+                                AccentBrush="#FF059669"
+                                IconGlyph="&#xE707;"
+                                Subtitle="Open pin in Maps"
+                                Title="Google Maps" />
+                            <mapcontrols:MapActionButton
+                                x:Name="BtnMapsDirections"
+                                AccentBrush="#FF7C3AED"
+                                IconGlyph="&#xE816;"
+                                Subtitle="Driving directions"
+                                Title="Directions" />
+                        </StackPanel>
+                    </ScrollViewer>
+                </Grid>
+            </Border>
+        </Grid>
+    </Grid>
+</Page>

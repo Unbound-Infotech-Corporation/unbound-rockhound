@@ -1,0 +1,23 @@
+Welcome to Unbound Rockhound
+============================
+
+Thank you for choosing Unbound Rockhound by Unbound Infotech Corporation.
+
+This guided setup will install the Windows desktop application and create
+Start Menu and (optional) Desktop shortcuts that use the official product icon.
+
+What you get
+------------
+  • Offline-first forensic geolocation and field research tools
+  • Local data under %LocalAppData%\UnboundRockhound\
+  • Optional cloud account features when you configure Supabase
+
+Before you continue
+-------------------
+  • Windows 10 (1809+) or Windows 11, 64-bit is required
+  • Administrator permission is required for Program Files install
+  • Please review the license agreement on the next screens
+
+Publisher: Unbound Infotech Corporation
+Web:       https://unboundinfotech.com/
+Support:   support@unboundinfotech.com

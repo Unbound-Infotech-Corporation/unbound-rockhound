@@ -1,0 +1,5 @@
+serial_number,claim_name,claim_type,status,state,latitude,longitude,legal_description,claimant,location_date,last_maintenance_fee_paid,last_assessment_year,field_office,minerals,acres
+NVDEMOSEED001,Seed Active Lode,Lode Claim,Active,NV,39.8400,-117.0100,NV 21 0230N 0440E 022,Seed Claimant LLC,2019-04-12,2025-08-20,2026,Battle Mountain,gold,20.66
+NVDEMOSEED002,Seed Expiring Soon Placer,Placer Claim,Active,NV,39.8500,-117.0200,NV 21 0230N 0440E 023,Jane Q. Prospector,2018-06-01,2024-08-15,2024,Battle Mountain,gold,20.66
+NVDEMOSEED003,Seed Lapsed Lode,Lode Claim,Closed,NV,38.2600,-117.5100,NV 21 0050N 0400E 029,,2015-03-20,,,Tonopah,silver,20.66
+ORDEMOSEED001,Seed Mill Site,Mill Site,Active,OR,44.1200,-120.4500,OR 31 0150S 0140E 010,Cascade Minerals Co.,2020-09-01,2025-08-28,2026,Prineville,,5.0

@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Page
+    x:Class="GeoMineralTrace_App.Pages.PublicMinesPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:controls="using:GeoMineralTrace_App.Controls"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d">
+
+    <Grid Style="{StaticResource GmtPageRoot}" RowSpacing="{StaticResource GmtStackGapDefault}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <StackPanel Spacing="4">
+            <TextBlock Style="{StaticResource GmtTextTitle}" Text="Public Mines" />
+            <TextBlock Style="{StaticResource GmtTextBody}" TextWrapping="Wrap"
+                Text="Sites classified as public surface (BLM, USFS, state park, or state land). Full record details appear when you select a row." />
+        </StackPanel>
+
+        <InfoBar Grid.Row="1" Style="{StaticResource GmtInfoBar}" IsOpen="True" IsClosable="False" Severity="Informational"
+            Title="Public ≠ always open collecting"
+            Message="Public land type does not guarantee collecting is allowed. Check claims, closures, permits, and agency rules before visiting. USGS activity status may be outdated." />
+
+        <Border Grid.Row="2" Style="{StaticResource GmtToolbarStrip}">
+            <StackPanel Orientation="Horizontal" Spacing="{StaticResource GmtToolbarGap}">
+                <TextBox x:Name="StateBox" Style="{StaticResource GmtTextBox}" Width="72" PlaceholderText="ST" Text="" />
+                <TextBox x:Name="MineralBox" Style="{StaticResource GmtTextBox}" Width="160" PlaceholderText="Mineral" />
+                <ComboBox x:Name="LandFilter" Width="200" SelectedIndex="0" VerticalAlignment="Center">
+                    <ComboBoxItem Content="All public types" Tag="" />
+                    <ComboBoxItem Content="BLM" Tag="PublicBlm" />
+                    <ComboBoxItem Content="USFS" Tag="PublicUsfs" />
+                    <ComboBoxItem Content="State park" Tag="StatePark" />
+                    <ComboBoxItem Content="State land" Tag="StateLand" />
+                </ComboBox>
+                <Button Content="Search" Click="Search_Click" Style="{StaticResource GmtButtonPrimary}" />
+                <Button x:Name="OpenEarthToolbarButton" Content="Open in Google Earth" Click="OpenEarth_Click"
+                    Style="{StaticResource GmtButtonSecondary}" IsEnabled="False" />
+            </StackPanel>
+        </Border>
+
+        <Grid Grid.Row="3" ColumnSpacing="12">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="1.15*" />
+            </Grid.ColumnDefinitions>
+
+            <Border Style="{StaticResource GmtCard}">
+                <Grid>
+                    <ListView x:Name="MineList" Style="{StaticResource GmtListView}" SelectionMode="Single"
+                        SelectionChanged="MineList_SelectionChanged"
+                        ItemContainerStyle="{StaticResource GmtListViewItem}">
+                        <ListView.ItemTemplate>
+                            <DataTemplate>
+                                <StackPanel Padding="4,6" Spacing="2">
+                                    <TextBlock Style="{StaticResource GmtTextBody}" FontWeight="SemiBold" Text="{Binding Title}" />
+                                    <TextBlock Style="{StaticResource GmtTextBodySm}" Text="{Binding Meta}" TextWrapping="Wrap" />
+                                </StackPanel>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                    </ListView>
+                    <controls:EmptyState x:Name="MineEmpty" Icon="&#xE774;" Title="No public mines"
+                        Description="Widen the state filter, run Classify ownership on the registry, or import curated public sites." />
+                </Grid>
+            </Border>
+
+            <Border Grid.Column="1" Style="{StaticResource GmtCard}">
+                <Grid>
+                    <StackPanel x:Name="DetailPlaceholder" Spacing="8" Padding="12" VerticalAlignment="Center" HorizontalAlignment="Center">
+                        <FontIcon Glyph="&#xE76C;" FontSize="28" Opacity="0.55" />
+                        <TextBlock Style="{StaticResource GmtTextSubtitle}" Text="Public mine detail" HorizontalAlignment="Center" />
+                        <TextBlock Style="{StaticResource GmtTextBodySm}" TextWrapping="Wrap" TextAlignment="Center" MaxWidth="300"
+                            Text="Select a public site to see location, minerals, access, limits, hazards, sources, and ratings." />
+                    </StackPanel>
+                    <ScrollViewer x:Name="DetailPanel" Visibility="Collapsed">
+                        <StackPanel Spacing="10" Padding="4">
+                            <TextBlock x:Name="DetailTitle" Style="{StaticResource GmtTextSubtitle}" TextWrapping="Wrap" />
+                            <TextBlock x:Name="DetailOwnership" Style="{StaticResource GmtTextLabel}" />
+
+                            <TextBlock Style="{StaticResource GmtTextCaption}" Text="LOCATION" />
+                            <TextBlock x:Name="DetailLocation" Style="{StaticResource GmtTextBody}" TextWrapping="Wrap" />
+
+                            <TextBlock Style="{StaticResource GmtTextCaption}" Text="MINERALS &amp; FINDS" />
+                            <TextBlock x:Name="DetailMinerals" Style="{StaticResource GmtTextBody}" TextWrapping="Wrap" />
+
+                            <TextBlock Style="{StaticResource GmtTextCaption}" Text="ACCESS &amp; STATUS" />
+                            <TextBlock x:Name="DetailAccess" Style="{StaticResource GmtTextBody}" TextWrapping="Wrap" />
+
+                            <TextBlock Style="{StaticResource GmtTextCaption}" Text="COLLECTING LIMITS" />
+                            <TextBlock x:Name="DetailLimits" Style="{StaticResource GmtTextBody}" TextWrapping="Wrap" />
+
+                            <TextBlock Style="{StaticResource GmtTextCaption}" Text="DIFFICULTY &amp; SEASONALITY" />
+                            <TextBlock x:Name="DetailDifficulty" Style="{StaticResource GmtTextBody}" TextWrapping="Wrap" />
+
+                            <TextBlock Style="{StaticResource GmtTextCaption}" Text="HAZARDS" />
+                            <TextBlock x:Name="DetailHazards" Style="{StaticResource GmtTextBody}" TextWrapping="Wrap" />
+
+                            <TextBlock Style="{StaticResource GmtTextCaption}" Text="NEAREST SERVICES" />
+                            <TextBlock x:Name="DetailServices" Style="{StaticResource GmtTextBody}" TextWrapping="Wrap" />
+
+                            <TextBlock Style="{StaticResource GmtTextCaption}" Text="GEOLOGY / ENRICHMENT" />
+                            <TextBlock x:Name="DetailEnrichment" Style="{StaticResource GmtTextBodySm}" TextWrapping="Wrap" />
+
+                            <TextBlock Style="{StaticResource GmtTextCaption}" Text="NEARBY BLM CLAIMS" />
+                            <TextBlock x:Name="DetailNearbyClaims" Style="{StaticResource GmtTextBodySm}" TextWrapping="Wrap" />
+
+                            <TextBlock Style="{StaticResource GmtTextCaption}" Text="NEAREST RIVERS" />
+                            <TextBlock x:Name="DetailNearbyRivers" Style="{StaticResource GmtTextBodySm}" TextWrapping="Wrap" />
+
+                            <TextBlock Style="{StaticResource GmtTextCaption}" Text="RATINGS" />
+                            <TextBlock x:Name="DetailRatings" Style="{StaticResource GmtTextBody}" TextWrapping="Wrap" />
+
+                            <TextBlock Style="{StaticResource GmtTextCaption}" Text="SOURCES &amp; DATASET" />
+                            <TextBlock x:Name="DetailSources" Style="{StaticResource GmtTextBodySm}" TextWrapping="Wrap" />
+
+                            <TextBlock Style="{StaticResource GmtTextCaption}" Text="RECORD IDS" />
+                            <TextBlock x:Name="DetailIds" Style="{StaticResource GmtTextBodySm}" FontFamily="Consolas" TextWrapping="Wrap" />
+
+                            <StackPanel Orientation="Horizontal" Spacing="8">
+                                <Button Content="Open in Google Earth" Click="OpenEarth_Click" Style="{StaticResource GmtButtonPrimary}" />
+                                <Button Content="Show in full registry" Click="OpenRegistry_Click" Style="{StaticResource GmtButtonSecondary}" />
+                            </StackPanel>
+                        </StackPanel>
+                    </ScrollViewer>
+                </Grid>
+            </Border>
+        </Grid>
+
+        <Border Grid.Row="4" Style="{StaticResource GmtToolbarStripSubtle}">
+            <Grid ColumnSpacing="{StaticResource GmtToolbarGap}">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+                <TextBlock x:Name="ResultStats" Style="{StaticResource GmtTextCaption}" VerticalAlignment="Center" TextWrapping="Wrap" />
+                <StackPanel Grid.Column="1" Orientation="Horizontal" Spacing="8">
+                    <Button x:Name="PrevPageButton" Content="Previous" Click="PrevPage_Click" Style="{StaticResource GmtButtonSecondary}" IsEnabled="False" />
+                    <Button x:Name="NextPageButton" Content="Next" Click="NextPage_Click" Style="{StaticResource GmtButtonSecondary}" IsEnabled="False" />
+                </StackPanel>
+            </Grid>
+        </Border>
+    </Grid>
+</Page>

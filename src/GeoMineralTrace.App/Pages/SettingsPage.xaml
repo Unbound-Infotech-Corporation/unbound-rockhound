@@ -1,0 +1,241 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Page
+    x:Class="GeoMineralTrace_App.Pages.SettingsPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d">
+
+    <ScrollViewer Padding="{StaticResource GmtPagePaddingWide}">
+        <StackPanel Spacing="{StaticResource GmtStackGapSection}" MaxWidth="720">
+            <StackPanel Spacing="4">
+                <TextBlock Style="{StaticResource GmtTextTitle}" Text="Settings" />
+                <TextBlock Style="{StaticResource GmtTextBody}" Text="Appearance, engines, data paths, and network policy." />
+            </StackPanel>
+
+            <Border Style="{StaticResource GmtCard}">
+                <StackPanel Spacing="{StaticResource GmtStackGapDefault}">
+                    <TextBlock Style="{StaticResource GmtTextLabel}" Text="CLOUD ACCOUNT" />
+                    <TextBlock x:Name="CloudAccountStatus" Style="{StaticResource GmtTextBody}" TextWrapping="Wrap"
+                        Text="Not signed in — configure Supabase and create an account to sync your profile." />
+                    <StackPanel Orientation="Horizontal" Spacing="{StaticResource GmtToolbarGap}">
+                        <Button Content="Sign in…" Click="CloudSignIn_Click" Style="{StaticResource GmtButtonSecondary}" />
+                        <Button Content="My profile" Click="CloudProfile_Click" Style="{StaticResource GmtButtonGhost}" />
+                        <Button x:Name="CloudSignOutButton" Content="Sign out" Click="CloudSignOut_Click" Style="{StaticResource GmtButtonGhost}" />
+                    </StackPanel>
+                    <TextBlock Style="{StaticResource GmtTextCaption}" TextWrapping="Wrap"
+                        Text="Email/password via Supabase. Profiles are readable by signed-in users; only you can edit your own row (RLS). See docs/social-layer.md." />
+                </StackPanel>
+            </Border>
+
+            <Border Style="{StaticResource GmtCard}">
+                <StackPanel Spacing="{StaticResource GmtStackGapDefault}">
+                    <TextBlock Style="{StaticResource GmtTextLabel}" Text="APPEARANCE" />
+                    <ComboBox
+                        x:Name="ThemeCombo"
+                        Style="{StaticResource GmtComboBox}"
+                        Header="Application theme"
+                        SelectionChanged="ThemeCombo_SelectionChanged"
+                        Width="280">
+                        <ComboBoxItem Content="Dark (default)" Tag="Dark" IsSelected="True" />
+                        <ComboBoxItem Content="Light" Tag="Light" />
+                        <ComboBoxItem Content="System default" Tag="Default" />
+                    </ComboBox>
+                </StackPanel>
+            </Border>
+
+            <Border Style="{StaticResource GmtCard}">
+                <StackPanel Spacing="{StaticResource GmtStackGapDefault}">
+                    <TextBlock Style="{StaticResource GmtTextLabel}" Text="HOME LOCATION &amp; SEARCH RADIUS" />
+                    <TextBlock Style="{StaticResource GmtTextBody}" TextWrapping="Wrap"
+                        Text="Map and nearby lists show rivers, trails, mining claims, and rockhounding sites within this radius of your set location. Default is 100 miles — tighten or expand to match how far you travel." />
+                    <TextBlock x:Name="HomeLocationStatus" Style="{StaticResource GmtTextCaption}" TextWrapping="Wrap" />
+                    <ComboBox
+                        x:Name="StateCentroidCombo"
+                        Style="{StaticResource GmtComboBox}"
+                        Header="Quick pick — U.S. state center"
+                        SelectionChanged="StateCentroidCombo_SelectionChanged"
+                        Width="360" />
+                    <TextBox x:Name="HomeLabelBox" Style="{StaticResource GmtTextBox}"
+                        Header="Location label (optional)"
+                        PlaceholderText="e.g. Denver metro, Boise, Ouachita foothills"
+                        LostFocus="HomeLocation_LostFocus" />
+                    <StackPanel Orientation="Horizontal" Spacing="{StaticResource GmtToolbarGap}">
+                        <TextBox x:Name="HomeLatBox" Style="{StaticResource GmtTextBox}"
+                            Header="Latitude"
+                            PlaceholderText="39.7392"
+                            Width="160"
+                            LostFocus="HomeLocation_LostFocus" />
+                        <TextBox x:Name="HomeLonBox" Style="{StaticResource GmtTextBox}"
+                            Header="Longitude"
+                            PlaceholderText="-104.9903"
+                            Width="160"
+                            LostFocus="HomeLocation_LostFocus" />
+                    </StackPanel>
+                    <NumberBox
+                        x:Name="SearchRadiusBox"
+                        Style="{StaticResource GmtNumberBox}"
+                        Header="Search radius (miles)"
+                        Minimum="5"
+                        Maximum="500"
+                        SmallChange="5"
+                        LargeChange="25"
+                        Value="100"
+                        Width="220"
+                        ValueChanged="SearchRadiusBox_ValueChanged" />
+                    <ToggleSwitch
+                        x:Name="PreferHomeOnMapToggle"
+                        Header="Prefer home location on Map"
+                        OffContent="Use analysis focus when available"
+                        OnContent="Center catalog layers on home"
+                        Toggled="PreferHomeOnMapToggle_Toggled" />
+                    <StackPanel Orientation="Horizontal" Spacing="{StaticResource GmtToolbarGap}">
+                        <Button Content="Save location" Click="SaveHomeLocation_Click" Style="{StaticResource GmtButtonSecondary}" />
+                        <Button Content="Clear location" Click="ClearHomeLocation_Click" Style="{StaticResource GmtButtonGhost}" />
+                        <Button Content="Open Map" Click="OpenMapFromHome_Click" Style="{StaticResource GmtButtonGhost}" />
+                    </StackPanel>
+                    <TextBlock Style="{StaticResource GmtTextCaption}" TextWrapping="Wrap"
+                        Text="Quick pick uses offline state centroids (no GPS or geocoding). Enter exact lat/lon for a dig site, cabin, or town. Import full trail extracts via Map → Import trails… (USGS National Map / USFS GeoJSON)." />
+                </StackPanel>
+            </Border>
+
+            <Border Style="{StaticResource GmtCard}">
+                <StackPanel Spacing="{StaticResource GmtStackGapDefault}">
+                    <TextBlock Style="{StaticResource GmtTextLabel}" Text="YOUTUBE ACCOUNT" />
+                    <TextBlock x:Name="YouTubeSessionStatus" Style="{StaticResource GmtTextBody}" TextWrapping="Wrap"
+                        Text="Not signed in — public videos work without an account." />
+                    <StackPanel Orientation="Horizontal" Spacing="{StaticResource GmtToolbarGap}">
+                        <Button Content="Sign in to YouTube…" Click="YouTubeSignIn_Click" Style="{StaticResource GmtButtonSecondary}" />
+                        <Button x:Name="YouTubeSignOutButton" Content="Sign out" Click="YouTubeSignOut_Click" Style="{StaticResource GmtButtonGhost}" />
+                    </StackPanel>
+                    <TextBlock Style="{StaticResource GmtTextCaption}" TextWrapping="Wrap"
+                        Text="Optional. Use the Premium account holder's login so Stream &amp; analyze / archival download can access streams that account can watch. Cookies stay local; sign out clears them." />
+                </StackPanel>
+            </Border>
+
+            <Border Style="{StaticResource GmtCard}">
+                <StackPanel Spacing="{StaticResource GmtStackGapDefault}">
+                    <TextBlock Style="{StaticResource GmtTextLabel}" Text="INSTAGRAM ACCOUNT" />
+                    <TextBlock x:Name="InstagramSessionStatus" Style="{StaticResource GmtTextBody}" TextWrapping="Wrap"
+                        Text="Not signed in — most Instagram posts require sign-in." />
+                    <StackPanel Orientation="Horizontal" Spacing="{StaticResource GmtToolbarGap}">
+                        <Button Content="Sign in to Instagram…" Click="InstagramSignIn_Click" Style="{StaticResource GmtButtonSecondary}" />
+                        <Button x:Name="InstagramSignOutButton" Content="Sign out" Click="InstagramSignOut_Click" Style="{StaticResource GmtButtonGhost}" />
+                    </StackPanel>
+                    <TextBlock Style="{StaticResource GmtTextCaption}" TextWrapping="Wrap"
+                        Text="Required for most Instagram posts. Use an account that can view the content you want to analyze. Cookies stay local; sign out clears them." />
+                </StackPanel>
+            </Border>
+
+            <Border Style="{StaticResource GmtCard}">
+                <StackPanel Spacing="{StaticResource GmtStackGapDefault}">
+                    <TextBlock Style="{StaticResource GmtTextLabel}" Text="NETWORK &amp; ENRICHMENT" />
+                    <ToggleSwitch
+                        x:Name="OnlineEnrichmentToggle"
+                        Header="Allow optional online enrichment"
+                        OffContent="Local-only (recommended)"
+                        OnContent="Online enrichment permitted"
+                        Toggled="OnlineEnrichmentToggle_Toggled" />
+                    <TextBlock Style="{StaticResource GmtTextCaption}" TextWrapping="Wrap"
+                        Text="When off: Map plots markers without online basemap tiles. YouTube / Instagram stream and download still ask before using the network." />
+                </StackPanel>
+            </Border>
+
+            <Border Style="{StaticResource GmtCard}">
+                <StackPanel Spacing="{StaticResource GmtStackGapDefault}">
+                    <TextBlock Style="{StaticResource GmtTextLabel}" Text="SOFTWARE UPDATES" />
+                    <ToggleSwitch
+                        x:Name="CheckUpdatesToggle"
+                        Header="Check for updates on launch"
+                        OffContent="Do not check"
+                        OnContent="Check when online"
+                        Toggled="CheckUpdatesToggle_Toggled" />
+                    <TextBlock Style="{StaticResource GmtTextCaption}" TextWrapping="Wrap"
+                        Text="Fetches a small version JSON from your vendor’s update feed (not map tiles). When a newer build exists, a banner appears at the top of the app with a Download link. Your cases in LocalAppData are never overwritten by the download." />
+                    <TextBox x:Name="UpdateFeedUrlBox" Style="{StaticResource GmtTextBox}"
+                        Header="Update feed URL (optional override)"
+                        PlaceholderText="https://updates.unboundrockhound.app/unbound-rockhound/latest.json"
+                        LostFocus="UpdateFeedUrl_LostFocus" />
+                    <StackPanel Orientation="Horizontal" Spacing="{StaticResource GmtToolbarGap}">
+                        <Button Content="Check now" Click="CheckUpdatesNow_Click" Style="{StaticResource GmtButtonSecondary}" />
+                        <Button Content="Clear dismissed update" Click="ClearDismissedUpdate_Click" Style="{StaticResource GmtButtonGhost}" />
+                    </StackPanel>
+                    <TextBlock x:Name="UpdateStatusText" Style="{StaticResource GmtTextCaption}" TextWrapping="Wrap" />
+                </StackPanel>
+            </Border>
+
+            <Border Style="{StaticResource GmtCard}">
+                <StackPanel Spacing="{StaticResource GmtStackGapDefault}">
+                    <TextBlock Style="{StaticResource GmtTextLabel}" Text="GOOGLE EARTH" />
+                    <TextBlock Style="{StaticResource GmtTextBody}" TextWrapping="Wrap"
+                        Text="Exports open in Google Earth Pro for 3D terrain and claim boundaries. The live Map page stays in-app; Earth is your spatial workbench." />
+                    <TextBox x:Name="GoogleEarthPathBox" Style="{StaticResource GmtTextBox}"
+                        Header="Google Earth Pro executable"
+                        PlaceholderText="Auto-detect, or browse to googleearth.exe"
+                        LostFocus="GoogleEarthSettings_LostFocus" />
+                    <StackPanel Orientation="Horizontal" Spacing="{StaticResource GmtToolbarGap}">
+                        <Button Content="Browse…" Click="BrowseGoogleEarth_Click" Style="{StaticResource GmtButtonSecondary}" />
+                        <Button Content="Test launch" Click="TestGoogleEarth_Click" Style="{StaticResource GmtButtonGhost}" />
+                    </StackPanel>
+                    <TextBox x:Name="GoogleEarthExportsBox" Style="{StaticResource GmtTextBox}"
+                        Header="KML export folder (optional)"
+                        PlaceholderText="Defaults to LocalAppData\UnboundRockhound\Exports"
+                        LostFocus="GoogleEarthSettings_LostFocus" />
+                    <StackPanel Orientation="Horizontal" Spacing="{StaticResource GmtToolbarGap}">
+                        <Button Content="Browse export folder…" Click="BrowseExportsFolder_Click" Style="{StaticResource GmtButtonSecondary}" />
+                        <Button Content="Open export folder" Click="OpenExportsFolder_Click" Style="{StaticResource GmtButtonGhost}" />
+                    </StackPanel>
+                    <TextBlock x:Name="GoogleEarthStatus" Style="{StaticResource GmtTextCaption}" TextWrapping="Wrap" />
+                </StackPanel>
+            </Border>
+
+            <Border Style="{StaticResource GmtCard}">
+                <StackPanel Spacing="{StaticResource GmtStackGapDefault}">
+                    <TextBlock Style="{StaticResource GmtTextLabel}" Text="DIAGNOSTICS &amp; CRASH REPORTS" />
+                    <TextBlock Style="{StaticResource GmtTextBody}" TextWrapping="Wrap"
+                        Text="When something fails, Unbound Rockhound saves a local report you can copy, zip, or email. Nothing is sent automatically." />
+                    <TextBox x:Name="SupportEmailBox" Style="{StaticResource GmtTextBox}"
+                        Header="Support email (for Send email…)"
+                        PlaceholderText="support@unboundinfotech.com"
+                        LostFocus="SupportEmail_LostFocus" />
+                    <TextBlock x:Name="DiagnosticsStatus" Style="{StaticResource GmtTextCaption}" TextWrapping="Wrap" />
+                    <StackPanel Orientation="Horizontal" Spacing="{StaticResource GmtToolbarGap}">
+                        <Button Content="Send test report…" Click="SendTestReport_Click" Style="{StaticResource GmtButtonSecondary}" />
+                        <Button Content="Open reports folder" Click="OpenReportsFolder_Click" Style="{StaticResource GmtButtonGhost}" />
+                        <Button Content="Open app log" Click="OpenAppLog_Click" Style="{StaticResource GmtButtonGhost}" />
+                    </StackPanel>
+                    <ListView x:Name="ReportList" MaxHeight="160" SelectionMode="Single"
+                        SelectionChanged="ReportList_SelectionChanged">
+                        <ListView.ItemTemplate>
+                            <DataTemplate>
+                                <StackPanel Padding="2,4" Spacing="2">
+                                    <TextBlock Style="{StaticResource GmtTextBodySm}" FontWeight="SemiBold" Text="{Binding Title}" />
+                                    <TextBlock Style="{StaticResource GmtTextCaption}" Text="{Binding Subtitle}" />
+                                </StackPanel>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                    </ListView>
+                    <Button x:Name="OpenSelectedReportButton" Content="Review selected report…"
+                        Click="ReviewSelectedReport_Click" Style="{StaticResource GmtButtonSecondary}"
+                        IsEnabled="False" HorizontalAlignment="Left" />
+                </StackPanel>
+            </Border>
+
+            <Border Style="{StaticResource GmtCard}">
+                <StackPanel Spacing="{StaticResource GmtStackGapTight}">
+                    <TextBlock Style="{StaticResource GmtTextLabel}" Text="ENGINE STATUS" />
+                    <TextBlock x:Name="EngineStatusText" Style="{StaticResource GmtTextMono}" TextWrapping="Wrap" IsTextSelectionEnabled="True" />
+                </StackPanel>
+            </Border>
+
+            <Border Style="{StaticResource GmtCard}">
+                <StackPanel Spacing="{StaticResource GmtStackGapTight}">
+                    <TextBlock Style="{StaticResource GmtTextLabel}" Text="DATA LOCATIONS" />
+                    <TextBlock x:Name="DataPathText" Style="{StaticResource GmtTextMono}" TextWrapping="Wrap" IsTextSelectionEnabled="True" />
+                    <Button Content="Open data folder" Click="OpenDataFolder_Click" Style="{StaticResource GmtButtonGhost}" HorizontalAlignment="Left" />
+                </StackPanel>
+            </Border>
+        </StackPanel>
+    </ScrollViewer>
+</Page>

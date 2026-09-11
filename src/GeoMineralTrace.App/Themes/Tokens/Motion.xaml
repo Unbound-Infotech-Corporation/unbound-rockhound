@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  GeoMineral Trace — Motion tokens (ms durations + standard easings)
+  Apply in Storyboards, VisualStateManager, and code-behind animations.
+-->
+<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <Duration x:Key="GmtDurationInstant">0:0:0</Duration>
+    <Duration x:Key="GmtDurationFast">0:0:0.15</Duration>
+    <Duration x:Key="GmtDurationNormal">0:0:0.2</Duration>
+    <Duration x:Key="GmtDurationSlow">0:0:0.25</Duration>
+    <Duration x:Key="GmtDurationPanel">0:0:0.35</Duration>
+    <Duration x:Key="GmtDurationEmphasis">0:0:0.45</Duration>
+
+    <x:Double x:Key="GmtMotionFastMs">150</x:Double>
+    <x:Double x:Key="GmtMotionNormalMs">200</x:Double>
+    <x:Double x:Key="GmtMotionSlowMs">250</x:Double>
+    <x:Double x:Key="GmtMotionPanelMs">350</x:Double>
+
+    <!-- Standard easing — ease-out for enter/hover, ease-in for exit -->
+    <CubicEase x:Key="GmtEaseOut" EasingMode="EaseOut" />
+    <CubicEase x:Key="GmtEaseIn" EasingMode="EaseIn" />
+    <CubicEase x:Key="GmtEaseInOut" EasingMode="EaseInOut" />
+
+    <!-- Result reveal stagger (ms between rows) -->
+    <x:Double x:Key="GmtStaggerStepMs">40</x:Double>
+    <x:Double x:Key="GmtResultRevealOffsetY">8</x:Double>
+
+</ResourceDictionary>

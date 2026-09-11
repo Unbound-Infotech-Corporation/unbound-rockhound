@@ -1,0 +1,173 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "id": "seed-crystal-park-co",
+      "properties": {
+        "name": "Crystal Park Access Trail",
+        "permanent_identifier": "seed-crystal-park-co",
+        "state": "CO",
+        "county": "Teller",
+        "trail_type": "Hiking",
+        "notes": "Curated approach trail near Crystal Park fee dig area.",
+        "source": "UnboundRockhound seed"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [-105.0160, 38.8120],
+          [-105.0125, 38.8145],
+          [-105.0080, 38.8170]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "seed-topaz-mountain-ut",
+      "properties": {
+        "name": "Topaz Mountain Access Road",
+        "permanent_identifier": "seed-topaz-mountain-ut",
+        "state": "UT",
+        "county": "Juab",
+        "trail_type": "AccessRoad",
+        "notes": "BLM access toward Topaz Mountain collecting area.",
+        "source": "UnboundRockhound seed"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [-113.1000, 39.7100],
+          [-113.0900, 39.7200],
+          [-113.0850, 39.7300]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "seed-opal-butte-or",
+      "properties": {
+        "name": "Opal Butte Approach",
+        "permanent_identifier": "seed-opal-butte-or",
+        "state": "OR",
+        "county": "Morrow",
+        "trail_type": "Pack",
+        "notes": "Approach route toward Opal Butte area (verify land status).",
+        "source": "UnboundRockhound seed"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [-119.6200, 45.1800],
+          [-119.6100, 45.1850],
+          [-119.6000, 45.1900]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "seed-herkimer-ny",
+      "properties": {
+        "name": "Herkimer Diamond Mines Loop",
+        "permanent_identifier": "seed-herkimer-ny",
+        "state": "NY",
+        "county": "Herkimer",
+        "trail_type": "Hiking",
+        "notes": "Trail near commercial Herkimer dig sites.",
+        "source": "UnboundRockhound seed"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [-74.9800, 43.0200],
+          [-74.9750, 43.0225],
+          [-74.9700, 43.0250]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "seed-jade-cove-ca",
+      "properties": {
+        "name": "Jade Cove Coastal Path",
+        "permanent_identifier": "seed-jade-cove-ca",
+        "state": "CA",
+        "county": "Monterey",
+        "trail_type": "Hiking",
+        "notes": "Coastal path near Jade Cove / Big Sur jade hunting shoreline.",
+        "source": "UnboundRockhound seed"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [-121.4700, 35.9200],
+          [-121.4680, 35.9220],
+          [-121.4660, 35.9240]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "seed-thunder-egg-or",
+      "properties": {
+        "name": "Richardson Ranch Trail",
+        "permanent_identifier": "seed-thunder-egg-or",
+        "state": "OR",
+        "county": "Jefferson",
+        "trail_type": "Hiking",
+        "notes": "Access near Central Oregon thunderegg country.",
+        "source": "UnboundRockhound seed"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [-121.1500, 44.5000],
+          [-121.1400, 44.5050],
+          [-121.1300, 44.5100]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "seed-montana-sapphire",
+      "properties": {
+        "name": "Gem Mountain Access",
+        "permanent_identifier": "seed-montana-sapphire",
+        "state": "MT",
+        "county": "Granite",
+        "trail_type": "AccessRoad",
+        "notes": "Approach toward Philipsburg / Gem Mountain sapphire digs.",
+        "source": "UnboundRockhound seed"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [-113.3000, 46.3200],
+          [-113.2900, 46.3250],
+          [-113.2800, 46.3300]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "seed-arkansas-quartz",
+      "properties": {
+        "name": "Crystal Mountain Trail",
+        "permanent_identifier": "seed-arkansas-quartz",
+        "state": "AR",
+        "county": "Montgomery",
+        "trail_type": "Hiking",
+        "notes": "Trail corridor near Ouachita quartz dig areas.",
+        "source": "UnboundRockhound seed"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [-93.6200, 34.5200],
+          [-93.6100, 34.5250],
+          [-93.6000, 34.5300]
+        ]
+      }
+    }
+  ]
+}

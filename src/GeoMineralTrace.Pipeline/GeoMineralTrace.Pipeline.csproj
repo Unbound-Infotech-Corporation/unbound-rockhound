@@ -1,0 +1,22 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <ItemGroup>
+    <ProjectReference Include="..\GeoMineralTrace.Core\GeoMineralTrace.Core.csproj" />
+    <ProjectReference Include="..\GeoMineralTrace.Evidence\GeoMineralTrace.Evidence.csproj" />
+    <ProjectReference Include="..\GeoMineralTrace.Hypothesis\GeoMineralTrace.Hypothesis.csproj" />
+    <ProjectReference Include="..\GeoMineralTrace.Solar\GeoMineralTrace.Solar.csproj" />
+    <ProjectReference Include="..\GeoMineralTrace.Rockhounding\GeoMineralTrace.Rockhounding.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="MetadataExtractor" Version="2.9.3" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="10.0.11" />
+  </ItemGroup>
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+</Project>

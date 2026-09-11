@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "GeoMineralTrace.App (Package)": {
+      "commandName": "MsixPackage"
+    },
+    "GeoMineralTrace.App (Unpackaged)": {
+      "commandName": "Project"
+    }
+  }
+}

@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Page
+    x:Class="GeoMineralTrace_App.Pages.HypothesesPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:controls="using:GeoMineralTrace_App.Controls"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d">
+
+    <Grid Style="{StaticResource GmtPageRoot}" RowSpacing="{StaticResource GmtStackGapDefault}" ColumnSpacing="{StaticResource GmtGridGap}">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="2*" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <StackPanel Grid.ColumnSpan="2" Spacing="4">
+            <TextBlock Style="{StaticResource GmtTextTitle}" Text="Location Hypotheses" />
+            <TextBlock Style="{StaticResource GmtTextBody}" Text="Your best location estimate from corroborating evidence — ranked candidates below for audit." />
+        </StackPanel>
+
+        <Border x:Name="SolarGapBanner" Grid.Row="1" Grid.ColumnSpan="2" Visibility="Collapsed"
+                Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
+                BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
+                BorderThickness="1" Padding="12,10" CornerRadius="4">
+            <Grid ColumnSpacing="12">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+                <StackPanel Spacing="4">
+                    <TextBlock x:Name="SolarGapTitle" Style="{StaticResource GmtTextBody}" FontWeight="SemiBold"
+                        Text="Generated without solar / shadow evidence" TextWrapping="Wrap" />
+                    <TextBlock x:Name="SolarGapBody" Style="{StaticResource GmtTextCaption}" TextWrapping="Wrap"
+                        Text="These rankings use text/OCR/ASR/scene clues only. Shadow measurements are this app's primary differentiator — add them to tighten the locus." />
+                </StackPanel>
+                <Button Grid.Column="1" Content="Open Solar / Shadow" Click="OpenSolar_Click"
+                    Style="{StaticResource GmtButtonSecondary}" VerticalAlignment="Center" />
+            </Grid>
+        </Border>
+
+        <StackPanel Grid.Row="2" Grid.ColumnSpan="2" Orientation="Horizontal" Spacing="{StaticResource GmtToolbarGap}">
+            <Button Content="Reload last analysis" Click="Reload_Click" Style="{StaticResource GmtButtonGhost}" />
+            <Button Content="Open Evidence Board" Click="OpenEvidence_Click" Style="{StaticResource GmtButtonSecondary}" />
+            <Button Content="Fuse sample evidence" Click="FuseSample_Click" Style="{StaticResource GmtButtonGhost}" />
+        </StackPanel>
+
+        <ScrollViewer Grid.Row="3" VerticalScrollBarVisibility="Auto">
+            <StackPanel Spacing="{StaticResource GmtStackGapDefault}">
+                <!-- Lead hypothesis hero -->
+                <Border x:Name="LeadHeroPanel" Visibility="Collapsed"
+                    Background="{ThemeResource GmtElevation3Brush}"
+                    BorderBrush="{ThemeResource GmtBrushTimelineSelectionBorder}"
+                    BorderThickness="1.5"
+                    CornerRadius="{StaticResource GmtRadiusCard}"
+                    Padding="20,18">
+                    <StackPanel Spacing="12">
+                        <Grid ColumnSpacing="12">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+                            <StackPanel Spacing="4">
+                                <TextBlock Style="{StaticResource GmtTextLabel}" Text="LEADING HYPOTHESIS" Opacity="0.9" />
+                                <TextBlock x:Name="LeadTitle" Style="{StaticResource GmtTextTitle}" TextWrapping="Wrap" />
+                                <TextBlock x:Name="LeadCoordinates" Style="{StaticResource GmtTextMono}" Opacity="0.88" />
+                            </StackPanel>
+                            <StackPanel Grid.Column="1" HorizontalAlignment="Right" Spacing="2">
+                                <TextBlock Style="{StaticResource GmtTextLabel}" Text="CONFIDENCE" HorizontalAlignment="Right" />
+                                <TextBlock x:Name="LeadConfidence" Style="{StaticResource GmtTextTimecodeEmphasis}" HorizontalAlignment="Right" />
+                            </StackPanel>
+                        </Grid>
+                        <TextBlock x:Name="LeadReasoning" Style="{StaticResource GmtTextBody}" TextWrapping="Wrap" Opacity="0.92" />
+                        <StackPanel Orientation="Horizontal" Spacing="{StaticResource GmtToolbarGap}">
+                            <Button x:Name="ViewOnMapButton" Content="View on map" Click="ViewOnMap_Click" Style="{StaticResource GmtButtonPrimary}" />
+                            <Button x:Name="AddToTripButton" Content="Add to trip" Click="AddToTrip_Click" Style="{StaticResource GmtButtonSecondary}" />
+                            <Button x:Name="OpenGlossaryButton" Content="Open in Glossary" Click="OpenGlossary_Click"
+                                Style="{StaticResource GmtButtonGhost}" Visibility="Collapsed" />
+                            <Button Content="Accept" Click="AcceptLead_Click" Style="{StaticResource GmtButtonSecondary}" />
+                            <Button Content="Reject" Click="RejectLead_Click" Style="{StaticResource GmtButtonDestructive}" />
+                        </StackPanel>
+                    </StackPanel>
+                </Border>
+
+                <!-- Runner-ups -->
+                <Expander x:Name="RunnersExpander" Visibility="Collapsed" HorizontalAlignment="Stretch"
+                    HorizontalContentAlignment="Stretch">
+                    <Expander.Header>
+                        <TextBlock x:Name="RunnersHeader" Style="{StaticResource GmtTextBody}" FontWeight="SemiBold" />
+                    </Expander.Header>
+                    <ItemsControl x:Name="RunnersList" Margin="0,8,0,0">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Border Background="{ThemeResource GmtElevation2Brush}"
+                                    BorderBrush="{ThemeResource GmtBrushBorderSubtle}"
+                                    BorderThickness="1" CornerRadius="8" Padding="12,10" Margin="0,0,0,8">
+                                    <Grid ColumnSpacing="8">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*" />
+                                            <ColumnDefinition Width="Auto" />
+                                        </Grid.ColumnDefinitions>
+                                        <StackPanel Spacing="4">
+                                            <TextBlock Style="{StaticResource GmtTextBody}" FontWeight="SemiBold" Text="{Binding Title}" TextWrapping="Wrap" Opacity="0.88" />
+                                            <TextBlock Style="{StaticResource GmtTextCaption}" Text="{Binding Coordinates}" />
+                                            <TextBlock Style="{StaticResource GmtTextBodySm}" Text="{Binding Summary}" TextWrapping="Wrap" Opacity="0.75" />
+                                        </StackPanel>
+                                        <StackPanel Grid.Column="1" Spacing="6" VerticalAlignment="Center">
+                                            <TextBlock Style="{StaticResource GmtTextMono}" Text="{Binding ConfidenceLabel}" HorizontalAlignment="Right" Opacity="0.85" />
+                                            <Button Content="Map" Click="RunnerMap_Click" Tag="{Binding Id}" Style="{StaticResource GmtButtonGhost}" HorizontalAlignment="Right" />
+                                        </StackPanel>
+                                    </Grid>
+                                </Border>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </Expander>
+
+                <!-- Audit list -->
+                <Border Style="{StaticResource GmtCard}">
+                    <Grid>
+                        <StackPanel Spacing="8">
+                            <TextBlock Style="{StaticResource GmtTextLabel}" Text="RANKED CANDIDATES (AUDIT)" />
+                            <TextBlock Style="{StaticResource GmtTextCaption}" Text="Full ranked list for transparency — the hero card above is your actionable estimate." TextWrapping="Wrap" />
+                            <ListView x:Name="HypothesisList" Style="{StaticResource GmtListView}" SelectionMode="Single" MaxHeight="360"
+                                ItemContainerStyle="{StaticResource GmtListViewItem}">
+                                <ListView.ItemTemplate>
+                                    <DataTemplate>
+                                        <StackPanel Padding="4,6" Spacing="4" Opacity="{Binding RowOpacity}">
+                                            <Grid ColumnSpacing="8">
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="*" />
+                                                    <ColumnDefinition Width="Auto" />
+                                                </Grid.ColumnDefinitions>
+                                                <TextBlock Style="{StaticResource GmtTextBody}" FontWeight="{Binding TitleWeight}" Foreground="{Binding TitleBrush}" Text="{Binding Title}" TextWrapping="Wrap" />
+                                                <TextBlock Grid.Column="1" Style="{StaticResource GmtTextMono}" FontWeight="{Binding ConfidenceWeight}" Foreground="{Binding ConfidenceBrush}" Text="{Binding ConfidenceLabel}" VerticalAlignment="Top" />
+                                            </Grid>
+                                            <TextBlock Style="{StaticResource GmtTextBodySm}" Foreground="{Binding DetailBrush}" Opacity="{Binding DetailOpacity}" Text="{Binding Detail}" TextWrapping="Wrap" />
+                                        </StackPanel>
+                                    </DataTemplate>
+                                </ListView.ItemTemplate>
+                            </ListView>
+                        </StackPanel>
+                        <controls:EmptyState x:Name="HypothesisEmpty" Icon="&#xE9D9;" Title="No hypotheses"
+                            Description="Run analysis or fuse sample evidence to generate ranked location candidates." />
+                    </Grid>
+                </Border>
+            </StackPanel>
+        </ScrollViewer>
+
+        <Border Grid.Row="3" Grid.Column="1" Style="{StaticResource GmtInspectorPanel}">
+            <StackPanel Spacing="{StaticResource GmtStackGapDefault}">
+                <TextBlock Style="{StaticResource GmtTextLabel}" Text="NEARBY SITES" />
+                <ListView x:Name="NearbyList" Style="{StaticResource GmtListView}" ItemContainerStyle="{StaticResource GmtListViewItem}" />
+            </StackPanel>
+        </Border>
+    </Grid>
+</Page>

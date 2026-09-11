@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<Page
+
+    x:Class="GeoMineralTrace_App.Pages.EvidenceBoardPage"
+
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+
+    xmlns:controls="using:GeoMineralTrace_App.Controls"
+
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+
+    mc:Ignorable="d">
+
+
+
+    <Grid Style="{StaticResource GmtPageRoot}" RowSpacing="{StaticResource GmtStackGapDefault}">
+
+        <Grid.RowDefinitions>
+
+            <RowDefinition Height="Auto" />
+
+            <RowDefinition Height="Auto" />
+
+            <RowDefinition Height="Auto" />
+
+            <RowDefinition Height="*" />
+
+        </Grid.RowDefinitions>
+
+
+
+        <StackPanel Spacing="4">
+
+            <TextBlock Style="{StaticResource GmtTextTitle}" Text="Evidence Board" />
+
+            <TextBlock Style="{StaticResource GmtTextBody}" Text="Review, weight, and reject clues from the current analysis session." />
+
+        </StackPanel>
+
+
+
+        <Border Grid.Row="1" Style="{StaticResource GmtToolbarStrip}">
+
+            <Grid ColumnSpacing="{StaticResource GmtToolbarGap}">
+
+                <Grid.ColumnDefinitions>
+
+                    <ColumnDefinition Width="*" />
+
+                    <ColumnDefinition Width="200" />
+
+                    <ColumnDefinition Width="Auto" />
+
+                </Grid.ColumnDefinitions>
+
+                <TextBox x:Name="SearchBox" Style="{StaticResource GmtTextBox}" PlaceholderText="Search evidence…" TextChanged="SearchBox_TextChanged" />
+
+                <ComboBox x:Name="TypeFilter" Grid.Column="1" Style="{StaticResource GmtComboBox}" HorizontalAlignment="Stretch" SelectionChanged="TypeFilter_SelectionChanged" />
+
+                <ToggleSwitch x:Name="ShowRejected" Grid.Column="2" OffContent="Hide rejected" OnContent="Show rejected" Toggled="ShowRejected_Toggled" />
+
+            </Grid>
+
+        </Border>
+
+
+
+        <StackPanel Grid.Row="2" Orientation="Horizontal" Spacing="{StaticResource GmtToolbarGap}">
+
+            <Button Content="Load sample" Click="LoadSample_Click" Style="{StaticResource GmtButtonGhost}" />
+
+            <Button Content="Measure shadow" Click="MeasureShadow_Click" Style="{StaticResource GmtButtonPrimary}" />
+
+            <Button Content="Accept" Click="AcceptWeight_Click" Style="{StaticResource GmtButtonSecondary}" />
+
+            <Button Content="Downweight" Click="Downweight_Click" Style="{StaticResource GmtButtonSecondary}" />
+
+            <Button Content="Reject" Click="Reject_Click" Style="{StaticResource GmtButtonDestructive}" />
+
+            <Button x:Name="OpenGlossaryButton" Content="Open in Glossary" Click="OpenGlossary_Click"
+                Style="{StaticResource GmtButtonSecondary}" IsEnabled="False"
+                ToolTipService.ToolTip="Open mineral mention in the offline glossary" />
+
+        </StackPanel>
+
+
+
+        <Grid Grid.Row="3">
+
+            <ListView x:Name="EvidenceList" Style="{StaticResource GmtListView}" SelectionMode="Single"
+
+                SelectionChanged="EvidenceList_SelectionChanged" ItemContainerStyle="{StaticResource GmtListViewItem}">
+
+                <ListView.ItemTemplate>
+
+                    <DataTemplate>
+
+                        <Grid Padding="4,2" ColumnSpacing="{StaticResource GmtSpace4}" Opacity="{Binding RowOpacity}">
+
+                            <Grid.ColumnDefinitions>
+
+                                <ColumnDefinition Width="120" />
+
+                                <ColumnDefinition Width="*" />
+
+                                <ColumnDefinition Width="88" />
+
+                            </Grid.ColumnDefinitions>
+
+                            <TextBlock Style="{StaticResource GmtTextCaption}" Text="{Binding Type}" VerticalAlignment="Center" Opacity="{Binding DetailOpacity}" />
+
+                            <StackPanel Grid.Column="1" Spacing="2">
+
+                                <TextBlock Style="{StaticResource GmtTextBody}" FontWeight="{Binding TitleWeight}" Foreground="{Binding TitleBrush}" Text="{Binding Summary}" TextWrapping="Wrap" />
+
+                                <TextBlock Style="{StaticResource GmtTextCaption}" Foreground="{Binding DetailBrush}" Opacity="{Binding DetailOpacity}" Text="{Binding Notes}" TextWrapping="Wrap" />
+
+                            </StackPanel>
+
+                            <TextBlock Grid.Column="2" Style="{StaticResource GmtTextMono}" FontWeight="{Binding ConfidenceWeight}" Foreground="{Binding ConfidenceBrush}" HorizontalAlignment="Right" Text="{Binding ConfidenceLabel}" VerticalAlignment="Center" />
+
+                        </Grid>
+
+                    </DataTemplate>
+
+                </ListView.ItemTemplate>
+
+            </ListView>
+
+            <controls:EmptyState x:Name="EmptyState" Icon="&#xE8A5;" Title="No evidence yet"
+
+                Description="Run an analysis from the Analyze page, or load sample evidence to explore the board." Visibility="Collapsed" />
+
+        </Grid>
+
+    </Grid>
+
+</Page>
+
+

@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Page
+    x:Class="GeoMineralTrace_App.Pages.ProfileEditPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d">
+
+    <ScrollViewer Padding="{StaticResource GmtPagePaddingWide}">
+        <StackPanel Spacing="{StaticResource GmtStackGapSection}" MaxWidth="560">
+            <StackPanel Spacing="4">
+                <TextBlock Style="{StaticResource GmtTextTitle}" Text="Edit profile" />
+                <TextBlock Style="{StaticResource GmtTextBody}" TextWrapping="Wrap"
+                    Text="Only you can change these fields — enforced by Supabase Row Level Security." />
+            </StackPanel>
+
+            <Border Style="{StaticResource GmtCard}">
+                <StackPanel Spacing="{StaticResource GmtStackGapDefault}">
+                    <TextBox x:Name="DisplayNameBox" Style="{StaticResource GmtTextBox}" Header="Display name" />
+                    <TextBox x:Name="HandleBox" Style="{StaticResource GmtTextBox}" Header="Handle"
+                        PlaceholderText="lowercase_letters_numbers (optional)" />
+                    <TextBox x:Name="BioBox" Style="{StaticResource GmtTextBox}" Header="Bio"
+                        AcceptsReturn="True" TextWrapping="Wrap" Height="100" />
+                    <TextBox x:Name="RegionBox" Style="{StaticResource GmtTextBox}" Header="Home region"
+                        PlaceholderText="e.g. Montana, USA" />
+                    <ToggleSwitch x:Name="ShowRedditToggle" Header="Show Reddit discovery"
+                        OffContent="Hidden" OnContent="Visible"
+                        ToolTipService.ToolTip="When off, the From Reddit forum category is hidden on desktop and Android." />
+                    <StackPanel Orientation="Horizontal" Spacing="{StaticResource GmtToolbarGap}">
+                        <Button Content="Choose avatar…" Click="PickAvatar_Click" Style="{StaticResource GmtButtonSecondary}" />
+                        <Button Content="Save profile" Click="Save_Click" Style="{StaticResource GmtButtonPrimary}" />
+                        <Button Content="Cancel" Click="Cancel_Click" Style="{StaticResource GmtButtonGhost}" />
+                    </StackPanel>
+                    <TextBlock x:Name="StatusText" Style="{StaticResource GmtTextCaption}" TextWrapping="Wrap" />
+                </StackPanel>
+            </Border>
+
+            <Border Style="{StaticResource GmtCard}">
+                <StackPanel Spacing="{StaticResource GmtStackGapDefault}">
+                    <TextBlock Style="{StaticResource GmtTextLabel}" Text="MARKETPLACE SHOPS" />
+                    <TextBlock Style="{StaticResource GmtTextCaption}" TextWrapping="Wrap"
+                        Text="Link Etsy, eBay, Whatnot, and other places you sell rockhounding / gem products. Up to 12 shops; up to 8 images or videos per shop." />
+
+                    <StackPanel x:Name="ShopsEditList" Spacing="{StaticResource GmtStackGapDefault}" />
+
+                    <TextBlock Style="{StaticResource GmtTextLabel}" Text="ADD A SHOP" />
+                    <ComboBox x:Name="MarketplaceCombo" Style="{StaticResource GmtComboBox}" Header="Marketplace"
+                        HorizontalAlignment="Stretch" />
+                    <TextBox x:Name="ShopNameBox" Style="{StaticResource GmtTextBox}" Header="Shop / store name"
+                        PlaceholderText="Optional display name" />
+                    <TextBox x:Name="ShopUrlBox" Style="{StaticResource GmtTextBox}" Header="Shop URL"
+                        PlaceholderText="https://www.etsy.com/shop/…" />
+                    <TextBox x:Name="ShopDescBox" Style="{StaticResource GmtTextBox}" Header="Short description"
+                        PlaceholderText="What you sell (rocks, specimens, jewelry…)"
+                        AcceptsReturn="True" TextWrapping="Wrap" Height="72" />
+                    <Button Content="Add shop" Click="AddShop_Click" Style="{StaticResource GmtButtonSecondary}" />
+                    <TextBlock x:Name="ShopStatusText" Style="{StaticResource GmtTextCaption}" TextWrapping="Wrap" />
+                </StackPanel>
+            </Border>
+        </StackPanel>
+    </ScrollViewer>
+</Page>
+
