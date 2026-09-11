@@ -28,7 +28,7 @@ On New Year’s, edit the Product record: set **Price** to `79.99` and remove or
 | **Price** | `39.99` |
 | **Type** | `download` |
 | **Status** | `active` *(only after Download URL works)* |
-| **Download URL** | `https://github.com/akindabigdeal-collab/unbound-rockhound/releases/download/v0.6.0/UnboundRockhound-Windows-x64-v0.6.0.zip` |
+| **Download URL** | `https://github.com/Unbound-Infotech-Corporation/unbound-rockhound/releases/download/v0.6.0/UnboundRockhound-Windows-x64-v0.6.0.zip` |
 | **Delivery Instructions** | *(leave empty for download type)* |
 
 > If Base44 prefers its own CDN, upload the same zip from the GitHub Release assets (or `dist\UnboundRockhound-Windows-x64-v0.6.0.zip` after packaging) and paste that URL instead.
