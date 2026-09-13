@@ -7,25 +7,45 @@
   <style>
     :root { color-scheme: dark; }
     body {
-      margin: 0; font: 16px/1.5 system-ui, Segoe UI, sans-serif;
-      background: #0f0f12; color: #e4e4e7;
+      margin: 0;
+      font: 16px/1.5 system-ui, "Segoe UI", sans-serif;
+      background: #0f0f12;
+      color: #e4e4e7;
     }
     main { max-width: 640px; margin: 48px auto; padding: 0 20px; }
-    h1 { font-size: 1.6rem; margin: 0 0 8px; }
+    h1 { font-size: 1.6rem; margin: 0 0 8px; letter-spacing: -0.02em; }
+    a { color: #93c5fd; }
     .card {
-      background: #18181b; border: 1px solid #3f3f48; border-radius: 12px;
-      padding: 20px; margin: 16px 0;
+      background: #18181b;
+      border: 1px solid #3f3f48;
+      border-radius: 12px;
+      padding: 20px;
+      margin: 16px 0;
     }
     .key {
       font: 1.15rem/1.4 ui-monospace, Consolas, monospace;
-      letter-spacing: 1px; word-break: break-all;
-      background: #111114; padding: 12px; border-radius: 8px;
+      letter-spacing: 1px;
+      word-break: break-all;
+      background: #111114;
+      padding: 12px;
+      border-radius: 8px;
     }
     .muted { color: #a1a1aa; font-size: 0.92rem; }
     button, .btn {
-      display: inline-block; margin-top: 12px; padding: 8px 14px;
-      border-radius: 8px; border: 1px solid #5e6ad2; background: #5e6ad2;
-      color: #fff; text-decoration: none; cursor: pointer; font: inherit;
+      display: inline-block;
+      margin-top: 12px;
+      padding: 8px 14px;
+      border-radius: 8px;
+      border: 1px solid #5e6ad2;
+      background: #5e6ad2;
+      color: #fff;
+      text-decoration: none;
+      cursor: pointer;
+      font: inherit;
+    }
+    button:focus-visible, a:focus-visible {
+      outline: 2px solid #93c5fd;
+      outline-offset: 2px;
     }
     .err { color: #fca5a5; }
     .ok { color: #86efac; }
@@ -35,9 +55,9 @@
   <main>
     <h1>Activate Unbound Rockhound</h1>
     <p class="muted">
-      After Stripe Checkout you should receive a license key email <em>and</em>
-      a download. This page shows the key if the webhook has finished
-      (use when the email is late or missing).
+      After checkout you should receive a license key by email and a download.
+      This page shows the key when your purchase is ready — useful if the email
+      is late or missing.
     </p>
 
     <div class="card">
@@ -58,19 +78,13 @@
     </div>
 
     <p class="muted">
-      Host this file at <code>https://unboundinfotech.com/activate</code>.
-      Stripe Success URL:
-      <code>https://unboundinfotech.com/activate?session_id={CHECKOUT_SESSION_ID}</code>
+      Need help? Email
+      <a href="mailto:support@unboundinfotech.com">support@unboundinfotech.com</a>
+      with your receipt.
     </p>
   </main>
   <script>
-    /**
-     * Operator: set your Supabase functions base (no trailing slash), e.g.
-     *   https://YOUR_PROJECT.supabase.co/functions/v1
-     * Or pass ?fn=https://YOUR_PROJECT.supabase.co/functions/v1
-     * Do not put service-role keys here — license-by-session is public (session id required).
-     */
-    const DEFAULT_FN = "https://YOUR_PROJECT.supabase.co/functions/v1";
+    const DEFAULT_FN = "https://iltdlxhvxlwirqkyzhcc.supabase.co/functions/v1";
     const params = new URLSearchParams(location.search);
     const sessionId = params.get("session_id") || params.get("checkoutSessionId") || "";
     const fnBase = (params.get("fn") || DEFAULT_FN).replace(/\/$/, "");
@@ -78,13 +92,16 @@
     const keyBox = document.getElementById("keyBox");
     const keyEl = document.getElementById("key");
 
+    function showNoSession() {
+      status.innerHTML =
+        "No checkout session was found on this link. Open the Activate link from your Stripe receipt, " +
+        "or paste the license key from your purchase email in the Windows app " +
+        "(<strong>Activate</strong> → paste key → <strong>Activate on this PC</strong>).";
+    }
+
     async function lookup() {
       if (!sessionId.startsWith("cs_")) {
-        status.innerHTML = "No Stripe <code>session_id</code> on this URL. Open the link from your receipt, or paste the key from email in the Windows app.";
-        return;
-      }
-      if (fnBase.includes("YOUR_PROJECT")) {
-        status.innerHTML = "<span class='err'>Operator: replace YOUR_PROJECT in this HTML (or pass <code>?fn=</code>) so the page can call license-by-session.</span>";
+        showNoSession();
         return;
       }
 
@@ -102,13 +119,13 @@
           return;
         }
         if (data.pending) {
-          status.textContent = data.message || "License not ready yet. Retrying…";
+          status.textContent = data.message || "License not ready yet. Checking again…";
           setTimeout(lookup, 2500);
           return;
         }
         status.innerHTML = "<span class='err'>" + (data.error || data.message || "Could not load license.") + "</span>";
       } catch (e) {
-        status.innerHTML = "<span class='err'>Network error talking to license-by-session. Retry in a few seconds.</span>";
+        status.innerHTML = "<span class='err'>Could not reach the license service. Trying again shortly…</span>";
         setTimeout(lookup, 4000);
       }
     }
