@@ -23,6 +23,7 @@ public sealed partial class ClaimsPage : Page
         InitializeComponent();
         Loaded += async (_, _) =>
         {
+            UsStateFilterHelper.Populate(StateBox);
             StatusFilter.SelectedIndex = 0;
             // NumberBox is km; convert from Settings miles preference.
             NearbyRadiusBox.Value = Math.Clamp(HomeLocationPreferences.SearchRadiusKm, 1, 200);
@@ -39,18 +40,19 @@ public sealed partial class ClaimsPage : Page
             var store = App.Services.GetRequiredService<ClaimStore>();
             await store.InitializeAsync();
 
-            ClaimStatus? status = StatusFilter.SelectedIndex switch
+            var statusTag = (StatusFilter.SelectedItem as ComboBoxItem)?.Tag as string ?? "";
+            ClaimStatus? status = statusTag switch
             {
-                1 => ClaimStatus.ExpiringSoon,
-                2 => ClaimStatus.Active,
-                3 => ClaimStatus.LapsedReopenable,
-                4 => ClaimStatus.Closed,
+                "ExpiringSoon" => ClaimStatus.ExpiringSoon,
+                "Active" => ClaimStatus.Active,
+                "LapsedReopenable" => ClaimStatus.LapsedReopenable,
+                "Closed" => ClaimStatus.Closed,
                 _ => null
             };
 
-            bool? deadlineOnly = StatusFilter.SelectedIndex == 5 ? true : null;
+            bool? deadlineOnly = statusTag == "Sept1" ? true : null;
 
-            var state = string.IsNullOrWhiteSpace(StateBox.Text) ? null : StateBox.Text.Trim();
+            var state = UsStateFilterHelper.ResolveStateCode(StateBox);
             var mineral = string.IsNullOrWhiteSpace(MineralBox.Text) ? null : MineralBox.Text.Trim();
 
             IReadOnlyList<MiningClaim> results;

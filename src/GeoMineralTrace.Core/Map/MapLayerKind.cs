@@ -20,5 +20,9 @@ public enum MapLayerKind
     /// DEM / LiDAR-derived hillshade imagery overlay (USGS 3DEP / Esri World Hillshade).
     /// Not raw point clouds — shaded relief from elevation models that include airborne LiDAR where collected.
     /// </summary>
-    LidarTerrain = 12
+    LidarTerrain = 12,
+    /// <summary>USGS State Geologic Map Compilation (SGMC) lithology overlay — public WMS.</summary>
+    UsgsGeology = 13,
+    /// <summary>USGS The National Map elevation contours overlay — public WMS.</summary>
+    ElevationContours = 14
 }

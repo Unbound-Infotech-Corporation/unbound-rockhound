@@ -7,11 +7,11 @@
     mc:Ignorable="d">
 
     <ScrollViewer Padding="{StaticResource GmtPagePaddingWide}">
-        <StackPanel Spacing="{StaticResource GmtStackGapSection}" MaxWidth="520">
+        <StackPanel Spacing="{StaticResource GmtStackGapSection}" MaxWidth="560">
             <StackPanel Spacing="4">
                 <TextBlock Style="{StaticResource GmtTextTitle}" Text="Activate license" />
                 <TextBlock Style="{StaticResource GmtTextBody}" TextWrapping="Wrap"
-                    Text="After purchasing on Stripe you receive a key shaped like UR-XXXX-XXXX-XXXX-XXXX. Paste it below to unlock this PC (up to 3 devices per license)." />
+                    Text="After you buy Unbound Rockhound, you get the Windows download and a license key email (UR-XXXX-XXXX-XXXX-XXXX). Paste the key here to unlock this PC — up to 3 devices per purchase." />
             </StackPanel>
 
             <InfoBar x:Name="StatusBar" IsOpen="True" IsClosable="False" Severity="Informational"
@@ -21,15 +21,28 @@
                 <StackPanel Spacing="{StaticResource GmtStackGapDefault}">
                     <TextBlock Style="{StaticResource GmtTextLabel}" Text="LICENSE KEY" />
                     <TextBox x:Name="KeyBox" Style="{StaticResource GmtTextBox}"
-                        Header="Key"
+                        Header="Paste the key from your purchase email"
                         PlaceholderText="UR-XXXX-XXXX-XXXX-XXXX"
                         FontFamily="Consolas"
-                        CharacterCasing="Upper" />
+                        CharacterCasing="Upper"
+                        TextChanged="KeyBox_TextChanged" />
+                    <TextBlock x:Name="KeyHint" Style="{StaticResource GmtTextCaption}" TextWrapping="Wrap"
+                        Text="Keys look like UR-ABCD-EFGH-JKLM-NPQR. Spaces and missing dashes are OK." />
                     <Button x:Name="ActivateButton" Content="Activate on this PC"
                         Click="Activate_Click" Style="{StaticResource GmtButtonPrimary}" />
                     <HyperlinkButton Content="Buy Unbound Rockhound"
                         NavigateUri="https://unboundinfotech.com/products/unbound-rockhound" />
+                    <HyperlinkButton Content="Open web Activate page (Stripe receipt)"
+                        NavigateUri="https://unboundinfotech.com/activate" />
                     <TextBlock x:Name="DetailText" Style="{StaticResource GmtTextCaption}" TextWrapping="Wrap" />
+                </StackPanel>
+            </Border>
+
+            <Border Style="{StaticResource GmtCard}">
+                <StackPanel Spacing="{StaticResource GmtStackGapTight}">
+                    <TextBlock Style="{StaticResource GmtTextLabel}" Text="NO KEY IN YOUR INBOX?" />
+                    <TextBlock Style="{StaticResource GmtTextBody}" TextWrapping="Wrap"
+                        Text="1. Check spam for “Your Unbound Rockhound license key”.&#x0a;2. Open the Activate link on your Stripe receipt (it can show the key if the email failed).&#x0a;3. Configure Sign in → Supabase URL + anon key — Activate talks to the same project as the webhook.&#x0a;4. Email support@unboundinfotech.com with your receipt." />
                 </StackPanel>
             </Border>
 

@@ -4,13 +4,36 @@ export const PRODUCT_ID = "unbound-rockhound";
 
 const ALPHABET = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789"; // no I/O/0/1
 
+/** Collapse Stripe / Base44 aliases to a comparable slug. */
+export function normalizeProductId(raw: string | null | undefined): string {
+  if (!raw || !raw.trim()) return PRODUCT_ID;
+  return raw
+    .trim()
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/-+/g, "-")
+    .replace(/^-|-$/g, "");
+}
+
+/**
+ * Dedicated webhook: missing metadata counts as this product.
+ * Rejects other Unbound SKUs (e.g. heirloom) so they do not mint Rockhound keys.
+ */
+export function isRockhoundProduct(raw: string | null | undefined): boolean {
+  const n = normalizeProductId(raw);
+  return n === PRODUCT_ID || n === "rockhound" || n === "unboundrockhound";
+}
+
 export function normalizeLicenseKey(raw: string): string {
+  if (!raw || !raw.trim()) {
+    throw new Error("Paste a license key shaped like UR-XXXX-XXXX-XXXX-XXXX");
+  }
   const cleaned = raw.toUpperCase().replace(/[^A-Z0-9]/g, "");
   // Accept UR + 16 chars with or without dashes
   let body = cleaned;
   if (body.startsWith("UR")) body = body.slice(2);
   if (body.length !== 16) {
-    throw new Error("License key must look like UR-XXXX-XXXX-XXXX-XXXX");
+    throw new Error("License key must look like UR-XXXX-XXXX-XXXX-XXXX (16 characters after UR)");
   }
   return `UR-${body.slice(0, 4)}-${body.slice(4, 8)}-${body.slice(8, 12)}-${body.slice(12, 16)}`;
 }
@@ -42,7 +65,7 @@ export function corsPreflight(): Response {
     headers: {
       "Access-Control-Allow-Origin": "*",
       "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
-      "Access-Control-Allow-Methods": "POST, OPTIONS",
+      "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
     },
   });
 }

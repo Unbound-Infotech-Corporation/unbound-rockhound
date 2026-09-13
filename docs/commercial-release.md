@@ -20,7 +20,7 @@ Use this before listing on the **Unbound Infotech** store or distributing a cust
 - [ ] Public privacy policy URL (cloud email/auth requires this for many payment processors)
 - [ ] Code-signing certificate (Authenticode) — unsigned WinUI exes trigger SmartScreen
 - [ ] Support mailbox live (`support@unboundinfotech.com`)
-- [ ] Payment + license delivery (Stripe → Supabase webhook → Activate) — see [licensing-stripe.md](licensing-stripe.md)
+- [ ] Payment + license delivery (Stripe → Supabase webhook → email key + `/activate` → desktop Activate) — see [licensing-stripe.md](licensing-stripe.md) §9 operator smoke checklist
 - [ ] Host update feed JSON at public HTTPS URL — see [app-updates.md](app-updates.md) + `scripts/Publish-UpdateFeed.ps1`
 - [ ] Refund / update policy for portable zip customers
 - [ ] Optional: Microsoft Store listing (Partner Center + MSIX signing)

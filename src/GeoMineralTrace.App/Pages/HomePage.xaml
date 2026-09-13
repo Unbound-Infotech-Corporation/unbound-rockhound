@@ -20,6 +20,13 @@
                     Text="Turn rockhounding videos and field clips into ranked location hypotheses — then cross-check claims, rivers, and public localities on the map." />
             </StackPanel>
 
+            <InfoBar x:Name="LicenseBanner" Style="{StaticResource GmtInfoBar}" IsOpen="False" IsClosable="False"
+                Severity="Informational" Title="License" Message="">
+                <InfoBar.ActionButton>
+                    <Button Content="Activate license" Click="GoActivate_Click" Style="{StaticResource GmtButtonSecondary}" />
+                </InfoBar.ActionButton>
+            </InfoBar>
+
             <InfoBar Style="{StaticResource GmtInfoBar}" IsOpen="True" IsClosable="False" Severity="Informational"
                 Title="Hypotheses, not GPS truth"
                 Message="Every result is a ranked lead with uncertainty. Use Deep Analysis to see why clues agree, reject weak evidence, and verify land access before you go." />

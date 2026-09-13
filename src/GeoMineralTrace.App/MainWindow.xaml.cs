@@ -27,7 +27,7 @@ public sealed partial class MainWindow : Window
 
     private static readonly HashSet<string> LicenseFreeTags = new(StringComparer.OrdinalIgnoreCase)
     {
-        "home", "about", "activate", "signin", "techniques"
+        "home", "about", "activate", "signin", "techniques", "settings"
     };
 
     public MainWindow()

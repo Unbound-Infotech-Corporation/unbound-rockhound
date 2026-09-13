@@ -46,40 +46,67 @@
                 HorizontalAlignment="Left"
                 VerticalAlignment="Top"
                 Margin="16,16,0,0"
-                MaxWidth="280"
+                MaxWidth="300"
+                MaxHeight="640"
                 Background="{StaticResource GmtBrushBackgroundRaised}"
                 BorderBrush="{StaticResource GmtBrushBorderSubtle}"
                 BorderThickness="1"
                 CornerRadius="{StaticResource GmtRadiusMd}"
-                Padding="14,12">
-                <StackPanel Spacing="8">
-                    <TextBlock FontWeight="SemiBold" Text="Map layers" />
-                    <TextBlock
-                        FontSize="11"
-                        Foreground="{StaticResource GmtBrushTextSecondary}"
-                        Text="Turn source types on or off. Rumoured = unverified leads."
-                        TextWrapping="Wrap" />
-                    <ToggleSwitch x:Name="LayerHypothesis" Header="Analysis hypotheses" Toggled="LayerToggled" />
-                    <ToggleSwitch x:Name="LayerSolar" Header="Solar locus" Toggled="LayerToggled" />
-                    <ToggleSwitch x:Name="LayerCurated" Header="Curated mines &amp; sites" Toggled="LayerToggled" />
-                    <ToggleSwitch x:Name="LayerUsgs" Header="USGS / official records" Toggled="LayerToggled" />
-                    <ToggleSwitch x:Name="LayerClaimActive" Header="BLM claims (active)" Toggled="LayerToggled" />
-                    <ToggleSwitch x:Name="LayerClaimExpiring" Header="BLM claims (expiring)" Toggled="LayerToggled" />
-                    <ToggleSwitch x:Name="LayerClaimOther" Header="BLM claims (other status)" Toggled="LayerToggled" />
-                    <ToggleSwitch x:Name="LayerRumoured" Header="Rumoured (forums / blogs)" Toggled="LayerToggled" />
-                    <ToggleSwitch x:Name="LayerCommunityReddit" Header="Community Reddit (unverified)" Toggled="LayerToggled" />
-                    <ToggleSwitch x:Name="LayerRivers" Header="Named rivers &amp; creeks" Toggled="LayerToggled" />
-                    <ToggleSwitch x:Name="LayerTrails" Header="Access &amp; hiking trails" Toggled="LayerToggled" />
-                    <ToggleSwitch x:Name="LayerPersonal" Header="Personal finds" Toggled="LayerToggled" />
-                    <ToggleSwitch x:Name="LayerLidar" Header="LiDAR terrain hillshade"
-                        Toggled="LayerToggled"
-                        ToolTipService.ToolTip="USGS 3DEP / Esri shaded relief from elevation models (includes airborne LiDAR where collected). Also pick “LiDAR terrain” in the map’s layer control (top-right)." />
-                    <TextBlock
-                        FontSize="11"
-                        Foreground="{StaticResource GmtBrushTextSecondary}"
-                        TextWrapping="Wrap"
-                        Text="LiDAR tip: turn this on for a translucent relief overlay, or choose “LiDAR terrain (USGS 3DEP)” / “Satellite + relief” in the map control (top-right)." />
-                </StackPanel>
+                Padding="12,10">
+                <ScrollViewer VerticalScrollBarVisibility="Auto">
+                    <StackPanel Spacing="6">
+                        <TextBlock FontWeight="SemiBold" Text="Map layers" />
+                        <TextBlock
+                            FontSize="11"
+                            Foreground="{StaticResource GmtBrushTextSecondary}"
+                            Text="Online tiles stay opt-in (Settings → Online Enrichment). Rumoured = unverified leads."
+                            TextWrapping="Wrap" />
+
+                        <TextBlock Style="{StaticResource GmtTextLabel}" Text="TERRAIN" Margin="0,6,0,0" />
+                        <ToggleSwitch x:Name="LayerLidar" Header="DEM / LiDAR-derived hillshade"
+                            Toggled="LayerToggled"
+                            ToolTipService.ToolTip="Shaded relief from elevation models (USGS 3DEP / Esri World Hillshade). Includes airborne LiDAR where collected — not raw LAS point clouds." />
+                        <Slider x:Name="LidarOpacitySlider" Minimum="15" Maximum="80" Value="55"
+                            Header="Hillshade opacity"
+                            ValueChanged="LidarOpacity_Changed" />
+                        <TextBlock
+                            FontSize="11"
+                            Foreground="{StaticResource GmtBrushTextSecondary}"
+                            TextWrapping="Wrap"
+                            Text="Honest label: this is DEM/LiDAR-derived hillshade, not a point-cloud viewer. Also pick USGS 3DEP / Imagery + relief in the map control (top-right)." />
+                        <Border Padding="8,6" BorderBrush="{StaticResource GmtBrushBorderSubtle}" BorderThickness="1"
+                            CornerRadius="6">
+                            <TextBlock FontSize="11" TextWrapping="Wrap"
+                                Text="Terrain legend: light = facing the sun; dark = shadow / steep. Use with Imagery or USGS Topo to read ridges and drainages." />
+                        </Border>
+
+                        <TextBlock Style="{StaticResource GmtTextLabel}" Text="GEOLOGY" Margin="0,6,0,0" />
+                        <ToggleSwitch x:Name="LayerGeology" Header="USGS geologic units (SGMC)"
+                            Toggled="LayerToggled"
+                            ToolTipService.ToolTip="USGS State Geologic Map Compilation lithology overlay (public WMS). Requires Online Enrichment." />
+                        <ToggleSwitch x:Name="LayerContours" Header="Elevation contours (USGS TNM)"
+                            Toggled="LayerToggled"
+                            ToolTipService.ToolTip="USGS The National Map contour overlay (public WMS). Requires Online Enrichment." />
+
+                        <TextBlock Style="{StaticResource GmtTextLabel}" Text="CLAIMS" Margin="0,6,0,0" />
+                        <ToggleSwitch x:Name="LayerClaimActive" Header="BLM claims (active)" Toggled="LayerToggled" />
+                        <ToggleSwitch x:Name="LayerClaimExpiring" Header="BLM claims (expiring)" Toggled="LayerToggled" />
+                        <ToggleSwitch x:Name="LayerClaimOther" Header="BLM claims (other status)" Toggled="LayerToggled" />
+
+                        <TextBlock Style="{StaticResource GmtTextLabel}" Text="LOCALITIES" Margin="0,6,0,0" />
+                        <ToggleSwitch x:Name="LayerCurated" Header="Curated mines &amp; sites" Toggled="LayerToggled" />
+                        <ToggleSwitch x:Name="LayerUsgs" Header="USGS / official records" Toggled="LayerToggled" />
+                        <ToggleSwitch x:Name="LayerRumoured" Header="Rumoured (forums / blogs)" Toggled="LayerToggled" />
+                        <ToggleSwitch x:Name="LayerCommunityReddit" Header="Community Reddit (unverified)" Toggled="LayerToggled" />
+                        <ToggleSwitch x:Name="LayerPersonal" Header="Personal finds" Toggled="LayerToggled" />
+                        <ToggleSwitch x:Name="LayerRivers" Header="Named rivers &amp; creeks" Toggled="LayerToggled" />
+                        <ToggleSwitch x:Name="LayerTrails" Header="Access &amp; hiking trails" Toggled="LayerToggled" />
+
+                        <TextBlock Style="{StaticResource GmtTextLabel}" Text="HYPOTHESES" Margin="0,6,0,0" />
+                        <ToggleSwitch x:Name="LayerHypothesis" Header="Analysis hypotheses" Toggled="LayerToggled" />
+                        <ToggleSwitch x:Name="LayerSolar" Header="Solar locus" Toggled="LayerToggled" />
+                    </StackPanel>
+                </ScrollViewer>
             </Border>
 
             <!-- Selected pin actions -->

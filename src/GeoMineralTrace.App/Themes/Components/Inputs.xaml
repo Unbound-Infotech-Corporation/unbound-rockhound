@@ -28,6 +28,19 @@
         <Setter Property="BorderThickness" Value="1" />
     </Style>
 
+    <Style x:Key="GmtFilterComboBox" TargetType="ComboBox" BasedOn="{StaticResource GmtComboBox}">
+        <Setter Property="Width" Value="220" />
+        <Setter Property="MinWidth" Value="220" />
+        <Setter Property="VerticalAlignment" Value="Center" />
+        <Setter Property="PlaceholderText" Value="All states" />
+    </Style>
+
+    <Style x:Key="GmtFilterComboBoxNarrow" TargetType="ComboBox" BasedOn="{StaticResource GmtComboBox}">
+        <Setter Property="Width" Value="200" />
+        <Setter Property="MinWidth" Value="200" />
+        <Setter Property="VerticalAlignment" Value="Center" />
+    </Style>
+
     <Style x:Key="GmtNumberBox" TargetType="NumberBox">
         <Setter Property="FontFamily" Value="{StaticResource GmtFontMono}" />
         <Setter Property="FontSize" Value="{StaticResource GmtFontSizeBodySm}" />

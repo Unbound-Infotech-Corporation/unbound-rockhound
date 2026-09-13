@@ -9,6 +9,7 @@ import { createClient } from "https://esm.sh/@supabase/supabase-js@2.49.1";
 import {
   PRODUCT_ID,
   corsPreflight,
+  isRockhoundProduct,
   jsonResponse,
   normalizeLicenseKey,
 } from "../_shared/license.ts";
@@ -47,18 +48,28 @@ Deno.serve(async (req) => {
     return jsonResponse({ error: "Invalid device fingerprint" }, 400);
   }
 
-  const productId = (body.productId ?? PRODUCT_ID).trim() || PRODUCT_ID;
+  const requestedProduct = (body.productId ?? PRODUCT_ID).trim() || PRODUCT_ID;
+  if (!isRockhoundProduct(requestedProduct)) {
+    return jsonResponse({ error: "This app activates Unbound Rockhound keys only." }, 400);
+  }
   const admin = createClient(supabaseUrl, serviceKey);
 
-  const { data: license, error: licErr } = await admin
+  const { data: byKey, error: licErr } = await admin
     .from("product_licenses")
     .select("id, license_key, email, status, max_activations, product_id")
     .eq("license_key", licenseKey)
-    .eq("product_id", productId)
     .maybeSingle();
 
   if (licErr) return jsonResponse({ error: licErr.message }, 500);
-  if (!license) return jsonResponse({ error: "License key not found" }, 404);
+  if (!byKey) {
+    return jsonResponse({
+      error: "License key not found. Check the email from Unbound Infotech, or open the Activate web page from your Stripe receipt.",
+    }, 404);
+  }
+  if (!isRockhoundProduct(byKey.product_id)) {
+    return jsonResponse({ error: "This key is not for Unbound Rockhound." }, 404);
+  }
+  const license = byKey;
   if (license.status !== "active") {
     return jsonResponse({
       error: `License is ${license.status}`,

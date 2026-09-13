@@ -189,14 +189,9 @@ public sealed class LicenseService : ILicenseService
             };
         }
 
-        string normalized;
-        try
+        if (!LicenseKeyFormat.TryNormalize(licenseKey, out var normalized, out var formatError))
         {
-            normalized = LicenseKeyFormat.Normalize(licenseKey);
-        }
-        catch (Exception ex)
-        {
-            return new LicenseActivateResult { Ok = false, Error = ex.Message };
+            return new LicenseActivateResult { Ok = false, Error = formatError };
         }
 
         var url = $"{cfg.Url.TrimEnd('/')}/functions/v1/license-activate";
@@ -208,7 +203,7 @@ public sealed class LicenseService : ILicenseService
             licenseKey = normalized,
             deviceFingerprint = GetDeviceFingerprint(),
             deviceLabel = $"{Environment.MachineName} ({Environment.UserName})",
-            productId = AppBranding.UpdateProductId
+            productId = LicenseProductId.Canonical
         });
 
         using var res = await _http.SendAsync(req, ct).ConfigureAwait(false);
@@ -225,13 +220,20 @@ public sealed class LicenseService : ILicenseService
 
         if (!res.IsSuccessStatusCode || dto?.Ok != true)
         {
-            var err = dto?.Error ?? $"Activation failed ({(int)res.StatusCode}).";
+            var err = dto?.Error;
+            if (string.IsNullOrWhiteSpace(err))
+            {
+                var snippet = payload.Length > 180 ? payload[..180] + "…" : payload;
+                err = string.IsNullOrWhiteSpace(snippet)
+                    ? $"Activation failed ({(int)res.StatusCode}). Check Sign in → Supabase URL, then retry."
+                    : $"Activation failed ({(int)res.StatusCode}): {snippet}";
+            }
             return new LicenseActivateResult { Ok = false, Error = err };
         }
 
         _current = new LicenseEntitlement
         {
-            ProductId = dto.ProductId ?? AppBranding.UpdateProductId,
+            ProductId = dto.ProductId ?? LicenseProductId.Canonical,
             LicenseKey = dto.LicenseKey ?? normalized,
             Email = dto.Email,
             Status = LicenseStatuses.Active,
@@ -262,7 +264,7 @@ public sealed class LicenseService : ILicenseService
         {
             licenseKey = _current.LicenseKey,
             deviceFingerprint = GetDeviceFingerprint(),
-            productId = AppBranding.UpdateProductId
+            productId = LicenseProductId.Canonical
         });
 
         using var res = await _http.SendAsync(req, ct).ConfigureAwait(false);

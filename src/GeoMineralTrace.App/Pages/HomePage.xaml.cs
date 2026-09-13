@@ -1,3 +1,6 @@
+using GeoMineralTrace.Core.Licensing;
+using GeoMineralTrace.Infrastructure.Licensing;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Media;
@@ -10,7 +13,45 @@ public sealed partial class HomePage : Page
     public HomePage()
     {
         InitializeComponent();
-        Loaded += (_, _) => PlayEnterAnimation();
+        Loaded += (_, _) =>
+        {
+            RefreshLicenseBanner();
+            PlayEnterAnimation();
+        };
+    }
+
+    private void RefreshLicenseBanner()
+    {
+        try
+        {
+            var license = App.Services.GetRequiredService<ILicenseService>();
+            var e = license.Current;
+            if (license.IsEntitled && e is not null
+                && string.Equals(e.Status, LicenseStatuses.Active, StringComparison.OrdinalIgnoreCase))
+            {
+                LicenseBanner.IsOpen = false;
+                return;
+            }
+
+            LicenseBanner.IsOpen = true;
+            if (license.IsEntitled && e?.TrialEndsUtc is { } end)
+            {
+                var days = Math.Max(0, (int)Math.Ceiling((end - DateTimeOffset.UtcNow).TotalDays));
+                LicenseBanner.Severity = InfoBarSeverity.Informational;
+                LicenseBanner.Title = "Evaluation trial";
+                LicenseBanner.Message = $"{days} day(s) remaining. After the trial, paste your purchase key on Activate.";
+            }
+            else
+            {
+                LicenseBanner.Severity = InfoBarSeverity.Warning;
+                LicenseBanner.Title = "Activation required";
+                LicenseBanner.Message = "Your trial has ended. Open Activate and paste the key from your Unbound Infotech purchase email.";
+            }
+        }
+        catch
+        {
+            LicenseBanner.IsOpen = false;
+        }
     }
 
     private void PlayEnterAnimation()
@@ -95,4 +136,7 @@ public sealed partial class HomePage : Page
 
     private void GoMap_Click(object sender, RoutedEventArgs e) =>
         MainWindow.Instance?.NavigateTo(typeof(MapPage), "map");
+
+    private void GoActivate_Click(object sender, RoutedEventArgs e) =>
+        MainWindow.Instance?.NavigateTo(typeof(ActivatePage), "activate");
 }
