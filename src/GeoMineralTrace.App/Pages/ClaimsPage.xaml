@@ -29,15 +29,16 @@
         <Border Grid.Row="2" Style="{StaticResource GmtToolbarStrip}">
             <StackPanel Spacing="8">
                 <StackPanel Orientation="Horizontal" Spacing="{StaticResource GmtToolbarGap}">
-                    <TextBox x:Name="StateBox" Style="{StaticResource GmtTextBox}" Width="88" PlaceholderText="All ST" />
+                    <ComboBox x:Name="StateBox" Style="{StaticResource GmtFilterComboBox}" PlaceholderText="All states" />
                     <TextBox x:Name="MineralBox" Style="{StaticResource GmtTextBox}" Width="140" PlaceholderText="Mineral" />
-                    <ComboBox x:Name="StatusFilter" Width="220" SelectedIndex="0">
-                        <ComboBoxItem Content="All statuses" />
-                        <ComboBoxItem Content="Expiring Soon (fee risk)" />
-                        <ComboBoxItem Content="Active" />
-                        <ComboBoxItem Content="Lapsed / Reopenable" />
-                        <ComboBoxItem Content="Closed" />
-                        <ComboBoxItem Content="Sept 1 fee check (advisory)" />
+                    <ComboBox x:Name="StatusFilter" Style="{StaticResource GmtFilterComboBox}" SelectedIndex="0"
+                        PlaceholderText="All statuses">
+                        <ComboBoxItem Content="All statuses" Tag="" />
+                        <ComboBoxItem Content="Expiring Soon (fee risk)" Tag="ExpiringSoon" />
+                        <ComboBoxItem Content="Active" Tag="Active" />
+                        <ComboBoxItem Content="Lapsed / Reopenable" Tag="LapsedReopenable" />
+                        <ComboBoxItem Content="Closed" Tag="Closed" />
+                        <ComboBoxItem Content="Sept 1 fee check (advisory)" Tag="Sept1" />
                     </ComboBox>
                     <Button Content="Search" Click="Search_Click" Style="{StaticResource GmtButtonPrimary}" />
                     <Button Content="Import BLM…" Click="Import_Click" Style="{StaticResource GmtButtonSecondary}" />
@@ -83,7 +84,7 @@
                         </ListView.ItemTemplate>
                     </ListView>
                     <controls:EmptyState x:Name="ClaimEmpty" Icon="&#xE8EF;" Title="No claims match"
-                        Description="Try All statuses with an empty state filter, or import a BLM MLRS GeoJSON/CSV extract." />
+                        Description="Try All statuses with All states, or import a BLM MLRS GeoJSON/CSV extract." />
                 </Grid>
             </Border>
 

@@ -1077,41 +1077,7 @@ public sealed partial class MapPage : Page
             <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
             """;
 
-        var lidarOverlayOn = MapLayerPreferences.IsVisible(MapLayerKind.LidarTerrain);
-
-        // Do not use tile.openstreetmap.org — OSM volunteer tiles block WebView/desktop apps
-        // with HTTP 200 "Access blocked" placeholder images (see osm.wiki/Blocked).
-        var tileJs = online
-            ? """
-              var street=L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}',{
-                maxZoom:19,attribution:'Tiles © Esri'});
-              var carto=L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png',{
-                maxZoom:20,subdomains:'abcd',attribution:'© OpenStreetMap © CARTO'});
-              var sat=L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',{
-                maxZoom:19,attribution:'Tiles © Esri'});
-              var usgsLidar=L.tileLayer('https://basemap.nationalmap.gov/arcgis/rest/services/USGSShadedReliefOnly/MapServer/tile/{z}/{y}/{x}',{
-                maxZoom:16,attribution:'USGS National Map — 3DEP shaded relief (LiDAR/DEM-derived)'});
-              var hillshade=L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/Elevation/World_Hillshade/MapServer/tile/{z}/{y}/{x}',{
-                maxZoom:16,opacity:0.55,attribution:'Esri World Hillshade (DEM/LiDAR-derived)'});
-              var topo=L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer/tile/{z}/{y}/{x}',{
-                maxZoom:19,attribution:'Tiles © Esri'});
-              var satRelief=L.layerGroup([
-                L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',{maxZoom:19,attribution:'Tiles © Esri'}),
-                L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/Elevation/World_Hillshade/MapServer/tile/{z}/{y}/{x}',{
-                  maxZoom:16,opacity:0.45,attribution:'Esri World Hillshade'})
-              ]);
-              street.addTo(map);
-              L.control.layers({
-                "Street (Esri)":street,
-                "Street (Carto)":carto,
-                "Satellite (Esri)":sat,
-                "Satellite + relief":satRelief,
-                "LiDAR terrain (USGS 3DEP)":usgsLidar,
-                "Topo (Esri)":topo
-              }, {"Hillshade overlay (LiDAR/DEM)":hillshade}, {collapsed:false,position:'topright'}).addTo(map);
-              """
-              + (lidarOverlayOn ? "hillshade.addTo(map);" : "")
-            : """
+        var tileJs = online ? BuildOnlineTileJs() : """
               L.rectangle([[24.5,-125],[49.5,-66.5]],{color:'#3f3f48',weight:1,fillColor:'#18181b',fillOpacity:0.9}).addTo(map);
               """;
 
@@ -1184,13 +1150,13 @@ public sealed partial class MapPage : Page
             .leaflet-control-layers label{color:#e4e4e7!important}
             .leaflet-popup-content button{margin-top:8px;padding:6px 10px;border-radius:6px;border:1px solid #5e6ad2;background:#5e6ad2;color:#fff;cursor:pointer}
             .legend{position:absolute;z-index:1000;right:12px;bottom:12px;background:rgba(15,15,18,.94);color:#e4e4e7;
-              padding:10px 12px;font:11px/1.5 Segoe UI,sans-serif;border:1px solid #3f3f48;border-radius:10px;max-width:200px}
+              padding:10px 12px;font:11px/1.5 Segoe UI,sans-serif;border:1px solid #3f3f48;border-radius:10px;max-width:220px}
             .legend b{display:block;margin-bottom:4px;font-size:12px}
             </style>
             </head><body>
             """);
         sb.Append("<div class=\"note\">").Append(System.Net.WebUtility.HtmlEncode(emptyNote)).Append("</div>");
-        sb.Append("""<div class="legend"><b>Pins &amp; lines</b><span style="color:#F97316">●</span> Home<br/><span style="color:#E11D48">●</span> Leading estimate<br/><span style="color:#0EA5E9">—</span> Rivers<br/><span style="color:#84CC16">—</span> Trails</div>""");
+        sb.Append("""<div class="legend"><b>Pins, lines &amp; terrain</b><span style="color:#F97316">●</span> Home<br/><span style="color:#E11D48">●</span> Leading estimate<br/><span style="color:#0EA5E9">—</span> Rivers<br/><span style="color:#84CC16">—</span> Trails<br/><span style="opacity:.8">Hillshade = DEM/LiDAR-derived relief (not raw LAS)</span></div>""");
         sb.Append("<div id=\"map\"></div><script>");
         sb.Append("function postPin(lat,lon,label,kind,detail){if(window.chrome&&window.chrome.webview){window.chrome.webview.postMessage(JSON.stringify({type:'marker',lat:lat,lon:lon,label:label,kind:kind,detail:detail}));}}");
         sb.Append("var map=L.map('map').setView([39.5,-98.35],4);");
@@ -1200,6 +1166,105 @@ public sealed partial class MapPage : Page
         sb.Append(markerJs);
         sb.Append("</script></body></html>");
         return sb.ToString();
+    }
+
+    private static string BuildOnlineTileJs()
+    {
+        var lidarOverlayOn = MapLayerPreferences.IsVisible(MapLayerKind.LidarTerrain);
+        var geologyOn = MapLayerPreferences.IsVisible(MapLayerKind.UsgsGeology);
+        var contoursOn = MapLayerPreferences.IsVisible(MapLayerKind.ElevationContours);
+        var opacity = MapLayerPreferences.LidarOpacity.ToString("0.##", CultureInfo.InvariantCulture);
+
+        // Do not use tile.openstreetmap.org — OSM volunteer tiles block WebView/desktop apps
+        // with HTTP 200 "Access blocked" placeholder images (see osm.wiki/Blocked).
+        var js = """
+              var hillshade=null;
+              var geology=null;
+              var contours=null;
+              """ + $"""
+              var hillOpacity={opacity};
+              """ + """
+              var street=L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}',{
+                maxZoom:19,attribution:'Tiles © Esri — World Street Map'});
+              var carto=L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png',{
+                maxZoom:20,subdomains:'abcd',attribution:'© OpenStreetMap © CARTO'});
+              var sat=L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',{
+                maxZoom:19,attribution:'Tiles © Esri — World Imagery'});
+              var usgsLidar=L.tileLayer('https://basemap.nationalmap.gov/arcgis/rest/services/USGSShadedReliefOnly/MapServer/tile/{z}/{y}/{x}',{
+                maxZoom:16,attribution:'USGS The National Map — 3DEP shaded relief (DEM/LiDAR-derived, not raw LAS)'});
+              hillshade=L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/Elevation/World_Hillshade/MapServer/tile/{z}/{y}/{x}',{
+                maxZoom:16,opacity:hillOpacity,attribution:'Esri World Hillshade (DEM/LiDAR-derived)'});
+              window.__hillshade=hillshade;
+              window.__setHillshadeOpacity=function(o){if(window.__hillshade){window.__hillshade.setOpacity(o);}};
+              var topo=L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer/tile/{z}/{y}/{x}',{
+                maxZoom:19,attribution:'Tiles © Esri — World Topo'});
+              var usgsTopo=L.tileLayer('https://basemap.nationalmap.gov/arcgis/rest/services/USGSTopo/MapServer/tile/{z}/{y}/{x}',{
+                maxZoom:16,attribution:'USGS The National Map — Topo'});
+              var usgsImagery=L.tileLayer('https://basemap.nationalmap.gov/arcgis/rest/services/USGSImageryOnly/MapServer/tile/{z}/{y}/{x}',{
+                maxZoom:16,attribution:'USGS The National Map — Imagery'});
+              var openTopo=L.tileLayer('https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png',{
+                maxZoom:17,attribution:'© OpenStreetMap, SRTM — © OpenTopoMap (CC-BY-SA)'});
+              var satRelief=L.layerGroup([
+                L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',{maxZoom:19,attribution:'Tiles © Esri'}),
+                L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/Elevation/World_Hillshade/MapServer/tile/{z}/{y}/{x}',{
+                  maxZoom:16,opacity:0.45,attribution:'Esri World Hillshade'})
+              ]);
+              geology=L.tileLayer.wms('https://www.sciencebase.gov/arcgis/services/Catalog/5888bf4fe4b05ccb964bab9d/MapServer/WMSServer',{
+                layers:'SGMC_Geology',format:'image/png',transparent:true,opacity:0.42,version:'1.3.0',
+                attribution:'USGS SGMC geologic units (Horton et al.) — public WMS'});
+              contours=L.tileLayer.wms('https://carto.nationalmap.gov/arcgis/services/contours/MapServer/WMSServer',{
+                layers:'0',format:'image/png',transparent:true,opacity:0.65,version:'1.3.0',
+                attribution:'USGS The National Map — Contours'});
+              street.addTo(map);
+              L.control.layers({
+                "Streets (Esri)":street,
+                "Streets (Carto / OSM)":carto,
+                "Imagery (Esri)":sat,
+                "Imagery + hillshade":satRelief,
+                "USGS Imagery":usgsImagery,
+                "USGS Topo (The National Map)":usgsTopo,
+                "OpenTopoMap":openTopo,
+                "Esri Topo":topo,
+                "DEM hillshade (USGS 3DEP)":usgsLidar
+              }, {
+                "Hillshade overlay (DEM/LiDAR-derived)":hillshade,
+                "USGS geologic units (SGMC)":geology,
+                "Elevation contours (USGS)":contours
+              }, {collapsed:true,position:'topright'}).addTo(map);
+              """;
+
+        if (lidarOverlayOn)
+            js += "hillshade.addTo(map);";
+        if (geologyOn)
+            js += "geology.addTo(map);";
+        if (contoursOn)
+            js += "contours.addTo(map);";
+        return js;
+    }
+
+    private void LidarOpacity_Changed(object sender, Microsoft.UI.Xaml.Controls.Primitives.RangeBaseValueChangedEventArgs e)
+    {
+        if (!_layerUiReady)
+            return;
+
+        MapLayerPreferences.LidarOpacity = LidarOpacitySlider.Value / 100.0;
+        _ = ApplyHillshadeOpacityAsync();
+    }
+
+    private async Task ApplyHillshadeOpacityAsync()
+    {
+        try
+        {
+            if (MapView.CoreWebView2 is null)
+                return;
+            var opacity = MapLayerPreferences.LidarOpacity.ToString("0.##", CultureInfo.InvariantCulture);
+            await MapView.CoreWebView2.ExecuteScriptAsync(
+                $"if(window.__setHillshadeOpacity)window.__setHillshadeOpacity({opacity});").ConfigureAwait(true);
+        }
+        catch
+        {
+            // Overlay script is best-effort; next full refresh still applies opacity.
+        }
     }
 
     private void SyncLayerTogglesFromPreferences()
@@ -1218,6 +1283,9 @@ public sealed partial class MapPage : Page
         LayerTrails.IsOn = MapLayerPreferences.IsVisible(MapLayerKind.Trail);
         LayerPersonal.IsOn = MapLayerPreferences.IsVisible(MapLayerKind.PersonalFind);
         LayerLidar.IsOn = MapLayerPreferences.IsVisible(MapLayerKind.LidarTerrain);
+        LayerGeology.IsOn = MapLayerPreferences.IsVisible(MapLayerKind.UsgsGeology);
+        LayerContours.IsOn = MapLayerPreferences.IsVisible(MapLayerKind.ElevationContours);
+        LidarOpacitySlider.Value = MapLayerPreferences.LidarOpacity * 100.0;
         _layerUiReady = true;
     }
 
@@ -1236,6 +1304,9 @@ public sealed partial class MapPage : Page
         MapLayerPreferences.SetVisible(MapLayerKind.Trail, LayerTrails.IsOn);
         MapLayerPreferences.SetVisible(MapLayerKind.PersonalFind, LayerPersonal.IsOn);
         MapLayerPreferences.SetVisible(MapLayerKind.LidarTerrain, LayerLidar.IsOn);
+        MapLayerPreferences.SetVisible(MapLayerKind.UsgsGeology, LayerGeology.IsOn);
+        MapLayerPreferences.SetVisible(MapLayerKind.ElevationContours, LayerContours.IsOn);
+        MapLayerPreferences.LidarOpacity = LidarOpacitySlider.Value / 100.0;
     }
 
     private async Task OpenEarthForSelectionAsync()

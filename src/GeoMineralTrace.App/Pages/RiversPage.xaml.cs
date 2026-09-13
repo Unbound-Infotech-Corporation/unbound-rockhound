@@ -21,7 +21,11 @@ public sealed partial class RiversPage : Page
     public RiversPage()
     {
         InitializeComponent();
-        Loaded += async (_, _) => await SearchAsync();
+        Loaded += async (_, _) =>
+        {
+            UsStateFilterHelper.Populate(StateBox);
+            await SearchAsync();
+        };
     }
 
     private async void Search_Click(object sender, RoutedEventArgs e) => await SearchAsync();
@@ -33,7 +37,7 @@ public sealed partial class RiversPage : Page
             var store = App.Services.GetRequiredService<RiverStore>();
             await store.InitializeAsync();
 
-            var state = string.IsNullOrWhiteSpace(StateBox.Text) ? null : StateBox.Text.Trim();
+            var state = UsStateFilterHelper.ResolveStateCode(StateBox);
             var name = string.IsNullOrWhiteSpace(NameBox.Text) ? null : NameBox.Text.Trim();
             var mineral = string.IsNullOrWhiteSpace(MineralBox.Text) ? null : MineralBox.Text.Trim();
             var curatedOnly = CuratedOnlyBox.IsChecked == true;

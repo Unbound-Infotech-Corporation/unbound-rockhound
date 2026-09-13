@@ -21,8 +21,32 @@ public sealed partial class ActivatePage : Page
     {
         base.OnNavigatedTo(e);
         RefreshStatus();
-        if (e.Parameter is string key && !string.IsNullOrWhiteSpace(key))
+        if (e.Parameter is string key && !string.IsNullOrWhiteSpace(key)
+            && !string.Equals(key, "activate", StringComparison.OrdinalIgnoreCase))
+        {
             KeyBox.Text = key;
+        }
+
+        UpdateKeyHint();
+    }
+
+    private void KeyBox_TextChanged(object sender, TextChangedEventArgs e) => UpdateKeyHint();
+
+    private void UpdateKeyHint()
+    {
+        if (string.IsNullOrWhiteSpace(KeyBox.Text))
+        {
+            KeyHint.Text = "Keys look like UR-ABCD-EFGH-JKLM-NPQR. Spaces and missing dashes are OK.";
+            return;
+        }
+
+        if (LicenseKeyFormat.LooksComplete(KeyBox.Text))
+        {
+            KeyHint.Text = $"Ready: {LicenseKeyFormat.Normalize(KeyBox.Text)}";
+            return;
+        }
+
+        KeyHint.Text = "That does not look complete yet — keep pasting until you have 16 characters after UR.";
     }
 
     private void RefreshStatus()
@@ -37,7 +61,7 @@ public sealed partial class ActivatePage : Page
                 StatusBar.Message = string.IsNullOrWhiteSpace(e.Email)
                     ? $"Active on this PC · {MaskKey(e.LicenseKey)}"
                     : $"Licensed to {e.Email} · {MaskKey(e.LicenseKey)}";
-                DetailText.Text = $"Last checked: {e.ValidatedAtUtc:u} · Max devices: {e.MaxActivations}";
+                DetailText.Text = $"Last checked: {e.ValidatedAtUtc:u} · Max devices: {e.MaxActivations}. Analyze and research tools are unlocked.";
             }
             else
             {
@@ -46,7 +70,7 @@ public sealed partial class ActivatePage : Page
                 var days = e.TrialEndsUtc is { } end
                     ? Math.Max(0, (int)Math.Ceiling((end - DateTimeOffset.UtcNow).TotalDays))
                     : 0;
-                StatusBar.Message = $"{days} day(s) left in the evaluation trial.";
+                StatusBar.Message = $"{days} day(s) left in the evaluation trial. Paste a purchased key anytime.";
                 DetailText.Text = e.TrialEndsUtc is { } t
                     ? $"Trial ends {t:u} (UTC)."
                     : "";
@@ -70,6 +94,7 @@ public sealed partial class ActivatePage : Page
     private async void Activate_Click(object sender, RoutedEventArgs e)
     {
         ActivateButton.IsEnabled = false;
+        StatusBar.IsOpen = true;
         StatusBar.Severity = InfoBarSeverity.Informational;
         StatusBar.Title = "Activating…";
         StatusBar.Message = "Contacting license server…";
@@ -80,11 +105,14 @@ public sealed partial class ActivatePage : Page
             {
                 StatusBar.Severity = InfoBarSeverity.Error;
                 StatusBar.Title = "Activation failed";
-                StatusBar.Message = result.Error ?? "Unknown error";
+                StatusBar.Message = result.Error ?? "Unknown error — check Sign in (Supabase) and the key, then retry.";
                 return;
             }
 
             RefreshStatus();
+            StatusBar.Severity = InfoBarSeverity.Success;
+            StatusBar.Title = "Activated";
+            StatusBar.Message = "This PC is licensed. Analyze, Map, and research tools are unlocked.";
         }
         catch (Exception ex)
         {

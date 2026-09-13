@@ -33,6 +33,7 @@ GeoMineralTrace/
     GeoMineralTrace.Infrastructure/  DI / logging / session context
   tests/                             xUnit + FluentAssertions
   docs/                              Architecture, data sources, scoring, limitations, roadmap
+  web/activate/                      Stripe success page (host at unboundinfotech.com/activate)
   knowledge/techniques/              Markdown technique articles
   data/seed/                         CSV seed payloads
 ```

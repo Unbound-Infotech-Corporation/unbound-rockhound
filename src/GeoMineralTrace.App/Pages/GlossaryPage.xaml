@@ -46,9 +46,9 @@
                     Minimum="0" Maximum="10" Width="100" ValueChanged="Mohs_Changed" />
                 <TextBox x:Name="ColorBox" Style="{StaticResource GmtTextBox}" Width="120"
                     PlaceholderText="Color…" TextChanged="Filter_Changed" />
-                <TextBox x:Name="StateBox" Style="{StaticResource GmtTextBox}" Width="72"
-                    PlaceholderText="State" TextChanged="Filter_Changed"
-                    ToolTipService.ToolTip="Filter to species reported in localities for this state code" />
+                <ComboBox x:Name="StateBox" Style="{StaticResource GmtFilterComboBox}"
+                    PlaceholderText="All states" SelectionChanged="Filter_Changed"
+                    ToolTipService.ToolTip="Filter to species reported in localities for this state" />
             </StackPanel>
         </Border>
 

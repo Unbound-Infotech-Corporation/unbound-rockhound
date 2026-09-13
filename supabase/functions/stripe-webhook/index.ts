@@ -18,6 +18,7 @@ import { createClient } from "https://esm.sh/@supabase/supabase-js@2.49.1";
 import {
   PRODUCT_ID,
   generateLicenseKey,
+  isRockhoundProduct,
   jsonResponse,
   sendLicenseEmail,
 } from "../_shared/license.ts";
@@ -150,11 +151,15 @@ async function handleCheckoutCompleted(
   }
 
   const meta = (session["metadata"] ?? {}) as Record<string, string>;
-  const productId = meta["product_id"] || PRODUCT_ID;
-  if (productId !== PRODUCT_ID) {
-    console.log("Ignoring non-rockhound product", productId);
+  const clientRef = typeof session["client_reference_id"] === "string"
+    ? String(session["client_reference_id"])
+    : "";
+  const rawProductId = meta["product_id"] || meta["productId"] || clientRef || PRODUCT_ID;
+  if (!isRockhoundProduct(rawProductId)) {
+    console.log("Ignoring non-rockhound product", rawProductId);
     return;
   }
+  const productId = PRODUCT_ID;
 
   const email =
     (typeof session["customer_details"] === "object" &&
@@ -167,6 +172,7 @@ async function handleCheckoutCompleted(
     null;
 
   let licenseKey = generateLicenseKey();
+  let inserted = false;
   for (let attempt = 0; attempt < 5; attempt++) {
     const { error } = await admin.from("product_licenses").insert({
       product_id: productId,
@@ -180,21 +186,33 @@ async function handleCheckoutCompleted(
       status: "active",
       max_activations: 3,
     });
-    if (!error) break;
+    if (!error) {
+      inserted = true;
+      break;
+    }
     if (error.code === "23505") {
       licenseKey = generateLicenseKey();
       continue;
     }
     throw new Error(error.message);
   }
+  if (!inserted) {
+    throw new Error("Could not allocate a unique license key after 5 attempts");
+  }
 
   if (email) {
     const mail = await sendLicenseEmail({ to: email, licenseKey });
     if (!mail.sent) {
-      console.warn("License email not sent:", mail.error);
+      console.error("License email not sent:", mail.error);
+      await admin.from("product_licenses").update({
+        notes: `License created; Resend failed: ${mail.error ?? "unknown"}. Buyer can use /activate?session_id= or license-by-session.`,
+      }).eq("stripe_checkout_session_id", sessionId);
     }
   } else {
     console.warn("No email on checkout session; license created without delivery mail");
+    await admin.from("product_licenses").update({
+      notes: "License created without customer email — reveal via license-by-session / activate page.",
+    }).eq("stripe_checkout_session_id", sessionId);
   }
 }
 

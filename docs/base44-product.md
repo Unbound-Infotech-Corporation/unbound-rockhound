@@ -105,7 +105,7 @@ Portable Windows x64 — no .NET install required
 
 ## Tips for how Base44 lists products
 
-1. **Type = `download`** — After payment, buyers get the file from **Download URL** on the success page. Don’t put license-key text in Delivery Instructions unless Type is `license` or `subscription`.
+1. **Type = `download`** — After payment, buyers get the file from **Download URL** on the success page. Don’t put license-key text in Delivery Instructions unless Type is `license` or `subscription`. **Preferred launch path:** Type=`download` (zip) **plus** Stripe webhook → Resend email with the `UR-` key (and `/activate?session_id=` as backup). See [licensing-stripe.md](licensing-stripe.md) §9. If Base44 adds a working Type=`license` field, use it only as a pointer (“key arrives by email”) — never a shared static key.
 
 2. **Download URL must be a direct file link** — Prefer the GitHub Release asset above, or upload `UnboundRockhound-Windows-x64-v0.6.0.zip` to Base44 media and paste that public URL. It must start the zip download, not open a marketing HTML page.
 
@@ -121,6 +121,6 @@ Portable Windows x64 — no .NET install required
 
 8. **Price changes** — On Jan 1, 2027 set Price to `79.99` and edit Tagline / Description / Features to remove “launch special” language. Existing buyers who already downloaded keep their zip; this only affects new purchases.
 
-9. **Test purchase** — Do one real or test checkout yourself: success page → download zip → unzip → `Launch Unbound Rockhound.bat` → About shows version **0.6.0**.
+9. **Test purchase** — Do one real or test checkout yourself: success page → download zip → license key email (or `/activate?session_id=`) → unzip → `Launch Unbound Rockhound.bat` → Activate → About shows version **0.6.0** and Licensed.
 
 10. **Heirloom** — Keep as a separate Product row. Only flip it to `active` when its own Download URL points at a real Heirloom build.

@@ -9,6 +9,7 @@ import { createClient } from "https://esm.sh/@supabase/supabase-js@2.49.1";
 import {
   PRODUCT_ID,
   corsPreflight,
+  isRockhoundProduct,
   jsonResponse,
   normalizeLicenseKey,
 } from "../_shared/license.ts";
@@ -42,18 +43,24 @@ Deno.serve(async (req) => {
     return jsonResponse({ error: "Invalid device fingerprint" }, 400);
   }
 
-  const productId = (body.productId ?? PRODUCT_ID).trim() || PRODUCT_ID;
+  const requestedProduct = (body.productId ?? PRODUCT_ID).trim() || PRODUCT_ID;
+  if (!isRockhoundProduct(requestedProduct)) {
+    return jsonResponse({ ok: false, error: "wrong_product", status: "missing" }, 400);
+  }
   const admin = createClient(supabaseUrl, serviceKey);
 
-  const { data: license, error: licErr } = await admin
+  const { data: byKey, error: licErr } = await admin
     .from("product_licenses")
     .select("id, license_key, email, status, max_activations, product_id")
     .eq("license_key", licenseKey)
-    .eq("product_id", productId)
     .maybeSingle();
 
   if (licErr) return jsonResponse({ error: licErr.message }, 500);
-  if (!license) return jsonResponse({ ok: false, error: "not_found", status: "missing" }, 404);
+  if (!byKey) return jsonResponse({ ok: false, error: "not_found", status: "missing" }, 404);
+  if (!isRockhoundProduct(byKey.product_id)) {
+    return jsonResponse({ ok: false, error: "wrong_product", status: "missing" }, 404);
+  }
+  const license = byKey;
   if (license.status !== "active") {
     return jsonResponse({
       ok: false,

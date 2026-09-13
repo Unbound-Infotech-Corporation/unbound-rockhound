@@ -1,5 +1,6 @@
 using GeoMineralTrace.Core.Rockhounding;
 using GeoMineralTrace.Rockhounding.Storage;
+using GeoMineralTrace_App.Helpers;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
@@ -24,6 +25,7 @@ public sealed partial class GlossaryPage : Page
         Loaded += async (_, _) =>
         {
             if (_loaded) return;
+            UsStateFilterHelper.Populate(StateBox);
             _loaded = true;
             await EnsureReadyAsync();
             await RefreshListAsync();
@@ -70,7 +72,7 @@ public sealed partial class GlossaryPage : Page
             double? mohsMin = double.IsNaN(MohsMinBox.Value) ? null : MohsMinBox.Value;
             double? mohsMax = double.IsNaN(MohsMaxBox.Value) ? null : MohsMaxBox.Value;
             var crystal = CrystalBox.SelectedIndex > 0 ? CrystalBox.SelectedItem?.ToString() : null;
-            var state = string.IsNullOrWhiteSpace(StateBox.Text) ? null : StateBox.Text.Trim();
+            var state = UsStateFilterHelper.ResolveStateCode(StateBox);
 
             var filter = new MineralSpeciesFilter
             {

@@ -29,9 +29,9 @@
 
         <Border Grid.Row="2" Style="{StaticResource GmtToolbarStrip}">
             <StackPanel Orientation="Horizontal" Spacing="{StaticResource GmtToolbarGap}">
-                <TextBox x:Name="StateBox" Style="{StaticResource GmtTextBox}" Width="72" PlaceholderText="ST" Text="" />
+                <ComboBox x:Name="StateBox" Style="{StaticResource GmtFilterComboBox}" PlaceholderText="All states" />
                 <TextBox x:Name="MineralBox" Style="{StaticResource GmtTextBox}" Width="160" PlaceholderText="Mineral" />
-                <ComboBox x:Name="LandFilter" Width="200" SelectedIndex="0" VerticalAlignment="Center">
+                <ComboBox x:Name="LandFilter" Style="{StaticResource GmtFilterComboBoxNarrow}" SelectedIndex="0">
                     <ComboBoxItem Content="All public types" Tag="" />
                     <ComboBoxItem Content="BLM" Tag="PublicBlm" />
                     <ComboBoxItem Content="USFS" Tag="PublicUsfs" />
@@ -65,7 +65,7 @@
                         </ListView.ItemTemplate>
                     </ListView>
                     <controls:EmptyState x:Name="MineEmpty" Icon="&#xE774;" Title="No public mines"
-                        Description="Widen the state filter, run Classify ownership on the registry, or import curated public sites." />
+                        Description="Choose All states, run Classify ownership on the registry, or import curated public sites." />
                 </Grid>
             </Border>
 

@@ -34,6 +34,7 @@ public sealed partial class RockhoundingPage : Page
         InitializeComponent();
         Loaded += async (_, _) =>
         {
+            UsStateFilterHelper.Populate(StateBox);
             if (!string.IsNullOrWhiteSpace(_pendingMineralFilter))
             {
                 MineralBox.Text = _pendingMineralFilter;
@@ -114,7 +115,7 @@ public sealed partial class RockhoundingPage : Page
             var store = App.Services.GetRequiredService<LocalityStore>();
             await store.InitializeAsync();
 
-            _lastState = string.IsNullOrWhiteSpace(StateBox.Text) ? "" : StateBox.Text.Trim();
+            _lastState = UsStateFilterHelper.ResolveStateCode(StateBox) ?? "";
             _lastMineral = string.IsNullOrWhiteSpace(MineralBox.Text) ? null : MineralBox.Text.Trim();
             _lastBeginnerOnly = BeginnerOnly.IsChecked == true;
             _lastOwnershipTag = (OwnershipBox.SelectedItem as ComboBoxItem)?.Tag as string ?? "";

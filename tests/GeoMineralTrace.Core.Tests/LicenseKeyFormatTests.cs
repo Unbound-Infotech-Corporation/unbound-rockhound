@@ -18,6 +18,30 @@ public class LicenseKeyFormatTests
     public void Normalize_RejectsBadLength()
     {
         var act = () => LicenseKeyFormat.Normalize("UR-ABCD");
-        act.Should().Throw<InvalidOperationException>();
+        act.Should().Throw<InvalidOperationException>()
+            .WithMessage("*16 characters*");
+    }
+
+    [Fact]
+    public void TryNormalize_Empty_ExplainsPaste()
+    {
+        LicenseKeyFormat.TryNormalize("  ", out _, out var error).Should().BeFalse();
+        error.Should().Contain("Paste");
+    }
+
+    [Fact]
+    public void TryNormalize_AcceptsSpacesAndLowercase()
+    {
+        LicenseKeyFormat.TryNormalize(" ur abcd efgh jklm npqr ", out var key, out var error)
+            .Should().BeTrue();
+        error.Should().BeNull();
+        key.Should().Be("UR-ABCD-EFGH-JKLM-NPQR");
+    }
+
+    [Fact]
+    public void LooksComplete_MatchesNormalize()
+    {
+        LicenseKeyFormat.LooksComplete("URABCDEFGHJKLMNPQR").Should().BeTrue();
+        LicenseKeyFormat.LooksComplete("UR-ABCD").Should().BeFalse();
     }
 }

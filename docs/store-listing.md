@@ -51,8 +51,8 @@ Copy/paste for the Unbound Infotech product store / sales page.
 - [ ] Upload zip (and setup exe if available) to the Unbound Infotech store CDN / download slot
 - [ ] Paste short blurb + feature bullets + disclosures
 - [ ] Link EULA / this privacy summary
-- [ ] Set price / license delivery (Gumroad, Lemon Squeezy, or internal checkout)
-- [ ] Smoke-test download → unzip → launch → Analyze sample → About shows 0.6.0
+- [ ] Set price / license delivery (Stripe + Base44 Type=`download`; see [licensing-stripe.md](licensing-stripe.md) operator smoke checklist)
+- [ ] Smoke-test download → key email or `/activate` → unzip → launch → Activate → Analyze sample → About shows 0.6.0 Licensed
 - [ ] (Optional cloud) Apply Supabase migration; configure customer-facing project URL + anon key docs — never ship service role
 - [ ] Point update feed `updates/unbound-rockhound/latest.json` (or host equivalent) when auto-update URL is live
 

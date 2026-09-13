@@ -8,6 +8,7 @@
 4. Online enrichment is **opt-in** (Settings); when off, Map plots markers without OSM tiles.
 5. Flag **closed, claim, permit-only, and restricted** sites; do not silently promote them.
 6. Rockhounding module **never initiates network I/O at runtime** — USGS refreshes are offline, periodic import jobs against local files.
+7. Map **basemap / overlay tiles** load only when the user enables **Settings → Online Enrichment**. They are not rockhounding-module I/O.
 
 ## USGS MRDS (national)
 
@@ -171,6 +172,31 @@ dotnet run --project artifacts/TrailsImport -- `
 ```
 
 Or use in-app **Map → Import trails…**. Trails appear when the **Access & hiking trails** layer is on, scoped to your home search radius.
+
+---
+
+## Map basemaps & overlays (opt-in Online Enrichment)
+
+These are **public** tile/WMS services with required attribution. They are not raw LAS/LiDAR point clouds. Hillshade is **DEM / LiDAR-derived shaded relief**.
+
+| Layer | Kind | Endpoint (summary) | Attribution / terms |
+|-------|------|--------------------|---------------------|
+| Streets (Esri) | Basemap | ArcGIS `World_Street_Map` tiles | Tiles © Esri |
+| Streets (Carto / OSM) | Basemap | CARTO Voyager | © OpenStreetMap © CARTO — do **not** hit `tile.openstreetmap.org` (blocks desktop WebView) |
+| Imagery (Esri) | Basemap | ArcGIS `World_Imagery` | Tiles © Esri |
+| Imagery + hillshade | Basemap group | Imagery + Esri `World_Hillshade` | Esri |
+| USGS Imagery | Basemap | The National Map `USGSImageryOnly` | USGS TNM (public domain; attribute USGS) |
+| USGS Topo | Basemap | TNM `USGSTopo` | USGS The National Map |
+| OpenTopoMap | Basemap | `tile.opentopomap.org` | © OSM, SRTM — © OpenTopoMap (CC-BY-SA) |
+| Esri Topo | Basemap | ArcGIS `World_Topo_Map` | Tiles © Esri |
+| DEM hillshade (USGS 3DEP) | Basemap | TNM `USGSShadedReliefOnly` | USGS 3DEP shaded relief (LiDAR/DEM-derived) |
+| Hillshade overlay | Overlay | Esri `Elevation/World_Hillshade` | Esri World Hillshade — opacity slider in the layer panel |
+| USGS geologic units (SGMC) | Overlay | ScienceBase WMS `5888bf4fe4b05ccb964bab9d` layer `SGMC_Geology` | USGS SGMC (Horton et al., [doi:10.5066/F7WH2N65](https://doi.org/10.5066/F7WH2N65)); [state geology](https://mrdata.usgs.gov/geology/state) |
+| Elevation contours | Overlay | TNM `contours` WMS | USGS The National Map — Contours |
+
+**Honesty:** “LiDAR terrain” in the UI means hillshade from elevation models that include airborne LiDAR where 3DEP collected it. The app does not stream LAS/LAZ point clouds.
+
+Layer panel groups: **Terrain / Geology / Claims / Localities / Hypotheses**. Claims, localities, rivers, trails, and hypotheses are local SQLite markers — they work offline.
 
 ---
 

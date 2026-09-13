@@ -6,6 +6,7 @@ using GeoMineralTrace.Hydrology.Storage;
 using GeoMineralTrace.Reporting.Kml;
 using GeoMineralTrace.Rockhounding.Ownership;
 using GeoMineralTrace.Rockhounding.Storage;
+using GeoMineralTrace_App.Helpers;
 using GeoMineralTrace_App.Services;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.UI.Xaml;
@@ -25,7 +26,11 @@ public sealed partial class PublicMinesPage : Page
     public PublicMinesPage()
     {
         InitializeComponent();
-        Loaded += async (_, _) => await SearchAsync(resetPage: true);
+        Loaded += async (_, _) =>
+        {
+            UsStateFilterHelper.Populate(StateBox);
+            await SearchAsync(resetPage: true);
+        };
     }
 
     private async void Search_Click(object sender, RoutedEventArgs e) =>
@@ -55,7 +60,7 @@ public sealed partial class PublicMinesPage : Page
             if (resetPage)
                 _pageIndex = 0;
 
-            var state = string.IsNullOrWhiteSpace(StateBox.Text) ? null : StateBox.Text.Trim();
+            var state = UsStateFilterHelper.ResolveStateCode(StateBox);
             var mineral = string.IsNullOrWhiteSpace(MineralBox.Text) ? null : MineralBox.Text.Trim();
             LandType? land = null;
             if (LandFilter.SelectedItem is ComboBoxItem { Tag: string tag } &&

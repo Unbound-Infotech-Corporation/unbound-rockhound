@@ -20,8 +20,13 @@ public static class MapLayerPreferences
         [MapLayerKind.Trail] = "MapLayerTrails",
         [MapLayerKind.CommunityReddit] = "MapLayerCommunityReddit",
         // Default off — user enables to blend terrain relief over satellite/street.
-        [MapLayerKind.LidarTerrain] = "MapLayerLidarTerrain"
+        [MapLayerKind.LidarTerrain] = "MapLayerLidarTerrain",
+        [MapLayerKind.UsgsGeology] = "MapLayerUsgsGeology",
+        [MapLayerKind.ElevationContours] = "MapLayerElevationContours"
     };
+
+    public const string LidarOpacityKey = "MapLayerLidarOpacity";
+    public const double DefaultLidarOpacity = 0.55;
 
     public static bool IsVisible(MapLayerKind kind)
     {
@@ -29,9 +34,9 @@ public static class MapLayerPreferences
             return true;
 
         var raw = AppPreferences.ReadSetting(key);
-        if (kind == MapLayerKind.LidarTerrain)
+        if (kind is MapLayerKind.LidarTerrain or MapLayerKind.UsgsGeology or MapLayerKind.ElevationContours)
         {
-            // Explicit opt-in for hillshade overlay (default off).
+            // Explicit opt-in for online terrain / geology overlays (default off).
             return string.Equals(raw, "true", StringComparison.OrdinalIgnoreCase);
         }
 
@@ -42,6 +47,25 @@ public static class MapLayerPreferences
     {
         if (Keys.TryGetValue(kind, out var key))
             AppPreferences.WriteSetting(key, visible ? "true" : "false");
+    }
+
+    /// <summary>Hillshade overlay opacity in 0.15–0.80. Default 0.55.</summary>
+    public static double LidarOpacity
+    {
+        get
+        {
+            var raw = AppPreferences.ReadSetting(LidarOpacityKey);
+            if (double.TryParse(raw, System.Globalization.NumberStyles.Float,
+                    System.Globalization.CultureInfo.InvariantCulture, out var value))
+            {
+                return Math.Clamp(value, 0.15, 0.80);
+            }
+
+            return DefaultLidarOpacity;
+        }
+        set => AppPreferences.WriteSetting(
+            LidarOpacityKey,
+            Math.Clamp(value, 0.15, 0.80).ToString("0.##", System.Globalization.CultureInfo.InvariantCulture));
     }
 
     public static bool MatchesMarkerKind(string markerKind)
