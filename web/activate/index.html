@@ -111,16 +111,21 @@
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ checkoutSessionId: sessionId })
         });
-        const data = await res.json();
+        const data = await res.json().catch(() => ({}));
         if (data.ok && data.licenseKey) {
           status.textContent = data.emailNote || "License ready.";
           keyEl.textContent = data.licenseKey;
           keyBox.hidden = false;
           return;
         }
-        if (data.pending) {
-          status.textContent = data.message || "License not ready yet. Checking again…";
+        if (data.pending || res.status === 404) {
+          status.textContent = "Your license is still being prepared. Checking again…";
           setTimeout(lookup, 2500);
+          return;
+        }
+        if (res.status >= 500) {
+          status.innerHTML = "<span class='err'>Still waiting on your license. Trying again shortly…</span>";
+          setTimeout(lookup, 4000);
           return;
         }
         status.innerHTML = "<span class='err'>" + (data.error || data.message || "Could not load license.") + "</span>";
