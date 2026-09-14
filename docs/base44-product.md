@@ -117,7 +117,7 @@ Portable Windows x64 — no .NET install required
 
 6. **Featured + Sort order** — Featured highlights the product; lower sort order usually appears earlier in the grid (confirm in your Base44 UI).
 
-7. **Image URL** — Use a square-ish logo or hero (app icon / StoreLogo). Empty Image URL makes the grid look unfinished.
+7. **Image URL** — Use the Gem Core store mark (`src/GeoMineralTrace.App/Assets/StoreLogo.scale-200.png` or `branding/gem-core.png`). Empty Image URL makes the grid look unfinished.
 
 8. **Price changes** — On Jan 1, 2027 set Price to `79.99` and edit Tagline / Description / Features to remove “launch special” language. Existing buyers who already downloaded keep their zip; this only affects new purchases.
 

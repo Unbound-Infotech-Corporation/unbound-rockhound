@@ -30,13 +30,13 @@ if (-not (Test-Path $IconPath)) {
     throw "App icon not found: $IconPath"
 }
 
-# Brand palette — deep slate / mineral teal (matches Unbound field aesthetic)
-$cTop = [System.Drawing.Color]::FromArgb(255, 12, 22, 34)
-$cMid = [System.Drawing.Color]::FromArgb(255, 18, 42, 58)
-$cBot = [System.Drawing.Color]::FromArgb(255, 8, 56, 64)
-$cAccent = [System.Drawing.Color]::FromArgb(255, 56, 178, 172)
-$cMuted = [System.Drawing.Color]::FromArgb(255, 160, 184, 196)
-$cWhite = [System.Drawing.Color]::FromArgb(255, 245, 248, 250)
+# Brand palette — Gem Core: Unbound cyan on near-black
+$cTop = [System.Drawing.Color]::FromArgb(255, 5, 8, 10)
+$cMid = [System.Drawing.Color]::FromArgb(255, 8, 16, 20)
+$cBot = [System.Drawing.Color]::FromArgb(255, 0, 20, 24)
+$cAccent = [System.Drawing.Color]::FromArgb(255, 0, 255, 255)
+$cMuted = [System.Drawing.Color]::FromArgb(255, 160, 200, 204)
+$cWhite = [System.Drawing.Color]::FromArgb(255, 245, 255, 255)
 
 $logo = Get-BestIconBitmap $IconPath 256
 
