@@ -25,11 +25,14 @@ Output: `dist\UnboundRockhound-Setup-0.6.0.exe`
 
 | File | Role |
 |------|------|
-| `src/.../Assets/AppIcon.ico` | Setup exe icon, shortcut icon, uninstall icon |
+| `src/.../Assets/AppIcon.ico` | Setup exe icon, shortcut icon, uninstall icon (Gem Core) |
+| `installer/assets/AppIcon.ico` | Staged copy of the same ICO |
 | `installer/assets/WizardImage.bmp` | Generated side panel (164×314) |
 | `installer/assets/WizardSmallImage.bmp` | Generated header mark (55×55) |
 | `installer/WELCOME.txt` | Info-before / welcome copy |
-| `Prepare-WizardAssets.ps1` | Regenerates BMPs from AppIcon.ico |
+| `Prepare-WizardAssets.ps1` | Regenerates BMPs from AppIcon.ico (Windows) |
+
+Product mark source and regen (SVG → PNG/ICO, including a Linux ICO writer): see [branding/README.md](../branding/README.md).
 
 ## Code signing (recommended for SmartScreen)
 

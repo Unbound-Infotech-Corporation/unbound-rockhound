@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" role="img" aria-label="Unbound Rockhound Gem Core">
+  <title>Unbound Rockhound Gem Core</title>
+  <desc>Unbound Infotech three-bar cyan U with a faceted crystal gem in the bowl. Cyan #00FFFF on black.</desc>
+
+  <g id="u-bars" fill="#00FFFF">
+    <path d="M 196 240 L 328 372 L 328 820 L 196 820 Z"/>
+    <path d="M 828 240 L 828 820 L 696 820 L 696 372 Z"/>
+    <rect x="196" y="692" width="632" height="128"/>
+  </g>
+
+  <g id="gem" stroke="none">
+    <polygon fill="#C8FFFF" points="512.0,286.0 628.0,360.0 588.6,383.8"/>
+    <polygon fill="#8AFFFF" points="512.0,286.0 588.6,383.8 512.0,335.0"/>
+    <polygon fill="#8AFFFF" points="628.0,360.0 646.0,458.0 600.4,448.5"/>
+    <polygon fill="#4AFFFF" points="628.0,360.0 600.4,448.5 588.6,383.8"/>
+    <polygon fill="#00C4CC" points="646.0,458.0 512.0,598.0 512.0,540.9"/>
+    <polygon fill="#009AA2" points="646.0,458.0 512.0,540.9 600.4,448.5"/>
+    <polygon fill="#007880" points="512.0,598.0 378.0,458.0 423.6,448.5"/>
+    <polygon fill="#005C64" points="512.0,598.0 423.6,448.5 512.0,540.9"/>
+    <polygon fill="#009AA2" points="378.0,458.0 396.0,360.0 435.4,383.8"/>
+    <polygon fill="#00C4CC" points="378.0,458.0 435.4,383.8 423.6,448.5"/>
+    <polygon fill="#4AFFFF" points="396.0,360.0 512.0,286.0 512.0,335.0"/>
+    <polygon fill="#00E8F0" points="396.0,360.0 512.0,335.0 435.4,383.8"/>
+    <polygon fill="#8AFFFF" points="512.0,335.0 588.6,383.8 551.4,406.2"/>
+    <polygon fill="#00C4CC" points="512.0,335.0 551.4,406.2 512.0,381.0"/>
+    <polygon fill="#4AFFFF" points="588.6,383.8 600.4,448.5 557.6,439.5"/>
+    <polygon fill="#00E8F0" points="588.6,383.8 557.6,439.5 551.4,406.2"/>
+    <polygon fill="#00C4CC" points="600.4,448.5 512.0,540.9 512.0,487.1"/>
+    <polygon fill="#00C4CC" points="600.4,448.5 512.0,487.1 557.6,439.5"/>
+    <polygon fill="#009AA2" points="512.0,540.9 423.6,448.5 466.4,439.5"/>
+    <polygon fill="#00E8F0" points="512.0,540.9 466.4,439.5 512.0,487.1"/>
+    <polygon fill="#00E8F0" points="423.6,448.5 435.4,383.8 472.6,406.2"/>
+    <polygon fill="#00C4CC" points="423.6,448.5 472.6,406.2 466.4,439.5"/>
+    <polygon fill="#4AFFFF" points="435.4,383.8 512.0,335.0 512.0,381.0"/>
+    <polygon fill="#00E8F0" points="435.4,383.8 512.0,381.0 472.6,406.2"/>
+    <polygon fill="#C8FFFF" points="512.0,381.0 551.4,406.2 512.0,430.0"/>
+    <polygon fill="#8AFFFF" points="551.4,406.2 557.6,439.5 512.0,430.0"/>
+    <polygon fill="#00E8F0" points="557.6,439.5 512.0,487.1 512.0,430.0"/>
+    <polygon fill="#00C4CC" points="512.0,487.1 466.4,439.5 512.0,430.0"/>
+    <polygon fill="#009AA2" points="466.4,439.5 472.6,406.2 512.0,430.0"/>
+    <polygon fill="#4AFFFF" points="472.6,406.2 512.0,381.0 512.0,430.0"/>
+  </g>
+</svg>
