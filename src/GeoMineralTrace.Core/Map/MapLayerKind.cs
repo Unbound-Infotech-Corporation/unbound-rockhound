@@ -24,5 +24,10 @@ public enum MapLayerKind
     /// <summary>USGS State Geologic Map Compilation (SGMC) lithology overlay — public WMS.</summary>
     UsgsGeology = 13,
     /// <summary>USGS The National Map elevation contours overlay — public WMS.</summary>
-    ElevationContours = 14
+    ElevationContours = 14,
+    /// <summary>
+    /// USGS Cooperative National Geologic Map (CNGM / National Geology) v2 Earth's-surface overlay.
+    /// Public ArcGIS vector tiles — distinct from the older SGMC <see cref="UsgsGeology"/> WMS.
+    /// </summary>
+    CooperativeNationalGeology = 15
 }

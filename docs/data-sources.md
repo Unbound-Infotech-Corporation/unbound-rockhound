@@ -191,7 +191,8 @@ These are **public** tile/WMS services with required attribution. They are not r
 | Esri Topo | Basemap | ArcGIS `World_Topo_Map` | Tiles © Esri |
 | DEM hillshade (USGS 3DEP) | Basemap | TNM `USGSShadedReliefOnly` | USGS 3DEP shaded relief (LiDAR/DEM-derived) |
 | Hillshade overlay | Overlay | Esri `Elevation/World_Hillshade` | Esri World Hillshade — opacity slider in the layer panel |
-| USGS geologic units (SGMC) | Overlay | ScienceBase WMS `5888bf4fe4b05ccb964bab9d` layer `SGMC_Geology` | USGS SGMC (Horton et al., [doi:10.5066/F7WH2N65](https://doi.org/10.5066/F7WH2N65)); [state geology](https://mrdata.usgs.gov/geology/state) |
+| USGS State Geology (SGMC) | Overlay | ScienceBase WMS `5888bf4fe4b05ccb964bab9d` layer `SGMC_Geology` | USGS SGMC (Horton et al., [doi:10.5066/F7WH2N65](https://doi.org/10.5066/F7WH2N65)); older seamless **state compilation** (Lower 48). [state geology](https://mrdata.usgs.gov/geology/state) |
+| USGS Cooperative National Geologic Map (v2) | Overlay | Public ArcGIS vector tiles `Hosted/mapunitpolys_esurf_v2` — `https://energy.usgs.gov/arcgis/rest/services/Hosted/mapunitpolys_esurf_v2/VectorTileServer/tile/{z}/{y}/{x}.pbf` (Earth’s surface / National Geology; 50 states + most U.S. territories) | USGS National Cooperative Geologic Mapping Program / NGMDB — public domain. Product: [DR-1210](https://ngmdb.usgs.gov/Prodesc/proddesc_118545.htm); viewer: [National Geology](https://ngmdb.usgs.gov/nationalgeology/); Earth’s surface data [doi:10.5066/P146VGVM](https://doi.org/10.5066/P146VGVM). **Not a replacement for SGMC** — keep both toggles. |
 | Elevation contours | Overlay | TNM `contours` WMS | USGS The National Map — Contours |
 
 **Honesty:** “LiDAR terrain” in the UI means hillshade from elevation models that include airborne LiDAR where 3DEP collected it. The app does not stream LAS/LAZ point clouds.

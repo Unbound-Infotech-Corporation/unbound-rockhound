@@ -22,7 +22,8 @@ public static class MapLayerPreferences
         // Default off — user enables to blend terrain relief over satellite/street.
         [MapLayerKind.LidarTerrain] = "MapLayerLidarTerrain",
         [MapLayerKind.UsgsGeology] = "MapLayerUsgsGeology",
-        [MapLayerKind.ElevationContours] = "MapLayerElevationContours"
+        [MapLayerKind.ElevationContours] = "MapLayerElevationContours",
+        [MapLayerKind.CooperativeNationalGeology] = "MapLayerCooperativeNationalGeology"
     };
 
     public const string LidarOpacityKey = "MapLayerLidarOpacity";
@@ -34,7 +35,10 @@ public static class MapLayerPreferences
             return true;
 
         var raw = AppPreferences.ReadSetting(key);
-        if (kind is MapLayerKind.LidarTerrain or MapLayerKind.UsgsGeology or MapLayerKind.ElevationContours)
+        if (kind is MapLayerKind.LidarTerrain
+            or MapLayerKind.UsgsGeology
+            or MapLayerKind.ElevationContours
+            or MapLayerKind.CooperativeNationalGeology)
         {
             // Explicit opt-in for online terrain / geology overlays (default off).
             return string.Equals(raw, "true", StringComparison.OrdinalIgnoreCase);

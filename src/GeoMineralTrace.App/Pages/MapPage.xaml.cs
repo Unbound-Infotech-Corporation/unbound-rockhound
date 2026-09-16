@@ -1071,6 +1071,7 @@ public sealed partial class MapPage : Page
             <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.Default.css"/>
             <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
             <script src="https://unpkg.com/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js"></script>
+            <script src="https://unpkg.com/leaflet.vectorgrid@1.3.0/dist/Leaflet.VectorGrid.bundled.min.js"></script>
             """
             : """
             <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
@@ -1172,6 +1173,7 @@ public sealed partial class MapPage : Page
     {
         var lidarOverlayOn = MapLayerPreferences.IsVisible(MapLayerKind.LidarTerrain);
         var geologyOn = MapLayerPreferences.IsVisible(MapLayerKind.UsgsGeology);
+        var cngmOn = MapLayerPreferences.IsVisible(MapLayerKind.CooperativeNationalGeology);
         var contoursOn = MapLayerPreferences.IsVisible(MapLayerKind.ElevationContours);
         var opacity = MapLayerPreferences.LidarOpacity.ToString("0.##", CultureInfo.InvariantCulture);
 
@@ -1180,6 +1182,7 @@ public sealed partial class MapPage : Page
         var js = """
               var hillshade=null;
               var geology=null;
+              var cngm=null;
               var contours=null;
               """ + $"""
               var hillOpacity={opacity};
@@ -1209,13 +1212,80 @@ public sealed partial class MapPage : Page
                 L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/Elevation/World_Hillshade/MapServer/tile/{z}/{y}/{x}',{
                   maxZoom:16,opacity:0.45,attribution:'Esri World Hillshade'})
               ]);
-              geology=L.tileLayer.wms('https://www.sciencebase.gov/arcgis/services/Catalog/5888bf4fe4b05ccb964bab9d/MapServer/WMSServer',{
+              geology=L.tileLayer.wms('""" + UsgsMapOverlayEndpoints.SgmcGeologyWms + """',{
                 layers:'SGMC_Geology',format:'image/png',transparent:true,opacity:0.42,version:'1.3.0',
                 attribution:'USGS SGMC geologic units (Horton et al.) — public WMS'});
               contours=L.tileLayer.wms('https://carto.nationalmap.gov/arcgis/services/contours/MapServer/WMSServer',{
                 layers:'0',format:'image/png',transparent:true,opacity:0.65,version:'1.3.0',
                 attribution:'USGS The National Map — Contours'});
+              function cngmAgeColor(a,fallback){
+                a=(a||'').toLowerCase();
+                if(/holocene|greenlandian|meghalayan|quaternary|pleistocene|calabrian|chibanian|gelasian/.test(a)) return '#fde047';
+                if(/pliocene|zanclean|piacenzian|neogene|miocene|messinian|serravallian|langhian|burdigalian/.test(a)) return '#facc15';
+                if(/oligocene|chattian|rupelian|eocene|priabonian|bartonian|lutetian|paleogene|paleocene/.test(a)) return '#fb923c';
+                if(/tertiary/.test(a)) return '#fdba74';
+                if(/cretaceous|maastrichtian|campanian|santonian|coniacian|turonian|cenomanian|albian|aptian|hauterivian|valanginian/.test(a)) return '#4ade80';
+                if(/jurassic|tithonian|kimmeridgian|callovian/.test(a)) return '#22d3ee';
+                if(/triassic|norian|carnian/.test(a)) return '#c084fc';
+                if(/permian|lopingian|guadalupian|cisuralian|kungurian|artinskian/.test(a)) return '#f87171';
+                if(/pennsylvanian|moscovian|bashkirian|kasimovian|carboniferous/.test(a)) return '#60a5fa';
+                if(/mississippian|tournaisian|visean|serpukhovian/.test(a)) return '#93c5fd';
+                if(/devonian|famennian|frasnian|givetian|emsian/.test(a)) return '#a3e635';
+                if(/silurian|pridoli|ludlow|wenlock|llandovery|aeronian/.test(a)) return '#86efac';
+                if(/ordovician|hirnantian|katian|sandbian|darriwilian/.test(a)) return '#5eead4';
+                if(/cambrian|furongian|miaolingian|terreneuvian|series 2/.test(a)) return '#34d399';
+                if(/paleozoic/.test(a)) return '#38bdf8';
+                if(/mesozoic/.test(a)) return '#4ade80';
+                if(/archean|eoarchean|paleoarchean|mesoarchean|neoarchean/.test(a)) return '#db2777';
+                if(/proterozoic|paleoproterozoic|mesoproterozoic|neoproterozoic|precambrian/.test(a)) return '#e879f9';
+                return fallback;
+              }
+              function cngmPolyStyle(p){
+                p=p||{};
+                var g=(p.geomaterial||'').toLowerCase();
+                var s=(p.synthesis_mapunitname||'').toLowerCase();
+                var a=(p.min_age||p.max_age||'');
+                var t=g+' '+s;
+                function sty(c){return {fill:true,fillColor:c,fillOpacity:0.42,color:'#27272a',weight:0.25,opacity:0.35};}
+                if(t.indexOf('unmapped')>=0) return {fill:true,fillColor:'#d4d4d8',fillOpacity:0.12,color:'#a1a1aa',weight:0.2,opacity:0.2};
+                if(/water or ice|water and ice/.test(t)) return {fill:true,fillColor:'#93c5fd',fillOpacity:0.28,color:'#3b82f6',weight:0.15,opacity:0.25};
+                if(t.indexOf('artificial')>=0||t.indexOf('human-engineered')>=0||t.indexOf('"made"')>=0) return sty('#a8a29e');
+                if(/limestone|dolomite|carbonate|marble/.test(t)) return sty('#86efac');
+                if(/ultramafic/.test(t)) return sty('#166534');
+                if(/granitic|felsic/.test(t)) return sty('#f9a8d4');
+                if(/mafic|gabbro/.test(t)) return sty('#b91c1c');
+                if(/volcanic|lava|pyroclastic|tephra|extrusive/.test(t)) return sty('#ef4444');
+                if(/intrusive|igneous/.test(t)) return sty('#e11d48');
+                if(/schist|gneiss|quartzite|phyllite|slate|metamorphic|meta-/.test(t)) return sty('#c084fc');
+                if(/glacial|till|ice-contact/.test(t)) return sty('#e5e7eb');
+                if(/alluvial|colluvium|eolian|loess|dune|playa|lacustrine|coastal|marine sediment|peat/.test(t)) return sty(cngmAgeColor(a,'#fde68a'));
+                return sty(cngmAgeColor(a,'#d6d3d1'));
+              }
+              try{
+                if(L.vectorGrid&&L.vectorGrid.protobuf){
+                  cngm=L.vectorGrid.protobuf('""" + UsgsMapOverlayEndpoints.CooperativeNationalGeologyVectorTiles + """',{
+                    rendererFactory:L.canvas.tile,
+                    interactive:false,
+                    maxNativeZoom:13,
+                    minZoom:6,
+                    tileSize:512,
+                    opacity:0.85,
+                    attribution:'USGS Cooperative National Geologic Map v2 (NCGMP / NGMDB) — public domain',
+                    vectorTileLayerStyles:{
+                      'mapunitpolys_esurf':function(props){return cngmPolyStyle(props);},
+                      'mapunitpolys_esurf/label':{fill:false,stroke:false,weight:0,opacity:0}
+                    }
+                  });
+                  cngm.on('tileerror',function(){});
+                }
+              }catch(ex){cngm=null;}
               street.addTo(map);
+              var overlayLayers={
+                "Hillshade overlay (DEM/LiDAR-derived)":hillshade,
+                "USGS State Geology (SGMC)":geology,
+                "Elevation contours (USGS)":contours
+              };
+              if(cngm) overlayLayers["USGS Cooperative National Geologic Map (v2)"]=cngm;
               L.control.layers({
                 "Streets (Esri)":street,
                 "Streets (Carto / OSM)":carto,
@@ -1226,17 +1296,15 @@ public sealed partial class MapPage : Page
                 "OpenTopoMap":openTopo,
                 "Esri Topo":topo,
                 "DEM hillshade (USGS 3DEP)":usgsLidar
-              }, {
-                "Hillshade overlay (DEM/LiDAR-derived)":hillshade,
-                "USGS geologic units (SGMC)":geology,
-                "Elevation contours (USGS)":contours
-              }, {collapsed:true,position:'topright'}).addTo(map);
+              }, overlayLayers, {collapsed:true,position:'topright'}).addTo(map);
               """;
 
         if (lidarOverlayOn)
             js += "hillshade.addTo(map);";
         if (geologyOn)
             js += "geology.addTo(map);";
+        if (cngmOn)
+            js += "if(cngm)cngm.addTo(map);";
         if (contoursOn)
             js += "contours.addTo(map);";
         return js;
@@ -1284,6 +1352,7 @@ public sealed partial class MapPage : Page
         LayerPersonal.IsOn = MapLayerPreferences.IsVisible(MapLayerKind.PersonalFind);
         LayerLidar.IsOn = MapLayerPreferences.IsVisible(MapLayerKind.LidarTerrain);
         LayerGeology.IsOn = MapLayerPreferences.IsVisible(MapLayerKind.UsgsGeology);
+        LayerCngmGeology.IsOn = MapLayerPreferences.IsVisible(MapLayerKind.CooperativeNationalGeology);
         LayerContours.IsOn = MapLayerPreferences.IsVisible(MapLayerKind.ElevationContours);
         LidarOpacitySlider.Value = MapLayerPreferences.LidarOpacity * 100.0;
         _layerUiReady = true;
@@ -1305,6 +1374,7 @@ public sealed partial class MapPage : Page
         MapLayerPreferences.SetVisible(MapLayerKind.PersonalFind, LayerPersonal.IsOn);
         MapLayerPreferences.SetVisible(MapLayerKind.LidarTerrain, LayerLidar.IsOn);
         MapLayerPreferences.SetVisible(MapLayerKind.UsgsGeology, LayerGeology.IsOn);
+        MapLayerPreferences.SetVisible(MapLayerKind.CooperativeNationalGeology, LayerCngmGeology.IsOn);
         MapLayerPreferences.SetVisible(MapLayerKind.ElevationContours, LayerContours.IsOn);
         MapLayerPreferences.LidarOpacity = LidarOpacitySlider.Value / 100.0;
     }
