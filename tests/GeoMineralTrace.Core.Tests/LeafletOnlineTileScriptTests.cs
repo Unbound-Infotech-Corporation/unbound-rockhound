@@ -151,6 +151,17 @@ public class LeafletOnlineTileScriptTests
         text.Should().Contain("MapLayerKind.LidarTerrain");
     }
 
+    [Fact]
+    public void MapPage_DoesNotConfigureAwaitWinRtExecuteScriptAsync()
+    {
+        var path = Path.Combine(FindRepoRoot(), "src/GeoMineralTrace.App/Pages/MapPage.xaml.cs");
+        var text = File.ReadAllText(path);
+        text.Should().Contain("ExecuteScriptAsync(");
+        text.Should().NotMatchRegex(
+            @"ExecuteScriptAsync[\s\S]{0,240}?\)\.ConfigureAwait",
+            "WinRT IAsyncOperation has no ConfigureAwait (CS1929)");
+    }
+
     private static string FindRepoRoot()
     {
         var dir = new DirectoryInfo(AppContext.BaseDirectory);
