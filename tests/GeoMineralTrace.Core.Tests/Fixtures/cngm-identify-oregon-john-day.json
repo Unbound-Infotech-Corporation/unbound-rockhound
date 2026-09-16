@@ -1,0 +1,24 @@
+{
+  "features": [
+    {
+      "attributes": {
+        "geomaterialconfidence": "High",
+        "synthesis_mapunitname": "Sedimentary rocks",
+        "geomaterial": "Sandstone and mudstone",
+        "synthesis_mapunit": "Ts",
+        "synthesis_citation": "Colgan, J.P., Johnstone, S.A., Campos, J.-M., Platt, B.W, Hirtz, J.A.M., Barrette, N.C., and Roe, W.P., 2025, Cooperative National Geologic Map—Earth’s surface geology (ver. 2.0, 2026): U.S. Geological Survey data release, https://doi.org/10.5066/P146VGVM.",
+        "description": null,
+        "synthesis_description": "Mostly sandstone and mudstone with minor carbonate, age constrained only to the Tertiary.",
+        "mapunit": "Tsfj",
+        "max_age": "Priabonian",
+        "name": "John Day Formation of east-central Oregon",
+        "map_citation": "Walker, G.W., and MacLeod, N.S., 1991, Geologic map of Oregon: U.S. Geological Survey, scale 1:500,000.",
+        "synthesis_url": "https://doi.org/10.5066/P146VGVM",
+        "min_age": "Burdigalian",
+        "ngmdb_url": "https://ngmdb.usgs.gov/Prodesc/proddesc_16259.htm",
+        "age": "lower Miocene to uppermost Eocene"
+      }
+    }
+  ],
+  "exceededTransferLimit": false
+}

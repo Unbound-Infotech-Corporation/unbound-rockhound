@@ -3,7 +3,7 @@
 **Base44 (unboundinfotech.com):** use the ready-to-paste Product fields in **[base44-product.md](base44-product.md)**.
 
 Copy/paste for the Unbound Infotech product store / sales page.  
-**SKU version:** 0.6.0 · **Publisher:** Unbound Infotech Corporation
+**SKU version:** 0.7.0 · **Publisher:** Unbound Infotech Corporation
 
 ## Short blurb (1–2 sentences)
 

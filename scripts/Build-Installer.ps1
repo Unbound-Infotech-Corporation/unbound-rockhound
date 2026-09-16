@@ -1,6 +1,6 @@
 # Build Unbound Rockhound Inno Setup installer (requires Inno Setup 6+).
 param(
-    [string]$Version = "0.6.0",
+    [string]$Version = "0.7.0",
     [string]$Configuration = "Release"
 )
 

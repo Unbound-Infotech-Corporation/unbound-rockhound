@@ -24,7 +24,8 @@ GeoMineral Trace is a **research aid**, not an oracle.
 - OCR uses **Windows.Media.Ocr** with sidecar `.ocr.txt` fallback.
 - ASR uses sidecar `.srt`/`.vtt`/`.txt`, optional **Whisper CLI** when installed, or `media.whisper.srt`.
 - Scene tags are heuristic keywords (+ `.tags.txt`) until an ONNX/vision adapter is registered.
-- Map markers work offline; **OSM tiles** require Online Enrichment (Settings) and network. Leaflet JS still loads from CDN when the WebView can reach the network.
+- Map markers work offline; **OSM tiles** require Online Enrichment (Settings) and network. Leaflet JS still loads from CDN when the WebView can reach the network. Do **not** use `tile.openstreetmap.org` (WebView gets “Access blocked”).
+- Cooperative National Geologic Map overlays and tap-identify are **opt-in Online Enrichment**. The product is a national synthesis: unit boundaries and GeoMaterial classes are regional, not a collecting map. Prospect Guess bands are honest uncertainty labels, not occurrence proof.
 - Place-name gazetteer is an expanded offline seed table — treat place hypotheses as leads, not proof.
 
 ## Operator duty

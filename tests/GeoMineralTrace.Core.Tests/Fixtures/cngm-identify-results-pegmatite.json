@@ -1,0 +1,20 @@
+{
+  "results": [
+    {
+      "layerId": 0,
+      "layerName": "mapunitpolys_esurf",
+      "attributes": {
+        "mapunit": "Ti",
+        "name": "Tertiary intrusive rocks",
+        "geomaterial": "Intrusive igneous rock",
+        "geomaterialconfidence": "Medium",
+        "synthesis_mapunitname": "Intrusive rocks",
+        "synthesis_mapunit": "Ti",
+        "description": "Pliocene andesite, dacite and granite, granodiorite, and local alaskite-aplite-pegmatite dikes and stocks.",
+        "age": "Tertiary",
+        "min_age": "Paleogene",
+        "max_age": "Neogene"
+      }
+    }
+  ]
+}

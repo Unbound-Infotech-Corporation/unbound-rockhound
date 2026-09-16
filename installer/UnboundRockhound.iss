@@ -2,7 +2,7 @@
 ; Build: scripts\Build-Installer.ps1  (or Package-Release.ps1 -BuildSetup)
 
 #define MyAppName "Unbound Rockhound"
-#define MyAppVersion "0.6.0"
+#define MyAppVersion "0.7.0"
 #define MyAppPublisher "Unbound Infotech Corporation"
 #define MyAppPublisherShort "Unbound Infotech"
 #define MyAppURL "https://unboundinfotech.com/"

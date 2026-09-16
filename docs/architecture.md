@@ -29,10 +29,11 @@
 
 | Project | Responsibility | Must not |
 |---------|----------------|----------|
-| **Core** | Shared types: `EvidenceItem`, `LocationHypothesis`, `Locality`, `ShadowMeasurement`, `Confidence` | Depend on UI, SQLite, or network |
+| **Core** | Shared types: `EvidenceItem`, `LocationHypothesis`, `Locality`, `ShadowMeasurement`, `Confidence`, CNGM unit / Prospect Guess heuristics | Depend on UI, SQLite, or network |
 | **Solar** | Forward solar position, shadow geometry, inverse locus, techniques KB | Persist localities or parse video |
 | **Evidence** | Session evidence store, filter/search | Rank locations |
 | **Hypothesis** | Fuse evidence streams into ranked hypotheses | Own media decoding |
+| **Infrastructure** | Logging, DI, session context, **CNGM identify HTTP** (opt-in) | Own domain formulas |
 | **Rockhounding** | Offline localities DB, ratings, spatial queries | Call the network |
 | **App** | Presentation, user measurement entry, navigation | Embed scientific formulas (call libraries) |
 

@@ -1,4 +1,5 @@
 using System.Globalization;
+using GeoMineralTrace.Core.Geology;
 
 namespace GeoMineralTrace.Core.Map;
 
@@ -12,6 +13,11 @@ public static class LeafletOnlineTileScript
     private const string HillOpacityToken = "__HILL_OPACITY__";
     private const string SgmcWmsToken = "__SGMC_WMS__";
     private const string CngmPbfToken = "__CNGM_PBF__";
+    private const string CngmSourceToken = "__CNGM_SOURCE__";
+    private const string CngmOpacityToken = "__CNGM_OPACITY__";
+    private const string CngmModeToken = "__CNGM_MODE__";
+    private const string CngmTitleToken = "__CNGM_TITLE__";
+    private const string CngmAttrToken = "__CNGM_ATTR__";
 
     /// <summary>
     /// Builds the online tile/overlay bootstrap script, including SGMC WMS, CNGM vector tiles,
@@ -22,7 +28,10 @@ public static class LeafletOnlineTileScript
         bool geologyOn,
         bool cngmOn,
         bool contoursOn,
-        double hillshadeOpacity)
+        double hillshadeOpacity,
+        CngmTheme theme = CngmTheme.EarthSurface,
+        CngmSymbology symbology = CngmSymbology.NationalSynthesis,
+        double cngmOpacity = 0.42)
     {
         if (double.IsNaN(hillshadeOpacity) || double.IsInfinity(hillshadeOpacity)
             || hillshadeOpacity < 0 || hillshadeOpacity > 1)
@@ -33,7 +42,17 @@ public static class LeafletOnlineTileScript
                 "Hillshade opacity must be a finite value between 0 and 1.");
         }
 
+        if (double.IsNaN(cngmOpacity) || double.IsInfinity(cngmOpacity)
+            || cngmOpacity < 0 || cngmOpacity > 1)
+        {
+            throw new ArgumentOutOfRangeException(
+                nameof(cngmOpacity),
+                cngmOpacity,
+                "CNGM overlay opacity must be a finite value between 0 and 1.");
+        }
+
         var opacity = hillshadeOpacity.ToString("0.##", CultureInfo.InvariantCulture);
+        var overlayOpacity = cngmOpacity.ToString("0.##", CultureInfo.InvariantCulture);
 
         // Placeholders (not C# interpolation) so Leaflet {z}/{y}/{x} templates stay literal
         // and USGS URLs never appear as raw-string delimiters inside this blob.
@@ -96,43 +115,67 @@ public static class LeafletOnlineTileScript
                 if(/proterozoic|paleoproterozoic|mesoproterozoic|neoproterozoic|precambrian/.test(a)) return '#e879f9';
                 return fallback;
               }
+              function cngmHashColor(s){
+                s=s||'';
+                var h=0;
+                for(var i=0;i<s.length;i++){h=((h<<5)-h)+s.charCodeAt(i);h|=0;}
+                var hue=Math.abs(h)%360;
+                return 'hsl('+hue+',42%,58%)';
+              }
+              window.__cngmMode='__CNGM_MODE__';
               function cngmPolyStyle(p){
                 p=p||{};
                 var g=(p.geomaterial||'').toLowerCase();
                 var s=(p.synthesis_mapunitname||'').toLowerCase();
                 var a=(p.min_age||p.max_age||'');
-                var t=g+' '+s;
-                function sty(c){return {fill:true,fillColor:c,fillOpacity:0.42,color:'#27272a',weight:0.25,opacity:0.35};}
+                var n=(p.name||p.mapunit||'');
+                var t=g+' '+s+' '+n;
+                var mode=window.__cngmMode||'synthesis';
+                var key=mode==='geomaterial'?g:(mode==='synthesis'?s+' '+g:t);
+                function sty(c){return {fill:true,fillColor:c,fillOpacity:0.55,color:'#27272a',weight:0.25,opacity:0.35};}
                 if(t.indexOf('unmapped')>=0) return {fill:true,fillColor:'#d4d4d8',fillOpacity:0.12,color:'#a1a1aa',weight:0.2,opacity:0.2};
                 if(/water or ice|water and ice/.test(t)) return {fill:true,fillColor:'#93c5fd',fillOpacity:0.28,color:'#3b82f6',weight:0.15,opacity:0.25};
                 if(t.indexOf('artificial')>=0||t.indexOf('human-engineered')>=0||t.indexOf('"made"')>=0) return sty('#a8a29e');
-                if(/limestone|dolomite|carbonate|marble/.test(t)) return sty('#86efac');
-                if(/ultramafic/.test(t)) return sty('#166534');
-                if(/granitic|felsic/.test(t)) return sty('#f9a8d4');
-                if(/mafic|gabbro/.test(t)) return sty('#b91c1c');
-                if(/volcanic|lava|pyroclastic|tephra|extrusive/.test(t)) return sty('#ef4444');
-                if(/intrusive|igneous/.test(t)) return sty('#e11d48');
-                if(/schist|gneiss|quartzite|phyllite|slate|metamorphic|meta-/.test(t)) return sty('#c084fc');
-                if(/glacial|till|ice-contact/.test(t)) return sty('#e5e7eb');
-                if(/alluvial|colluvium|eolian|loess|dune|playa|lacustrine|coastal|marine sediment|peat/.test(t)) return sty(cngmAgeColor(a,'#fde68a'));
+                if(mode==='age') return sty(cngmAgeColor(a,'#d6d3d1'));
+                if(mode==='source') return sty(cngmHashColor(n||s));
+                if(/limestone|dolomite|carbonate|marble/.test(key)) return sty('#86efac');
+                if(/ultramafic/.test(key)) return sty('#166534');
+                if(/granitic|felsic/.test(key)) return sty('#f9a8d4');
+                if(/mafic|gabbro/.test(key)) return sty('#b91c1c');
+                if(/volcanic|lava|pyroclastic|tephra|extrusive/.test(key)) return sty('#ef4444');
+                if(/intrusive|igneous/.test(key)) return sty('#e11d48');
+                if(/schist|gneiss|quartzite|phyllite|slate|metamorphic|meta-/.test(key)) return sty('#c084fc');
+                if(/glacial|till|ice-contact/.test(key)) return sty('#e5e7eb');
+                if(/alluvial|colluvium|eolian|loess|dune|playa|lacustrine|coastal|marine sediment|peat/.test(key)) return sty(cngmAgeColor(a,'#fde68a'));
                 return sty(cngmAgeColor(a,'#d6d3d1'));
               }
               try{
                 if(L.vectorGrid&&L.vectorGrid.protobuf){
+                  var cngmStyles={};
+                  var cngmFn=function(props){return cngmPolyStyle(props);};
+                  var cngmHide={fill:false,stroke:false,weight:0,opacity:0};
+                  cngmStyles['__CNGM_SOURCE__']=cngmFn;
+                  cngmStyles['mapunitpolys_esurf']=cngmFn;
+                  cngmStyles['mapunitpolys_quat']=cngmFn;
+                  cngmStyles['mapunitpolys_prequat']=cngmFn;
+                  cngmStyles['mapunitpolys_precamb']=cngmFn;
+                  cngmStyles['mapunitpolys_esurf/label']=cngmHide;
+                  cngmStyles['mapunitpolys_quat/label']=cngmHide;
+                  cngmStyles['mapunitpolys_prequat/label']=cngmHide;
+                  cngmStyles['mapunitpolys_precamb/label']=cngmHide;
                   cngm=L.vectorGrid.protobuf('__CNGM_PBF__',{
                     rendererFactory:L.canvas.tile,
                     interactive:false,
                     maxNativeZoom:13,
                     minZoom:6,
                     tileSize:512,
-                    opacity:0.85,
-                    attribution:'USGS Cooperative National Geologic Map v2 (NCGMP / NGMDB) — public domain',
-                    vectorTileLayerStyles:{
-                      'mapunitpolys_esurf':function(props){return cngmPolyStyle(props);},
-                      'mapunitpolys_esurf/label':{fill:false,stroke:false,weight:0,opacity:0}
-                    }
+                    opacity:__CNGM_OPACITY__,
+                    attribution:'__CNGM_ATTR__',
+                    vectorTileLayerStyles:cngmStyles
                   });
                   cngm.on('tileerror',function(){});
+                  window.__cngm=cngm;
+                  window.__setCngmOpacity=function(o){if(window.__cngm){window.__cngm.setOpacity(o);}};
                 }
               }catch(ex){cngm=null;}
               street.addTo(map);
@@ -141,7 +184,7 @@ public static class LeafletOnlineTileScript
                 "USGS State Geology (SGMC)":geology,
                 "Elevation contours (USGS)":contours
               };
-              if(cngm) overlayLayers["USGS Cooperative National Geologic Map (v2)"]=cngm;
+              if(cngm) overlayLayers["__CNGM_TITLE__"]=cngm;
               L.control.layers({
                 "Streets (Esri)":street,
                 "Streets (Carto / OSM)":carto,
@@ -156,7 +199,12 @@ public static class LeafletOnlineTileScript
               """
             .Replace(HillOpacityToken, opacity, StringComparison.Ordinal)
             .Replace(SgmcWmsToken, UsgsMapOverlayEndpoints.SgmcGeologyWms, StringComparison.Ordinal)
-            .Replace(CngmPbfToken, UsgsMapOverlayEndpoints.CooperativeNationalGeologyVectorTiles, StringComparison.Ordinal);
+            .Replace(CngmPbfToken, UsgsMapOverlayEndpoints.VectorTileUrl(theme), StringComparison.Ordinal)
+            .Replace(CngmSourceToken, UsgsMapOverlayEndpoints.VectorTileSourceLayer(theme), StringComparison.Ordinal)
+            .Replace(CngmOpacityToken, overlayOpacity, StringComparison.Ordinal)
+            .Replace(CngmModeToken, SymbologyMode(symbology), StringComparison.Ordinal)
+            .Replace(CngmTitleToken, OverlayTitle(theme), StringComparison.Ordinal)
+            .Replace(CngmAttrToken, UsgsMapOverlayEndpoints.Attribution, StringComparison.Ordinal);
 
         if (lidarOverlayOn)
             js += "hillshade.addTo(map);";
@@ -168,4 +216,20 @@ public static class LeafletOnlineTileScript
             js += "contours.addTo(map);";
         return js;
     }
+
+    private static string OverlayTitle(CngmTheme theme) => theme switch
+    {
+        CngmTheme.Quaternary => "USGS CNGM (Quaternary)",
+        CngmTheme.PreQuaternary => "USGS CNGM (Pre-Quaternary)",
+        CngmTheme.Precambrian => "USGS CNGM (Precambrian)",
+        _ => "USGS Cooperative National Geologic Map (NGMDB)"
+    };
+
+    private static string SymbologyMode(CngmSymbology symbology) => symbology switch
+    {
+        CngmSymbology.GeoMaterial => "geomaterial",
+        CngmSymbology.Age => "age",
+        CngmSymbology.SourceGeology => "source",
+        _ => "synthesis"
+    };
 }

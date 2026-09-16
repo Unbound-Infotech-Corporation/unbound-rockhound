@@ -1,10 +1,16 @@
-# Commercial release checklist (v0.6.0)
+# Commercial release checklist (v0.7.0)
+
+Packaging: `.\scripts\Package-Release.ps1 -Version 0.7.0 -SkipInstallSync` (optional `-BuildSetup`).
+
+Previous 0.6.0 store wrap remains the last published GitHub Release until this version is packaged and uploaded.
+
+- [ ] Version aligned: app `0.7.0`, Package.appxmanifest `0.7.0.0`, Package-Release.ps1 default (see packaging pass below)
 
 Use this before listing on the **Unbound Infotech** store or distributing a customer build.
 
 ## Done in this packaging pass
 
-- [x] Version aligned: app `0.6.0`, Package.appxmanifest `0.6.0.0`, Package-Release.ps1 default
+- [x] Version aligned: app `0.7.0`, Package.appxmanifest `0.7.0.0`, Package-Release.ps1 default
 - [x] Publisher branded **Unbound Infotech Corporation** (About / EULA / installer / AppBranding)
 - [x] Customer-facing Home + About copy
 - [x] EULA / disclaimer shipped (`EULA-DISCLAIMER.md`) including optional cloud-account privacy

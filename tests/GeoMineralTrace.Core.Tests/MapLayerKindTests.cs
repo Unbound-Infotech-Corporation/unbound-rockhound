@@ -24,5 +24,7 @@ public class MapLayerKindTests
         UsgsMapOverlayEndpoints.CooperativeNationalGeologyVectorTiles.Should().Contain("{z}/{y}/{x}.pbf");
         UsgsMapOverlayEndpoints.CooperativeNationalGeologyVectorTiles
             .Should().NotBe(UsgsMapOverlayEndpoints.SgmcGeologyWms);
+        UsgsMapOverlayEndpoints.EarthSurfaceIdentifyFeatureLayer
+            .Should().StartWith("https://energy.usgs.gov/arcgis/rest/services/Hosted/mapunitpolys_esurf_labels/");
     }
 }

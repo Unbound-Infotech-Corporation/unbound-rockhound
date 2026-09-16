@@ -1,6 +1,6 @@
 # Unbound Rockhound — End-User License Summary & Disclaimer
 
-**Version:** 0.6.0  
+**Version:** 0.7.0  
 **Product:** Unbound Rockhound (Windows desktop)  
 **Publisher:** Unbound Infotech Corporation ([unboundinfotech.com](https://unboundinfotech.com/))
 
@@ -14,13 +14,13 @@ You may not reverse-engineer the product solely to create a competing geolocatio
 
 ## No warranty
 
-THE SOFTWARE IS PROVIDED “AS IS,” WITHOUT WARRANTY OF ANY KIND. Location hypotheses, mineral locality data, claim status, river finds, and solar loci may be incomplete, outdated, or wrong.
+THE SOFTWARE IS PROVIDED “AS IS,” WITHOUT WARRANTY OF ANY KIND. Location hypotheses, mineral locality data, geologic-map synthesis, Prospect Guess hints, claim status, river finds, and solar loci may be incomplete, outdated, or wrong.
 
 ## Critical use restrictions
 
 1. **Not definitive geolocation.** Outputs are ranked probabilistic hypotheses. Do not treat them as courtroom-ready proof without independent corroboration.
 2. **Not legal advice.** Claim status, land ownership, and collecting rules must be verified with BLM, state agencies, landowners, and current regulations.
-3. **No visit endorsement.** Closed, restricted, or private sites flagged in the database must never be treated as recommendations to trespass or collect.
+3. **No visit endorsement.** Closed, restricted, or private sites flagged in the database must never be treated as recommendations to trespass or collect. Cooperative National Geologic Map units and Prospect Guess bands are research hints only — they do not grant permission to collect and are not a substitute for BLM / USFS / state / private-land checks.
 4. **Media rights.** You are solely responsible for complying with YouTube, Instagram, and copyright law when downloading or analyzing third-party media.
 5. **Safety.** Field travel is at your own risk. Weather, terrain, wildlife, and access conditions are outside the scope of this software.
 

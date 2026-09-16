@@ -138,7 +138,7 @@
                         OnContent="Online enrichment permitted"
                         Toggled="OnlineEnrichmentToggle_Toggled" />
                     <TextBlock Style="{StaticResource GmtTextCaption}" TextWrapping="Wrap"
-                        Text="When off: Map plots markers without online basemap tiles. YouTube / Instagram stream and download still ask before using the network." />
+                        Text="When off: Map plots markers without online basemap tiles, and NGMDB geologic identify is skipped. YouTube / Instagram stream and download still ask before using the network." />
                 </StackPanel>
             </Border>
 

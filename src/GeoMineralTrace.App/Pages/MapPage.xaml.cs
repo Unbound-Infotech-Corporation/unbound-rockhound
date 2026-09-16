@@ -6,6 +6,7 @@ using GeoMineralTrace.Claims.Storage;
 using GeoMineralTrace.Core.Claims;
 using GeoMineralTrace.Core.Finds;
 using GeoMineralTrace.Core.Geo;
+using GeoMineralTrace.Core.Geology;
 using GeoMineralTrace.Core.Hydrology;
 using GeoMineralTrace.Core.Hypothesis;
 using GeoMineralTrace.Core.Map;
@@ -48,6 +49,7 @@ public sealed partial class MapPage : Page
         BtnGoogleEarth.Click += (_, _) => _ = OpenEarthForSelectionAsync();
         BtnMapsView.Click += (_, _) => OpenMapsForSelection();
         BtnMapsDirections.Click += (_, _) => OpenDirectionsForSelection();
+        BtnProspectGuess.Click += (_, _) => _ = RunProspectGuessAsync();
     }
 
     protected override async void OnNavigatedTo(NavigationEventArgs e)
@@ -250,7 +252,10 @@ public sealed partial class MapPage : Page
 
             using var doc = JsonDocument.Parse(json);
             var root = doc.RootElement;
-            if (!root.TryGetProperty("type", out var typeProp) || typeProp.GetString() != "marker")
+            if (!root.TryGetProperty("type", out var typeProp))
+                return;
+            var type = typeProp.GetString();
+            if (type is not ("marker" or "tap"))
                 return;
 
             var lat = root.GetProperty("lat").GetDouble();
@@ -258,6 +263,12 @@ public sealed partial class MapPage : Page
             var label = root.TryGetProperty("label", out var labelProp) ? labelProp.GetString() ?? "Location" : "Location";
             var kind = root.TryGetProperty("kind", out var kindProp) ? kindProp.GetString() ?? "" : "";
             var detail = root.TryGetProperty("detail", out var detailProp) ? detailProp.GetString() : null;
+            if (type == "tap")
+            {
+                label = "Map tap";
+                kind = "tap";
+                detail = $"{lat.ToString("F5", CultureInfo.InvariantCulture)}, {lon.ToString("F5", CultureInfo.InvariantCulture)}";
+            }
 
             _ = DispatcherQueue.TryEnqueue(() =>
             {
@@ -267,6 +278,9 @@ public sealed partial class MapPage : Page
                     ? $"{lat.ToString("F5", CultureInfo.InvariantCulture)}, {lon.ToString("F5", CultureInfo.InvariantCulture)} · {KindLabel(kind)}"
                     : detail;
                 SelectionBar.Visibility = Visibility.Visible;
+                ProspectGuessText.Visibility = Visibility.Collapsed;
+                ProspectGuessText.Text = "";
+                _ = RunProspectGuessAsync();
             });
         }
         catch
@@ -309,7 +323,7 @@ public sealed partial class MapPage : Page
         DispatcherQueue.TryEnqueue(() =>
         {
             var baseCaption = HomeLocationPreferences.StatusSummary()
-                + " Toggle layers, tap a pin for Google Earth or Maps.";
+                + " Toggle layers, tap the map for geology + Prospect Guess, or tap a pin for Google Earth / Maps.";
             MapScopeCaption.Text = string.IsNullOrWhiteSpace(_focusRequest?.CaptionHint)
                 ? baseCaption
                 : _focusRequest!.CaptionHint + " · " + baseCaption;
@@ -1010,6 +1024,7 @@ public sealed partial class MapPage : Page
         "river" => "Named river",
         "trail" => "Access / hiking trail",
         "home" => "Home location",
+        "tap" => "Map tap",
         "personal_find" => "Personal find",
         _ => "Map pin"
     };
@@ -1095,7 +1110,7 @@ public sealed partial class MapPage : Page
                 if(m.detail){popup+='<br/><span style="opacity:.85">'+m.detail+'</span>';}
                 popup+='<br/><button onclick="postPin('+m.lat+','+m.lon+',\''+encodeURIComponent(m.label)+'\',\''+m.kind+'\',\''+encodeURIComponent(m.detail||'')+'\')">Select for Earth / Maps</button>';
                 c.bindPopup(popup);
-                c.on('click',function(){postPin(m.lat,m.lon,m.label,m.kind,m.detail||'');});
+                c.on('click',function(e){if(L.DomEvent)L.DomEvent.stopPropagation(e);postPin(m.lat,m.lon,m.label,m.kind,m.detail||'');});
                 if(m.kind==='hypothesis_lead'||m.kind==='hypothesis_runner'){c.addTo(map);group.push(c);}
                 else{cluster.addLayer(c);group.push(c);}
                 if(m.highlight){highlightLayer=c;}
@@ -1126,7 +1141,7 @@ public sealed partial class MapPage : Page
                 var opts={radius:m.radius||6,color:m.color,fillColor:m.color,fillOpacity:0.78,weight:1.6};
                 if(m.dash){opts.dashArray=m.dash;}
                 var c=L.circleMarker([m.lat,m.lon],opts).addTo(map).bindPopup(m.label);
-                c.on('click',function(){postPin(m.lat,m.lon,m.label,m.kind,m.detail||'');});
+                c.on('click',function(e){if(L.DomEvent)L.DomEvent.stopPropagation(e);postPin(m.lat,m.lon,m.label,m.kind,m.detail||'');});
                 group.push(c);
               });
               polylines.forEach(function(p){
@@ -1160,11 +1175,13 @@ public sealed partial class MapPage : Page
         sb.Append("""<div class="legend"><b>Pins, lines &amp; terrain</b><span style="color:#F97316">●</span> Home<br/><span style="color:#E11D48">●</span> Leading estimate<br/><span style="color:#0EA5E9">—</span> Rivers<br/><span style="color:#84CC16">—</span> Trails<br/><span style="opacity:.8">Hillshade = DEM/LiDAR-derived relief (not raw LAS)</span></div>""");
         sb.Append("<div id=\"map\"></div><script>");
         sb.Append("function postPin(lat,lon,label,kind,detail){if(window.chrome&&window.chrome.webview){window.chrome.webview.postMessage(JSON.stringify({type:'marker',lat:lat,lon:lon,label:label,kind:kind,detail:detail}));}}");
+        sb.Append("function postTap(lat,lon){if(window.chrome&&window.chrome.webview){window.chrome.webview.postMessage(JSON.stringify({type:'tap',lat:lat,lon:lon}));}}");
         sb.Append("var map=L.map('map').setView([39.5,-98.35],4);");
         sb.Append(tileJs);
         sb.Append("var markers=").Append(markersJson).Append(';');
         sb.Append("var polylines=").Append(polylinesJson).Append(';');
         sb.Append(markerJs);
+        sb.Append("map.on('click',function(e){postTap(e.latlng.lat,e.latlng.lng);});");
         sb.Append("</script></body></html>");
         return sb.ToString();
     }
@@ -1179,7 +1196,10 @@ public sealed partial class MapPage : Page
             geologyOn: MapLayerPreferences.IsVisible(MapLayerKind.UsgsGeology),
             cngmOn: MapLayerPreferences.IsVisible(MapLayerKind.CooperativeNationalGeology),
             contoursOn: MapLayerPreferences.IsVisible(MapLayerKind.ElevationContours),
-            hillshadeOpacity: MapLayerPreferences.LidarOpacity);
+            hillshadeOpacity: MapLayerPreferences.LidarOpacity,
+            theme: MapLayerPreferences.CngmTheme,
+            symbology: MapLayerPreferences.CngmSymbology,
+            cngmOpacity: MapLayerPreferences.CngmOpacity);
     }
 
     private void LidarOpacity_Changed(object sender, Microsoft.UI.Xaml.Controls.Primitives.RangeBaseValueChangedEventArgs e)
@@ -1189,6 +1209,63 @@ public sealed partial class MapPage : Page
 
         MapLayerPreferences.LidarOpacity = LidarOpacitySlider.Value / 100.0;
         _ = ApplyHillshadeOpacityAsync();
+    }
+
+    private void CngmOpacity_Changed(object sender, Microsoft.UI.Xaml.Controls.Primitives.RangeBaseValueChangedEventArgs e)
+    {
+        if (!_layerUiReady)
+            return;
+
+        MapLayerPreferences.CngmOpacity = CngmOpacitySlider.Value / 100.0;
+        _ = ApplyCngmOpacityAsync();
+    }
+
+    private async void CngmOverlayOption_Changed(object sender, SelectionChangedEventArgs e)
+    {
+        if (!_layerUiReady)
+            return;
+
+        SaveLayerTogglesToPreferences();
+        try
+        {
+            await RefreshMapAsync().ConfigureAwait(true);
+        }
+        catch (Exception ex)
+        {
+            ShowMapError("Map refresh failed: " + ex.Message);
+        }
+    }
+
+    private async Task ApplyCngmOpacityAsync()
+    {
+        try
+        {
+            if (MapView.CoreWebView2 is null)
+                return;
+            var opacity = MapLayerPreferences.CngmOpacity.ToString("0.##", CultureInfo.InvariantCulture);
+            await MapView.CoreWebView2.ExecuteScriptAsync(
+                $"if(window.__setCngmOpacity)window.__setCngmOpacity({opacity});").ConfigureAwait(true);
+        }
+        catch
+        {
+            // Overlay script is best-effort; next full refresh still applies opacity.
+        }
+    }
+
+    private static void SelectComboByTag(ComboBox box, string tag)
+    {
+        for (var i = 0; i < box.Items.Count; i++)
+        {
+            if (box.Items[i] is ComboBoxItem { Tag: string itemTag }
+                && string.Equals(itemTag, tag, StringComparison.OrdinalIgnoreCase))
+            {
+                box.SelectedIndex = i;
+                return;
+            }
+        }
+
+        if (box.Items.Count > 0)
+            box.SelectedIndex = 0;
     }
 
     private async Task ApplyHillshadeOpacityAsync()
@@ -1227,6 +1304,9 @@ public sealed partial class MapPage : Page
         LayerCngmGeology.IsOn = MapLayerPreferences.IsVisible(MapLayerKind.CooperativeNationalGeology);
         LayerContours.IsOn = MapLayerPreferences.IsVisible(MapLayerKind.ElevationContours);
         LidarOpacitySlider.Value = MapLayerPreferences.LidarOpacity * 100.0;
+        CngmOpacitySlider.Value = MapLayerPreferences.CngmOpacity * 100.0;
+        SelectComboByTag(CngmThemeBox, MapLayerPreferences.CngmTheme.ToString());
+        SelectComboByTag(CngmSymbologyBox, MapLayerPreferences.CngmSymbology.ToString());
         _layerUiReady = true;
     }
 
@@ -1249,6 +1329,13 @@ public sealed partial class MapPage : Page
         MapLayerPreferences.SetVisible(MapLayerKind.CooperativeNationalGeology, LayerCngmGeology.IsOn);
         MapLayerPreferences.SetVisible(MapLayerKind.ElevationContours, LayerContours.IsOn);
         MapLayerPreferences.LidarOpacity = LidarOpacitySlider.Value / 100.0;
+        MapLayerPreferences.CngmOpacity = CngmOpacitySlider.Value / 100.0;
+        if (CngmThemeBox.SelectedItem is ComboBoxItem { Tag: string themeTag }
+            && Enum.TryParse<CngmTheme>(themeTag, out var theme))
+            MapLayerPreferences.CngmTheme = theme;
+        if (CngmSymbologyBox.SelectedItem is ComboBoxItem { Tag: string styleTag }
+            && Enum.TryParse<CngmSymbology>(styleTag, out var style))
+            MapLayerPreferences.CngmSymbology = style;
     }
 
     private async Task OpenEarthForSelectionAsync()
@@ -1279,7 +1366,10 @@ public sealed partial class MapPage : Page
     private void ClearSelection()
     {
         _selection = null;
+        _prospectCts?.Cancel();
         SelectionBar.Visibility = Visibility.Collapsed;
+        ProspectGuessText.Visibility = Visibility.Collapsed;
+        ProspectGuessText.Text = "";
     }
 
     private sealed record MapPolyline(
