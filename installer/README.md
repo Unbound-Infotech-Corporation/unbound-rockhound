@@ -14,12 +14,12 @@
 
 ```powershell
 # Requires Inno Setup 6+ (winget install JRSoftware.InnoSetup)
-.\scripts\Package-Release.ps1 -Version 0.6.0 -SkipInstallSync -BuildSetup
+.\scripts\Package-Release.ps1 -Version 0.7.0 -SkipInstallSync -BuildSetup
 # or
-.\scripts\Build-Installer.ps1 -Version 0.6.0
+.\scripts\Build-Installer.ps1 -Version 0.7.0
 ```
 
-Output: `dist\UnboundRockhound-Setup-0.6.0.exe`
+Output: `dist\UnboundRockhound-Setup-0.7.0.exe`
 
 ## Assets
 

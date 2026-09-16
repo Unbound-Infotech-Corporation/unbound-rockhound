@@ -2,7 +2,7 @@
 
 param(
     [string]$Configuration = "Release",
-    [string]$Version = "0.6.0",
+    [string]$Version = "0.7.0",
     [string[]]$InstallDirs = @("F:\UnboundRockhound", "G:\UnboundRockhound"),
     [switch]$SkipInstallSync,
     [switch]$BuildSetup

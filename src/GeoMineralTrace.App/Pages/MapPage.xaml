@@ -24,7 +24,7 @@
                 <StackPanel Style="{StaticResource GmtPageHeader}">
                     <TextBlock Style="{StaticResource GmtTextTitle}" Text="Live Geospatial Map" />
                     <TextBlock x:Name="MapScopeCaption" Style="{StaticResource GmtTextBody}"
-                        Text="Claims, curated sites, USGS records, rivers, trails, and rumoured leads within your home search radius. Set location in Settings." />
+                        Text="Claims, curated sites, USGS records, rivers, trails, and rumoured leads within your home search radius. Tap the map for CNGM geology + Prospect Guess. Set location in Settings." />
                 </StackPanel>
                 <StackPanel Grid.Column="1" Style="{StaticResource GmtCommandRow}">
                     <Button Content="Import trails…" Click="ImportTrails_Click" Style="{StaticResource GmtButtonGhost}"
@@ -84,14 +84,34 @@
                         <ToggleSwitch x:Name="LayerGeology" Header="USGS State Geology (SGMC)"
                             Toggled="LayerToggled"
                             ToolTipService.ToolTip="USGS State Geologic Map Compilation (SGMC) lithology overlay (public WMS). Older seamless state-compilation product for the Lower 48 — not the Cooperative National Geologic Map. Requires Online Enrichment." />
-                        <ToggleSwitch x:Name="LayerCngmGeology" Header="USGS Cooperative National Geologic Map"
+                        <ToggleSwitch x:Name="LayerCngmGeology" Header="Cooperative National Geologic Map (NGMDB)"
                             Toggled="LayerToggled"
-                            ToolTipService.ToolTip="USGS Cooperative National Geologic Map v2 (National Geology) — Earth's surface units for all 50 states and most U.S. territories. Public vector tiles from the National Cooperative Geologic Mapping Program / NGMDB (public domain). Distinct from SGMC. Requires Online Enrichment; clearest at regional zoom." />
+                            ToolTipService.ToolTip="USGS Cooperative National Geologic Map v2 (National Geology) — Earth's surface / Quaternary / Pre-Quaternary / Precambrian units. Public vector tiles from the National Cooperative Geologic Mapping Program / NGMDB (USGS + AASG). Distinct from SGMC. Requires Online Enrichment; translucent so pins and claims stay visible." />
+                        <ComboBox x:Name="CngmThemeBox" Style="{StaticResource GmtFilterComboBox}" Header="CNGM theme"
+                            SelectionChanged="CngmOverlayOption_Changed">
+                            <ComboBoxItem Content="Earth Surface" Tag="EarthSurface" />
+                            <ComboBoxItem Content="Quaternary" Tag="Quaternary" />
+                            <ComboBoxItem Content="Pre-Quaternary" Tag="PreQuaternary" />
+                            <ComboBoxItem Content="Precambrian" Tag="Precambrian" />
+                        </ComboBox>
+                        <ComboBox x:Name="CngmSymbologyBox" Style="{StaticResource GmtFilterComboBox}" Header="CNGM symbology"
+                            SelectionChanged="CngmOverlayOption_Changed">
+                            <ComboBoxItem Content="National Synthesis" Tag="NationalSynthesis" />
+                            <ComboBoxItem Content="GeoMaterial" Tag="GeoMaterial" />
+                            <ComboBoxItem Content="Age" Tag="Age" />
+                            <ComboBoxItem Content="Source Geology" Tag="SourceGeology" />
+                        </ComboBox>
+                        <Slider x:Name="CngmOpacitySlider" Minimum="15" Maximum="70" Value="42"
+                            Header="Geologic overlay opacity"
+                            ValueChanged="CngmOpacity_Changed" />
+                        <HyperlinkButton Content="NGMDB National Geology viewer"
+                            NavigateUri="https://ngmdb.usgs.gov/nationalgeology/"
+                            FontSize="11" />
                         <TextBlock
                             FontSize="11"
                             Foreground="{StaticResource GmtBrushTextSecondary}"
                             TextWrapping="Wrap"
-                            Text="SGMC is the older state-compilation overlay. CNGM v2 is the new National Geology product (NCGMP / NGMDB, public domain)." />
+                            Text="SGMC is the older state-compilation overlay. CNGM v2 is the National Geology product (USGS / AASG / NCGMP). Attribution: public domain. Synthesis scale is not a collecting permit — verify land status." />
                         <ToggleSwitch x:Name="LayerContours" Header="Elevation contours (USGS TNM)"
                             Toggled="LayerToggled"
                             ToolTipService.ToolTip="USGS The National Map contour overlay (public WMS). Requires Online Enrichment." />
@@ -133,6 +153,7 @@
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto" />
                         <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
                     </Grid.RowDefinitions>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*" />
@@ -155,6 +176,12 @@
                     <ScrollViewer Grid.Row="1" Grid.ColumnSpan="2" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled">
                         <StackPanel Orientation="Horizontal" Spacing="10">
                             <mapcontrols:MapActionButton
+                                x:Name="BtnProspectGuess"
+                                AccentBrush="#FFB45309"
+                                IconGlyph="&#xE734;"
+                                Subtitle="Geology + nearby records"
+                                Title="Prospect Guess" />
+                            <mapcontrols:MapActionButton
                                 x:Name="BtnGoogleEarth"
                                 AccentBrush="#FF2563EB"
                                 IconGlyph="&#xE8A5;"
@@ -173,6 +200,14 @@
                                 Subtitle="Driving directions"
                                 Title="Directions" />
                         </StackPanel>
+                    </ScrollViewer>
+                    <ScrollViewer Grid.Row="2" Grid.ColumnSpan="2" MaxHeight="220" VerticalScrollBarVisibility="Auto">
+                        <TextBlock
+                            x:Name="ProspectGuessText"
+                            FontSize="12"
+                            LineHeight="18"
+                            TextWrapping="Wrap"
+                            Visibility="Collapsed" />
                     </ScrollViewer>
                 </Grid>
             </Border>

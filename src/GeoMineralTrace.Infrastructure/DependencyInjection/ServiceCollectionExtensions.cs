@@ -60,6 +60,14 @@ public static class ServiceCollectionExtensions
         services.AddSingleton<LicenseLocalStore>();
         services.AddHttpClient("supabase");
         services.AddHttpClient("license");
+        services.AddHttpClient("usgs-cngm", client =>
+        {
+            client.Timeout = TimeSpan.FromSeconds(12);
+            client.DefaultRequestHeaders.TryAddWithoutValidation(
+                "User-Agent",
+                AppBranding.UserAgentPrefix + "/cngm-identify");
+        });
+        services.AddSingleton<GeoMineralTrace.Infrastructure.Geology.CngmIdentifyClient>();
         services.AddSingleton<SocialAuthService>(sp =>
         {
             var http = sp.GetRequiredService<IHttpClientFactory>().CreateClient("supabase");

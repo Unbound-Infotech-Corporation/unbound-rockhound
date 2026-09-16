@@ -3,7 +3,7 @@
 **Audit date:** 2026-09-10  
 **Scope:** Full project as it stands today (desktop WinUI + Android companion)  
 **Phase:** **0 only** — report, no fixes, no Reddit/community Phase 1 work  
-**Product version (desktop badge):** v0.6.0  
+**Product version (desktop badge):** v0.7.0  
 **Repos:** `F:\Heirloom\GeoMineralTrace` (desktop) · `F:\Heirloom\UnboundRockhound` (Android)
 
 ---

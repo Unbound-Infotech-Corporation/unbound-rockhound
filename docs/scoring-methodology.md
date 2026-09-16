@@ -27,6 +27,23 @@ Implementation: `LocalityRating.ComputeOverall` and `LocalityRatingCalculator`.
 | Closed | 0.5 |
 | Unknown | 4.0 |
 
+## Prospect Guess (map tap)
+
+`ProspectGuessScorer` ranks gem/mineral **research hints** from:
+
+1. CNGM GeoMaterial / unit keywords (`GeoMaterialMineralCatalog` — local rules, no LLM)
+2. Nearby curated and USGS MRDS localities (default 25 km corridor)
+
+| Band | Meaning |
+|------|---------|
+| Stronger | Lithology keyword **and** a nearby record (≤ 15 km) lists the same mineral |
+| Plausible | Strong lithology match without a close listing, or a close curated listing without a geology flag |
+| Speculative | Weak geology-only match, or farther USGS corridor listings |
+
+Geology alone never yields **Stronger**. Water / ice / artificial / unmapped units yield no mineral hints.
+
+This is **not** a legal-access or collecting-permit score. Legal clarity remains the locality-rating factor above.
+
 ## Evidence confidence
 
 `Confidence` is clamped to \([0,1]\). User dispositions adjust fusion weight:

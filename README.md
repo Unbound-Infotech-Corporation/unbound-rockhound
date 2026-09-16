@@ -8,7 +8,7 @@ Professional Windows research instrument for **multi-modal forensic video geoloc
 
 | Area | State |
 |------|--------|
-| WinUI research shell + design system | **v0.6.0 — Unbound Rockhound branding + setup wizard** |
+| WinUI research shell + design system | **v0.7.0 — CNGM overlay, tap identify, Prospect Guess** |
 | Deep Analysis (scored clusters + reasoning) | Done |
 | Video/image analysis pipeline | Done |
 | Evidence Board / Hypotheses / Map / Reports | Done |

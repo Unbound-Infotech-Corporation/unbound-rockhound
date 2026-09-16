@@ -1,3 +1,4 @@
+using GeoMineralTrace.Core.Geology;
 using GeoMineralTrace.Core.Map;
 
 namespace GeoMineralTrace_App.Helpers;
@@ -28,6 +29,10 @@ public static class MapLayerPreferences
 
     public const string LidarOpacityKey = "MapLayerLidarOpacity";
     public const double DefaultLidarOpacity = 0.55;
+    public const string CngmOpacityKey = "MapLayerCngmOpacity";
+    public const double DefaultCngmOpacity = 0.42;
+    public const string CngmThemeKey = "MapLayerCngmTheme";
+    public const string CngmSymbologyKey = "MapLayerCngmSymbology";
 
     public static bool IsVisible(MapLayerKind kind)
     {
@@ -70,6 +75,41 @@ public static class MapLayerPreferences
         set => AppPreferences.WriteSetting(
             LidarOpacityKey,
             Math.Clamp(value, 0.15, 0.80).ToString("0.##", System.Globalization.CultureInfo.InvariantCulture));
+    }
+
+    /// <summary>CNGM overlay fill opacity in 0.15–0.70. Default 0.42 so pins stay readable.</summary>
+    public static double CngmOpacity
+    {
+        get
+        {
+            var raw = AppPreferences.ReadSetting(CngmOpacityKey);
+            if (double.TryParse(raw, System.Globalization.NumberStyles.Float,
+                    System.Globalization.CultureInfo.InvariantCulture, out var value))
+            {
+                return Math.Clamp(value, 0.15, 0.70);
+            }
+
+            return DefaultCngmOpacity;
+        }
+        set => AppPreferences.WriteSetting(
+            CngmOpacityKey,
+            Math.Clamp(value, 0.15, 0.70).ToString("0.##", System.Globalization.CultureInfo.InvariantCulture));
+    }
+
+    public static CngmTheme CngmTheme
+    {
+        get => Enum.TryParse<CngmTheme>(AppPreferences.ReadSetting(CngmThemeKey), ignoreCase: true, out var theme)
+            ? theme
+            : CngmTheme.EarthSurface;
+        set => AppPreferences.WriteSetting(CngmThemeKey, value.ToString());
+    }
+
+    public static CngmSymbology CngmSymbology
+    {
+        get => Enum.TryParse<CngmSymbology>(AppPreferences.ReadSetting(CngmSymbologyKey), ignoreCase: true, out var style)
+            ? style
+            : CngmSymbology.NationalSynthesis;
+        set => AppPreferences.WriteSetting(CngmSymbologyKey, value.ToString());
     }
 
     public static bool MatchesMarkerKind(string markerKind)

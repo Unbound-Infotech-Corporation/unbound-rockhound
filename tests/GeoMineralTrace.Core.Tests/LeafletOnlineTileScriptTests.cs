@@ -1,4 +1,5 @@
 using FluentAssertions;
+using GeoMineralTrace.Core.Geology;
 using GeoMineralTrace.Core.Map;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
@@ -31,7 +32,10 @@ public class LeafletOnlineTileScriptTests
         js.Should().Contain(UsgsMapOverlayEndpoints.CooperativeNationalGeologyVectorTiles);
         js.Should().Contain("L.vectorGrid.protobuf(");
         js.Should().Contain("mapunitpolys_esurf");
-        js.Should().Contain("USGS Cooperative National Geologic Map (v2)");
+        js.Should().Contain("USGS Cooperative National Geologic Map (NGMDB)");
+        js.Should().Contain("window.__cngmMode='synthesis'");
+        js.Should().Contain("window.__setCngmOpacity=");
+        js.Should().Contain("opacity:0.42,");
 
         js.Should().Contain("contours=L.tileLayer.wms(");
         js.Should().Contain("carto.nationalmap.gov/arcgis/services/contours/MapServer/WMSServer");
@@ -45,7 +49,35 @@ public class LeafletOnlineTileScriptTests
         js.Should().NotContain("__SGMC_WMS__");
         js.Should().NotContain("__CNGM_PBF__");
         js.Should().NotContain("__HILL_OPACITY__");
+        js.Should().NotContain("__CNGM_SOURCE__");
+        js.Should().NotContain("__CNGM_OPACITY__");
+        js.Should().NotContain("__CNGM_MODE__");
+        js.Should().NotContain("__CNGM_TITLE__");
+        js.Should().NotContain("__CNGM_ATTR__");
         js.Should().NotContain("UsgsMapOverlayEndpoints");
+        js.Should().NotContain(ForbiddenRawStringSplice);
+    }
+
+    [Fact]
+    public void Build_AppliesCngmThemeSymbologyAndOpacity()
+    {
+        var js = LeafletOnlineTileScript.Build(
+            lidarOverlayOn: false,
+            geologyOn: false,
+            cngmOn: true,
+            contoursOn: false,
+            hillshadeOpacity: 0.4,
+            theme: CngmTheme.Quaternary,
+            symbology: CngmSymbology.Age,
+            cngmOpacity: 0.7);
+
+        js.Should().Contain(UsgsMapOverlayEndpoints.VectorTileUrl(CngmTheme.Quaternary));
+        js.Should().Contain("cngmStyles['mapunitpolys_quat']");
+        js.Should().Contain("window.__cngmMode='age'");
+        js.Should().Contain("USGS CNGM (Quaternary)");
+        js.Should().Contain("opacity:0.7,");
+        js.Should().Contain(UsgsMapOverlayEndpoints.Attribution);
+        js.Should().NotContain("__CNGM_PBF__");
         js.Should().NotContain(ForbiddenRawStringSplice);
     }
 
@@ -71,6 +103,10 @@ public class LeafletOnlineTileScriptTests
     {
         var act = () => LeafletOnlineTileScript.Build(false, false, false, false, double.NaN);
         act.Should().Throw<ArgumentOutOfRangeException>().WithParameterName("hillshadeOpacity");
+
+        var cngm = () => LeafletOnlineTileScript.Build(
+            false, false, false, false, 0.5, cngmOpacity: double.PositiveInfinity);
+        cngm.Should().Throw<ArgumentOutOfRangeException>().WithParameterName("cngmOpacity");
     }
 
     [Theory]
