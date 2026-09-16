@@ -1244,7 +1244,7 @@ public sealed partial class MapPage : Page
                 return;
             var opacity = MapLayerPreferences.CngmOpacity.ToString("0.##", CultureInfo.InvariantCulture);
             await MapView.CoreWebView2.ExecuteScriptAsync(
-                $"if(window.__setCngmOpacity)window.__setCngmOpacity({opacity});").ConfigureAwait(true);
+                $"if(window.__setCngmOpacity)window.__setCngmOpacity({opacity});");
         }
         catch
         {
@@ -1276,7 +1276,7 @@ public sealed partial class MapPage : Page
                 return;
             var opacity = MapLayerPreferences.LidarOpacity.ToString("0.##", CultureInfo.InvariantCulture);
             await MapView.CoreWebView2.ExecuteScriptAsync(
-                $"if(window.__setHillshadeOpacity)window.__setHillshadeOpacity({opacity});").ConfigureAwait(true);
+                $"if(window.__setHillshadeOpacity)window.__setHillshadeOpacity({opacity});");
         }
         catch
         {
