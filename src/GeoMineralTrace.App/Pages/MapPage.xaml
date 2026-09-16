@@ -81,9 +81,17 @@
                         </Border>
 
                         <TextBlock Style="{StaticResource GmtTextLabel}" Text="GEOLOGY" Margin="0,6,0,0" />
-                        <ToggleSwitch x:Name="LayerGeology" Header="USGS geologic units (SGMC)"
+                        <ToggleSwitch x:Name="LayerGeology" Header="USGS State Geology (SGMC)"
                             Toggled="LayerToggled"
-                            ToolTipService.ToolTip="USGS State Geologic Map Compilation lithology overlay (public WMS). Requires Online Enrichment." />
+                            ToolTipService.ToolTip="USGS State Geologic Map Compilation (SGMC) lithology overlay (public WMS). Older seamless state-compilation product for the Lower 48 — not the Cooperative National Geologic Map. Requires Online Enrichment." />
+                        <ToggleSwitch x:Name="LayerCngmGeology" Header="USGS Cooperative National Geologic Map"
+                            Toggled="LayerToggled"
+                            ToolTipService.ToolTip="USGS Cooperative National Geologic Map v2 (National Geology) — Earth's surface units for all 50 states and most U.S. territories. Public vector tiles from the National Cooperative Geologic Mapping Program / NGMDB (public domain). Distinct from SGMC. Requires Online Enrichment; clearest at regional zoom." />
+                        <TextBlock
+                            FontSize="11"
+                            Foreground="{StaticResource GmtBrushTextSecondary}"
+                            TextWrapping="Wrap"
+                            Text="SGMC is the older state-compilation overlay. CNGM v2 is the new National Geology product (NCGMP / NGMDB, public domain)." />
                         <ToggleSwitch x:Name="LayerContours" Header="Elevation contours (USGS TNM)"
                             Toggled="LayerToggled"
                             ToolTipService.ToolTip="USGS The National Map contour overlay (public WMS). Requires Online Enrichment." />
