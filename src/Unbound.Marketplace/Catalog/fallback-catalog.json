@@ -1,0 +1,46 @@
+{
+  "products": [
+    {
+      "id": "6a988e26f11c4642bf4888e8",
+      "name": "Heirloom — Voice Archive & Digital Twin",
+      "tagline": "Build the version of yourself that gets to stay.",
+      "description": "A private AI-driven archive that captures your voice, stories, and memories so the people you love can keep hearing you. Built on Unbound Infotech infrastructure.",
+      "price": 79.99,
+      "status": "coming_soon",
+      "type": "download",
+      "category": "AI / Memory",
+      "featured": true,
+      "sort_order": 1,
+      "image_url": null
+    },
+    {
+      "id": "6a988e26f11c4642bf4888e9",
+      "name": "Clore.ai Fleet Optimizer",
+      "tagline": "Maximize earnings on the Clore.ai GPU marketplace.",
+      "description": "A specialized management tool for GPU hosts operating on Clore.ai. Monitor fleet health, optimize pricing, and track Proof of Holding rewards.",
+      "price": 14.99,
+      "status": "active",
+      "type": "license",
+      "category": "Infrastructure / Tools",
+      "featured": true,
+      "sort_order": 2,
+      "image_url": null
+    },
+    {
+      "id": "6a9949122f0c8cf48076190a",
+      "name": "Unbound Rockhound",
+      "licenseProductId": "unbound-rockhound",
+      "tagline": "Special launch price $39.99 — forensic video geolocation & rockhounding research for Windows.",
+      "description": "Unbound Rockhound is desktop research software from Unbound Infotech. Point it at rockhounding videos or field clips and get ranked location hypotheses, then cross-check claims, rivers, and public localities on an interactive map.",
+      "price": 39.99,
+      "status": "active",
+      "type": "download",
+      "category": "Software",
+      "featured": true,
+      "sort_order": 10,
+      "image_url": "https://media.base44.com/images/public/69d5f18a091f6012136d4f5a/c994f45cd_logo.png",
+      "download_url": "https://github.com/Unbound-Infotech-Corporation/unbound-rockhound/releases/download/v0.6.0/UnboundRockhound-Windows-x64-v0.6.0.zip",
+      "store_url": "https://unboundinfotech.com/store/6a9949122f0c8cf48076190a"
+    }
+  ]
+}

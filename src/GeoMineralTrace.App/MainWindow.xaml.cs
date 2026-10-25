@@ -7,6 +7,7 @@ using GeoMineralTrace.Infrastructure.Services;
 using GeoMineralTrace_App.Helpers;
 using GeoMineralTrace_App.Pages;
 using GeoMineralTrace_App.Services;
+using Unbound.Marketplace.WinUI;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.UI.Dispatching;
 using Microsoft.UI.Windowing;
@@ -27,7 +28,7 @@ public sealed partial class MainWindow : Window
 
     private static readonly HashSet<string> LicenseFreeTags = new(StringComparer.OrdinalIgnoreCase)
     {
-        "home", "about", "activate", "signin", "techniques", "settings"
+        "home", "about", "activate", "marketplace", "signin", "techniques", "settings"
     };
 
     public MainWindow()
@@ -256,6 +257,7 @@ public sealed partial class MainWindow : Window
         "profile" => typeof(ProfilePage),
         "signin" => typeof(SignInPage),
         "activate" => typeof(ActivatePage),
+        "marketplace" => typeof(MarketplacePage),
         "map" => typeof(MapPage),
         "reports" => typeof(ReportsPage),
         "techniques" => typeof(TechniquesPage),

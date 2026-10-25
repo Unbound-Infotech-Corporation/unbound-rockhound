@@ -7,7 +7,9 @@ using GeoMineralTrace.Pipeline.Abstractions;
 using GeoMineralTrace.Pipeline.Audio;
 using GeoMineralTrace.Pipeline.Ocr;
 using GeoMineralTrace_App.Helpers;
+using GeoMineralTrace_App.Marketplace;
 using GeoMineralTrace_App.Services;
+using Unbound.Marketplace;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.UI.Xaml;
 
@@ -33,6 +35,7 @@ public partial class App : Application
         DiagnosticReportCenter.Initialize();
         UnhandledException += OnUnhandledException;
         Services = BuildServices();
+        MarketplaceHostContext.Current = Services.GetRequiredService<MarketplaceHost>();
     }
 
     private void OnUnhandledException(object sender, Microsoft.UI.Xaml.UnhandledExceptionEventArgs e)
@@ -91,6 +94,7 @@ public partial class App : Application
     {
         var services = new ServiceCollection();
         services.AddGeoMineralTraceCore();
+        services.AddRockhoundMarketplace();
 
         services.AddSingleton<IOcrEngine>(_ => new CompositeOcrEngine(
             "Windows.Media.Ocr + Sidecar",

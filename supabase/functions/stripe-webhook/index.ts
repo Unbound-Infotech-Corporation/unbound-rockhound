@@ -155,6 +155,9 @@ async function handleCheckoutCompleted(
     ? String(session["client_reference_id"])
     : "";
   const rawProductId = meta["product_id"] || meta["productId"] || clientRef || PRODUCT_ID;
+  // Minting stays Rockhound-only. Allowlisted sibling apps (heirloom-unbound, viralforge,
+  // unbound-astrology, unboundos) are accepted by license-activate after a row exists,
+  // but this webhook does not create those rows.
   if (!isRockhoundProduct(rawProductId)) {
     console.log("Ignoring non-rockhound product", rawProductId);
     return;

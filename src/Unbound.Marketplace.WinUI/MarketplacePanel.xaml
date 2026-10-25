@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="utf-8"?>
+<UserControl
+    x:Class="Unbound.Marketplace.WinUI.MarketplacePanel"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:Unbound.Marketplace.WinUI"
+    HorizontalAlignment="Stretch"
+    VerticalAlignment="Stretch">
+
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="Themes/MarketplaceTheme.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </UserControl.Resources>
+
+    <Grid Background="{ThemeResource UmktBrushCanvas}">
+        <ScrollViewer>
+            <StackPanel Padding="32,20,32,32" Spacing="24" MaxWidth="1080" HorizontalAlignment="Stretch">
+                <Grid ColumnSpacing="16">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+                    <StackPanel Spacing="4">
+                        <TextBlock Style="{StaticResource UmktTextLabel}" Text="UNBOUND INFOTECH" />
+                        <TextBlock Style="{StaticResource UmktTextTitle}" Text="Unbound Marketplace" />
+                        <TextBlock Style="{StaticResource UmktTextBody}" MaxWidth="640"
+                            Text="Software from Unbound Infotech. Buy opens Stripe Checkout in your browser. Get it opens the store page or download for titles this install does not activate." />
+                    </StackPanel>
+                    <Button Grid.Column="1" Content="Refresh" VerticalAlignment="Top"
+                        Style="{StaticResource UmktButtonSecondary}"
+                        Command="{x:Bind ViewModel.RefreshCommand}" />
+                </Grid>
+
+                <InfoBar IsOpen="{x:Bind ViewModel.StatusIsOpen, Mode=OneWay}"
+                    IsClosable="False"
+                    Severity="{x:Bind ViewModel.StatusSeverity, Mode=OneWay}"
+                    Title="{x:Bind ViewModel.StatusTitle, Mode=OneWay}"
+                    Message="{x:Bind ViewModel.StatusMessage, Mode=OneWay}" />
+
+                <Border Style="{StaticResource UmktCard}"
+                    Visibility="{x:Bind local:BoolVis.Of(ViewModel.ShowCredential), Mode=OneWay}">
+                    <StackPanel Spacing="10">
+                        <TextBlock Style="{StaticResource UmktTextLabel}" Text="AFTER CHECKOUT" />
+                        <TextBlock Style="{StaticResource UmktTextBody}"
+                            Text="When Stripe finishes, this page checks for the license. You can also paste the key from your email or the checkout session id (cs_…) from the receipt. The existing Activate page still works." />
+                        <TextBox Style="{StaticResource UmktTextBox}"
+                            PlaceholderText="License key or cs_ checkout session"
+                            Text="{x:Bind ViewModel.CredentialText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                        <StackPanel Orientation="Horizontal" Spacing="8">
+                            <Button Content="Activate" Style="{StaticResource UmktButtonPrimary}"
+                                Command="{x:Bind ViewModel.ActivateCommand}" />
+                            <Button Content="Check again" Style="{StaticResource UmktButtonSecondary}"
+                                Visibility="{x:Bind local:BoolVis.Of(ViewModel.CheckAgainVisible), Mode=OneWay}"
+                                Command="{x:Bind ViewModel.CheckAgainCommand}" />
+                        </StackPanel>
+                    </StackPanel>
+                </Border>
+
+                <StackPanel Spacing="12" Visibility="{x:Bind local:BoolVis.Of(ViewModel.ShowLoadingOverlay), Mode=OneWay}">
+                    <ProgressRing IsActive="True" Width="32" Height="32" HorizontalAlignment="Left" />
+                    <TextBlock Style="{StaticResource UmktTextBody}" Text="Loading the Unbound Marketplace…" />
+                </StackPanel>
+
+                <Border Style="{StaticResource UmktCard}"
+                    Visibility="{x:Bind local:BoolVis.Of(ViewModel.ShowEmptyError), Mode=OneWay}">
+                    <StackPanel Spacing="8">
+                        <TextBlock Style="{StaticResource UmktTextLabel}" Text="CATALOG UNAVAILABLE" />
+                        <TextBlock Style="{StaticResource UmktTextBody}"
+                            Text="Unbound Marketplace could not load a catalog, including the bundled copy. Check the connection and refresh." />
+                        <Button Content="Try again" Style="{StaticResource UmktButtonPrimary}"
+                            Command="{x:Bind ViewModel.RefreshCommand}" />
+                    </StackPanel>
+                </Border>
+
+                <ItemsRepeater ItemsSource="{x:Bind ViewModel.Products, Mode=OneWay}"
+                    Visibility="{x:Bind local:BoolVis.Of(ViewModel.ShowCatalog), Mode=OneWay}">
+                    <ItemsRepeater.Layout>
+                        <UniformGridLayout MinItemWidth="300" MinItemHeight="230"
+                            MinRowSpacing="12" MinColumnSpacing="12"
+                            ItemsJustification="Start" />
+                    </ItemsRepeater.Layout>
+                    <ItemsRepeater.ItemTemplate>
+                        <DataTemplate x:DataType="local:MarketplaceProductCard">
+                            <Border Style="{StaticResource UmktCard}" MinHeight="218">
+                                <Grid RowSpacing="8">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="*" />
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="Auto" />
+                                    </Grid.RowDefinitions>
+                                    <Grid ColumnSpacing="12">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="Auto" />
+                                            <ColumnDefinition Width="*" />
+                                        </Grid.ColumnDefinitions>
+                                        <Grid Width="44" Height="44">
+                                            <Border Width="44" Height="44" CornerRadius="6"
+                                                Background="{ThemeResource UmktBrushRaised}"
+                                                BorderBrush="{ThemeResource UmktBrushBorder}"
+                                                BorderThickness="1"
+                                                Visibility="{x:Bind MonogramVisibility}">
+                                                <TextBlock Text="{x:Bind Monogram}"
+                                                    HorizontalAlignment="Center" VerticalAlignment="Center"
+                                                    FontFamily="Bahnschrift" FontWeight="SemiBold" FontSize="14"
+                                                    Foreground="{ThemeResource UmktBrushText}" />
+                                            </Border>
+                                            <Border Width="44" Height="44" CornerRadius="6"
+                                                Visibility="{x:Bind IconVisibility}">
+                                                <Image Source="{x:Bind Icon}" Stretch="UniformToFill" />
+                                            </Border>
+                                        </Grid>
+                                        <StackPanel Grid.Column="1" VerticalAlignment="Center" Spacing="2">
+                                            <TextBlock Text="{x:Bind Name}" TextWrapping="Wrap" MaxLines="2"
+                                                FontFamily="Bahnschrift" FontWeight="SemiBold" FontSize="16"
+                                                Foreground="{ThemeResource UmktBrushText}" />
+                                            <TextBlock Text="{x:Bind PriceLabel}"
+                                                FontFamily="Bahnschrift" FontSize="14"
+                                                Foreground="{ThemeResource UmktBrushPrimary}" />
+                                        </StackPanel>
+                                    </Grid>
+                                    <Border Grid.Row="1" Padding="8,2" CornerRadius="999"
+                                        HorizontalAlignment="Left"
+                                        Background="{ThemeResource UmktBrushSuccessSubtle}"
+                                        Visibility="{x:Bind ThisAppVisibility}">
+                                        <TextBlock Text="THIS APP" Style="{StaticResource UmktTextLabel}"
+                                            Foreground="{ThemeResource UmktBrushSuccess}" />
+                                    </Border>
+                                    <TextBlock Grid.Row="2" Text="{x:Bind Summary}" MaxLines="3"
+                                        Style="{StaticResource UmktTextBody}" TextTrimming="CharacterEllipsis" />
+                                    <TextBlock Grid.Row="3" Text="{x:Bind Footnote, Mode=OneWay}" Style="{StaticResource UmktTextCaption}" />
+                                    <Grid Grid.Row="4">
+                                        <Button Content="{x:Bind ActionLabel, Mode=OneWay}"
+                                            Style="{StaticResource UmktButtonPrimary}"
+                                            Visibility="{x:Bind BuyVisibility, Mode=OneWay}"
+                                            Command="{x:Bind BuyCommand}" />
+                                        <Border Padding="10,6" CornerRadius="4" HorizontalAlignment="Left"
+                                            Background="{ThemeResource UmktBrushRaised}"
+                                            BorderBrush="{ThemeResource UmktBrushBorder}"
+                                            BorderThickness="1"
+                                            Visibility="{x:Bind PassiveVisibility, Mode=OneWay}">
+                                            <TextBlock Text="{x:Bind ActionLabel, Mode=OneWay}"
+                                                FontFamily="Bahnschrift" FontWeight="SemiBold"
+                                                Foreground="{ThemeResource UmktBrushTextSecondary}" />
+                                        </Border>
+                                    </Grid>
+                                </Grid>
+                            </Border>
+                        </DataTemplate>
+                    </ItemsRepeater.ItemTemplate>
+                </ItemsRepeater>
+            </StackPanel>
+        </ScrollViewer>
+    </Grid>
+</UserControl>

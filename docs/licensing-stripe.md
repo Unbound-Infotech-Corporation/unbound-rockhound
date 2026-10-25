@@ -142,3 +142,19 @@ Live this list **before** flipping Base44 Status to `active`. Secrets stay in St
 **Base44 Type=`download` vs `license`:** prefer `download` so Checkout hands the zip immediately. Do **not** put a static key in Delivery Instructions. If Base44 later exposes Type=`license` as a second SKU, keep Stripe webhook as the source of truth for `UR-` keys (one key per paid session, max 3 devices, 14-day trial in-app). Do not invent a second key namespace.
 
 **Silent-failure checks:** after a test purchase, open `product_licenses` — if `notes` mentions Resend, the key still exists; use `/activate` or SQL. If Activate fails with HTTP body text, the app now surfaces it (wrong URL, bad key, 409 seat limit) instead of a blank error.
+
+## 10. Other Unbound Infotech apps
+
+`license-activate` and `license-validate` accept an optional `productId`. Omitted or blank still means `unbound-rockhound`, and a Rockhound key still has to be `UR-XXXX-XXXX-XXXX-XXXX`. The row's `product_id` must match the requested id, so a Rockhound client cannot bind another app's key.
+
+Allowlist (same values as `LicenseProductIds` and `ALLOWED_PRODUCT_IDS`):
+
+| App | `productId` |
+|-----|-------------|
+| Unbound Rockhound | `unbound-rockhound` |
+| Heirloom Unbound | `heirloom-unbound` |
+| ViralForge | `viralforge` |
+| Unbound Astrology | `unbound-astrology` |
+| UnboundOS | `unboundos` |
+
+`stripe-webhook` does not mint those other ids yet. A non-Rockhound `metadata.product_id` is ignored, and a missing id on this webhook is still Rockhound. Redeploy `license-activate` and `license-validate` after pulling the allowlist. See `docs/marketplace-widget.md` for the marketplace host settings.

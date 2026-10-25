@@ -1,6 +1,29 @@
-/** Shared license key helpers for Unbound Rockhound Edge functions. */
+/**
+ * Shared license key helpers.
+ *
+ * license_product_id scheme (store field, Stripe metadata.product_id, product_licenses.product_id):
+ *   unbound-rockhound   Unbound Rockhound (aliases rockhound / unboundrockhound; omitted id counts as this)
+ *   heirloom-unbound    Heirloom Unbound
+ *   viralforge          ViralForge
+ *   unbound-astrology   Unbound Astrology
+ *   unboundos           UnboundOS
+ *
+ * license-activate and license-validate accept any id in ALLOWED_PRODUCT_IDS.
+ * The requested product must match the row. Omitting productId still means unbound-rockhound,
+ * so existing Rockhound clients keep working. Keys stay UR-XXXX-XXXX-XXXX-XXXX.
+ * stripe-webhook still mints only unbound-rockhound.
+ */
 
 export const PRODUCT_ID = "unbound-rockhound";
+
+/** Product ids license-activate and license-validate will bind. Keep in sync with LicenseProductIds.cs. */
+export const ALLOWED_PRODUCT_IDS = [
+  "unbound-rockhound",
+  "heirloom-unbound",
+  "viralforge",
+  "unbound-astrology",
+  "unboundos",
+] as const;
 
 const ALPHABET = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789"; // no I/O/0/1
 
@@ -22,6 +45,21 @@ export function normalizeProductId(raw: string | null | undefined): string {
 export function isRockhoundProduct(raw: string | null | undefined): boolean {
   const n = normalizeProductId(raw);
   return n === PRODUCT_ID || n === "rockhound" || n === "unboundrockhound";
+}
+
+/**
+ * Map a request or row product id onto the allowlist.
+ * Blank / missing stays unbound-rockhound so Rockhound clients that omit productId do not change.
+ * Returns null when the id is not on the allowlist.
+ */
+export function canonicalAllowedProductId(raw: string | null | undefined): string | null {
+  if (raw == null || !String(raw).trim()) return PRODUCT_ID;
+  if (isRockhoundProduct(raw)) return PRODUCT_ID;
+  const n = normalizeProductId(raw);
+  for (const id of ALLOWED_PRODUCT_IDS) {
+    if (n === id) return id;
+  }
+  return null;
 }
 
 export function normalizeLicenseKey(raw: string): string {

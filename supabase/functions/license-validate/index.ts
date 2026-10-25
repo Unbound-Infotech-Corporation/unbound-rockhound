@@ -2,14 +2,14 @@
  * license-validate — refresh entitlement for an already-activated device.
  *
  * Deploy: supabase functions deploy license-validate --no-verify-jwt
- * Body: { licenseKey, deviceFingerprint }
+ * Body: { licenseKey, deviceFingerprint, productId? }
+ * productId defaults to unbound-rockhound. Other allowlisted ids must match the license row.
  */
 
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.49.1";
 import {
-  PRODUCT_ID,
+  canonicalAllowedProductId,
   corsPreflight,
-  isRockhoundProduct,
   jsonResponse,
   normalizeLicenseKey,
 } from "../_shared/license.ts";
@@ -43,8 +43,8 @@ Deno.serve(async (req) => {
     return jsonResponse({ error: "Invalid device fingerprint" }, 400);
   }
 
-  const requestedProduct = (body.productId ?? PRODUCT_ID).trim() || PRODUCT_ID;
-  if (!isRockhoundProduct(requestedProduct)) {
+  const requestedProduct = canonicalAllowedProductId(body.productId);
+  if (!requestedProduct) {
     return jsonResponse({ ok: false, error: "wrong_product", status: "missing" }, 400);
   }
   const admin = createClient(supabaseUrl, serviceKey);
@@ -57,7 +57,7 @@ Deno.serve(async (req) => {
 
   if (licErr) return jsonResponse({ error: licErr.message }, 500);
   if (!byKey) return jsonResponse({ ok: false, error: "not_found", status: "missing" }, 404);
-  if (!isRockhoundProduct(byKey.product_id)) {
+  if (canonicalAllowedProductId(byKey.product_id) !== requestedProduct) {
     return jsonResponse({ ok: false, error: "wrong_product", status: "missing" }, 404);
   }
   const license = byKey;
