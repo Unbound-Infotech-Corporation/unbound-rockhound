@@ -70,6 +70,8 @@
     <ProjectReference Include="..\GeoMineralTrace.Pipeline\GeoMineralTrace.Pipeline.csproj" />
     <ProjectReference Include="..\GeoMineralTrace.Reporting\GeoMineralTrace.Reporting.csproj" />
     <ProjectReference Include="..\GeoMineralTrace.Infrastructure\GeoMineralTrace.Infrastructure.csproj" />
+    <ProjectReference Include="..\Unbound.Marketplace\Unbound.Marketplace.csproj" />
+    <ProjectReference Include="..\Unbound.Marketplace.WinUI\Unbound.Marketplace.WinUI.csproj" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="..\..\knowledge\techniques\**\*" Link="knowledge\techniques\%(RecursiveDir)%(Filename)%(Extension)" CopyToOutputDirectory="PreserveNewest" />

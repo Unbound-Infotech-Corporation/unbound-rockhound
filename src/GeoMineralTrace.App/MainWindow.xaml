@@ -156,6 +156,9 @@
                 <NavigationViewItem Content="Profile" Tag="profile">
                     <NavigationViewItem.Icon><FontIcon Glyph="&#xE77B;" FontSize="18" /></NavigationViewItem.Icon>
                 </NavigationViewItem>
+                <NavigationViewItem Content="Marketplace" Tag="marketplace">
+                    <NavigationViewItem.Icon><FontIcon Glyph="&#xE719;" FontSize="18" /></NavigationViewItem.Icon>
+                </NavigationViewItem>
                 <NavigationViewItem Content="Activate" Tag="activate">
                     <NavigationViewItem.Icon><FontIcon Glyph="&#xE72E;" FontSize="18" /></NavigationViewItem.Icon>
                 </NavigationViewItem>
