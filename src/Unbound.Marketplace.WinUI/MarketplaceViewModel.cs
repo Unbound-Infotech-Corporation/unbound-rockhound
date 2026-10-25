@@ -21,8 +21,8 @@ public sealed class MarketplaceProductCard : ObservableObject
     private readonly Func<MarketplaceProductCard, Task> _buy;
     private MarketplaceOfferState _offer = MarketplaceOfferState.Buy;
     private bool _purchaseInFlight;
-    private bool _thisCardBusy;
     private string _actionLabel = "Buy";
+    private string _footnote;
     private Visibility _buyVisibility = Visibility.Visible;
     private Visibility _passiveVisibility = Visibility.Collapsed;
 
@@ -31,7 +31,10 @@ public sealed class MarketplaceProductCard : ObservableObject
         Product = product;
         IsThisApp = isThisApp;
         _buy = buy;
-        BuyCommand = new AsyncRelayCommand(() => _buy(this), () => _offer == MarketplaceOfferState.Buy && !_purchaseInFlight);
+        _footnote = MarketplaceOffer.Footnote(MarketplaceOfferState.Buy, isThisApp);
+        BuyCommand = new AsyncRelayCommand(
+            () => _buy(this),
+            () => (_offer is MarketplaceOfferState.Buy or MarketplaceOfferState.GetIt) && !_purchaseInFlight);
         if (Uri.TryCreate(product.IconUrl, UriKind.Absolute, out var uri)
             && uri.Scheme == Uri.UriSchemeHttps)
         {
@@ -51,9 +54,13 @@ public sealed class MarketplaceProductCard : ObservableObject
     public ImageSource? Icon { get; }
     public Visibility IconVisibility => Icon is null ? Visibility.Collapsed : Visibility.Visible;
     public Visibility MonogramVisibility => Icon is null ? Visibility.Visible : Visibility.Collapsed;
-    public string Footnote => IsThisApp
-        ? "Buy opens Stripe. The license activates in this app."
-        : "Buy opens Stripe Checkout in your browser.";
+    public string Footnote
+    {
+        get => _footnote;
+        private set => SetProperty(ref _footnote, value);
+    }
+
+    public MarketplaceOfferState Offer => _offer;
     public IAsyncRelayCommand BuyCommand { get; }
 
     public string ActionLabel
@@ -78,11 +85,11 @@ public sealed class MarketplaceProductCard : ObservableObject
     {
         _offer = offer;
         _purchaseInFlight = purchaseInFlight;
-        _thisCardBusy = thisCardBusy;
         ActionLabel = thisCardBusy ? "Opening…" : MarketplaceOffer.ActionLabel(offer);
-        var showBuy = offer == MarketplaceOfferState.Buy;
-        BuyVisibility = showBuy ? Visibility.Visible : Visibility.Collapsed;
-        PassiveVisibility = showBuy ? Visibility.Collapsed : Visibility.Visible;
+        Footnote = MarketplaceOffer.Footnote(offer, IsThisApp);
+        var showAction = offer is MarketplaceOfferState.Buy or MarketplaceOfferState.GetIt;
+        BuyVisibility = showAction ? Visibility.Visible : Visibility.Collapsed;
+        PassiveVisibility = showAction ? Visibility.Collapsed : Visibility.Visible;
         BuyCommand.NotifyCanExecuteChanged();
     }
 }
@@ -227,11 +234,10 @@ public sealed class MarketplaceViewModel : ObservableObject
             Products.Clear();
             foreach (var product in result.Products)
             {
-                var isThisApp = !string.IsNullOrWhiteSpace(product.LicenseProductId)
-                    && !string.IsNullOrWhiteSpace(_host.Options.HostLicenseProductId)
-                    && MarketplaceActivationMachine.ProductMatchesHost(
-                        product.LicenseProductId,
-                        _host.Options.HostLicenseProductId);
+                if (!MarketplaceOffer.IsListed(product, _host.Options))
+                    continue;
+
+                var isThisApp = MarketplaceOffer.CanActivateHere(product, _host.Options);
                 Products.Add(new MarketplaceProductCard(product, isThisApp, BuyAsync));
             }
 
@@ -267,7 +273,7 @@ public sealed class MarketplaceViewModel : ObservableObject
         var owned = _host?.Ownership.GetOwnedLicenseProductIds();
         foreach (var card in Products)
         {
-            var offer = MarketplaceOffer.Resolve(card.Product, owned);
+            var offer = MarketplaceOffer.Resolve(card.Product, owned, _host?.Options);
             card.Apply(
                 offer,
                 purchaseInFlight: _snapshot.IsPurchaseInFlight,
@@ -279,6 +285,12 @@ public sealed class MarketplaceViewModel : ObservableObject
     {
         if (_host is null)
             return;
+
+        if (card.Offer == MarketplaceOfferState.GetIt)
+        {
+            OpenGetIt(card);
+            return;
+        }
 
         var token = RestartWork();
         _busyProductId = card.Product.Id;
@@ -390,6 +402,16 @@ public sealed class MarketplaceViewModel : ObservableObject
             return;
         }
 
+        if (Products.Count == 0 && !IsFaulted && !IsOffline)
+        {
+            SetStatus(
+                InfoBarSeverity.Informational,
+                "Unbound Marketplace",
+                "No products are listed for this app right now.",
+                open: true);
+            return;
+        }
+
         if (IsOffline)
         {
             SetStatus(InfoBarSeverity.Warning, "Offline", _catalogNotice ?? MarketplaceCatalogClient.OfflineNotice, true);
@@ -399,8 +421,36 @@ public sealed class MarketplaceViewModel : ObservableObject
         SetStatus(
             InfoBarSeverity.Informational,
             "Unbound Marketplace",
-            "Buy with Stripe Checkout in your browser. Card details never enter the app.",
+            "Buy opens Stripe Checkout in your browser. Get it opens a store page or download for titles this install does not activate.",
             open: false);
+    }
+
+    private void OpenGetIt(MarketplaceProductCard card)
+    {
+        var link = MarketplaceOffer.ExternalLink(card.Product);
+        if (link is null || _host?.Browser is null)
+        {
+            SetStatus(
+                InfoBarSeverity.Warning,
+                "Get it",
+                $"{card.Name} has no store page or download link yet.",
+                open: true);
+            return;
+        }
+
+        try
+        {
+            _host.Browser.Open(link);
+            SetStatus(
+                InfoBarSeverity.Informational,
+                "Get it",
+                $"Opened {card.Name} in your browser. This install does not activate that license.",
+                open: true);
+        }
+        catch (Exception ex)
+        {
+            SetStatus(InfoBarSeverity.Error, "Could not open the link", ex.Message, open: true);
+        }
     }
 
     private void SetStatus(InfoBarSeverity severity, string title, string message, bool open)

@@ -1,3 +1,5 @@
+using Unbound.Marketplace.Checkout;
+
 namespace Unbound.Marketplace;
 
 /// <summary>
@@ -18,6 +20,9 @@ public sealed class MarketplaceHost
     public required IMarketplaceSessionClient Sessions { get; init; }
     public required IMarketplaceKeyActivator KeyActivator { get; init; }
     public required IMarketplaceOwnershipSource Ownership { get; init; }
+
+    /// <summary>Opens a store page or download for products this install does not activate.</summary>
+    public IExternalBrowser? Browser { get; init; }
 
     public MarketplacePurchaseFlow CreateFlow() => new(
         Options,

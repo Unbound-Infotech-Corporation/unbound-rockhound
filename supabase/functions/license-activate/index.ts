@@ -2,14 +2,15 @@
  * license-activate — bind a paid license key to this device.
  *
  * Deploy: supabase functions deploy license-activate --no-verify-jwt
- * Body: { licenseKey, deviceFingerprint, deviceLabel? }
+ * Body: { licenseKey, deviceFingerprint, deviceLabel?, productId? }
+ * productId defaults to unbound-rockhound. Other allowlisted ids must match the license row.
  */
 
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.49.1";
 import {
   PRODUCT_ID,
+  canonicalAllowedProductId,
   corsPreflight,
-  isRockhoundProduct,
   jsonResponse,
   normalizeLicenseKey,
 } from "../_shared/license.ts";
@@ -48,8 +49,8 @@ Deno.serve(async (req) => {
     return jsonResponse({ error: "Invalid device fingerprint" }, 400);
   }
 
-  const requestedProduct = (body.productId ?? PRODUCT_ID).trim() || PRODUCT_ID;
-  if (!isRockhoundProduct(requestedProduct)) {
+  const requestedProduct = canonicalAllowedProductId(body.productId);
+  if (!requestedProduct) {
     return jsonResponse({ error: "This app activates Unbound Rockhound keys only." }, 400);
   }
   const admin = createClient(supabaseUrl, serviceKey);
@@ -66,8 +67,12 @@ Deno.serve(async (req) => {
       error: "License key not found. Check the email from Unbound Infotech, or open the Activate web page from your Stripe receipt.",
     }, 404);
   }
-  if (!isRockhoundProduct(byKey.product_id)) {
-    return jsonResponse({ error: "This key is not for Unbound Rockhound." }, 404);
+  if (canonicalAllowedProductId(byKey.product_id) !== requestedProduct) {
+    return jsonResponse({
+      error: requestedProduct === PRODUCT_ID
+        ? "This key is not for Unbound Rockhound."
+        : "This key is not for this app.",
+    }, 404);
   }
   const license = byKey;
   if (license.status !== "active") {

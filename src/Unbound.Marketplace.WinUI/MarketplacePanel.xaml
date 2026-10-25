@@ -27,7 +27,7 @@
                         <TextBlock Style="{StaticResource UmktTextLabel}" Text="UNBOUND INFOTECH" />
                         <TextBlock Style="{StaticResource UmktTextTitle}" Text="Unbound Marketplace" />
                         <TextBlock Style="{StaticResource UmktTextBody}" MaxWidth="640"
-                            Text="Software from Unbound Infotech. Purchase opens Stripe Checkout in your browser — card numbers stay out of the app." />
+                            Text="Software from Unbound Infotech. Buy opens Stripe Checkout in your browser. Get it opens the store page or download for titles this install does not activate." />
                     </StackPanel>
                     <Button Grid.Column="1" Content="Refresh" VerticalAlignment="Top"
                         Style="{StaticResource UmktButtonSecondary}"
@@ -132,7 +132,7 @@
                                     </Border>
                                     <TextBlock Grid.Row="2" Text="{x:Bind Summary}" MaxLines="3"
                                         Style="{StaticResource UmktTextBody}" TextTrimming="CharacterEllipsis" />
-                                    <TextBlock Grid.Row="3" Text="{x:Bind Footnote}" Style="{StaticResource UmktTextCaption}" />
+                                    <TextBlock Grid.Row="3" Text="{x:Bind Footnote, Mode=OneWay}" Style="{StaticResource UmktTextCaption}" />
                                     <Grid Grid.Row="4">
                                         <Button Content="{x:Bind ActionLabel, Mode=OneWay}"
                                             Style="{StaticResource UmktButtonPrimary}"

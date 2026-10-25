@@ -113,6 +113,112 @@ public class CatalogParserTests
         MarketplaceOffer.Resolve(owned with { Status = "archived" }, ["unbound-rockhound"]).Should().Be(MarketplaceOfferState.Unavailable);
         MarketplaceOffer.ActionLabel(MarketplaceOfferState.Owned).Should().Be("Owned");
         MarketplaceOffer.ActionLabel(MarketplaceOfferState.Buy).Should().Be("Buy");
+        MarketplaceOffer.ActionLabel(MarketplaceOfferState.GetIt).Should().Be("Get it");
+    }
+
+    [Fact]
+    public void Offer_GetItWhenThisInstallCannotActivate_AndHidesUnlistedStatuses()
+    {
+        var rockhound = new MarketplaceOptions
+        {
+            HostLicenseProductId = LicenseProductIds.Rockhound,
+            HideComingSoon = true,
+            HideInactive = true,
+            ActivatableLicenseProductIds = new HashSet<string>(StringComparer.OrdinalIgnoreCase)
+            {
+                LicenseProductIds.Rockhound
+            }
+        };
+
+        var owned = new MarketplaceProduct
+        {
+            Id = "6a9949122f0c8cf48076190a",
+            Name = "Unbound Rockhound",
+            Status = "active",
+            LicenseProductId = LicenseProductIds.Rockhound,
+            StoreUrl = "https://unboundinfotech.com/store/6a9949122f0c8cf48076190a"
+        };
+        var clore = new MarketplaceProduct
+        {
+            Id = "6a988e26f11c4642bf4888e9",
+            Name = "Clore.ai Fleet Optimizer",
+            Status = "active",
+            StoreUrl = "https://unboundinfotech.com/store/6a988e26f11c4642bf4888e9"
+        };
+        var heirloom = owned with
+        {
+            Id = "6a988e26f11c4642bf4888e8",
+            Name = "Heirloom — Voice Archive & Digital Twin",
+            Status = "coming_soon",
+            LicenseProductId = LicenseProductIds.HeirloomUnbound
+        };
+        var otherApp = owned with
+        {
+            Id = "heirloom-live",
+            Name = "Heirloom Unbound",
+            LicenseProductId = LicenseProductIds.HeirloomUnbound,
+            DownloadUrl = "https://unboundinfotech.com/downloads/heirloom.zip",
+            StoreUrl = "https://unboundinfotech.com/store/heirloom"
+        };
+
+        MarketplaceOffer.IsListed(heirloom, rockhound).Should().BeFalse();
+        MarketplaceOffer.IsListed(owned with { Status = "archived" }, rockhound).Should().BeFalse();
+        MarketplaceOffer.IsListed(clore, rockhound).Should().BeTrue();
+        MarketplaceOffer.Resolve(clore, null, rockhound).Should().Be(MarketplaceOfferState.GetIt);
+        MarketplaceOffer.Resolve(owned, null, rockhound).Should().Be(MarketplaceOfferState.Buy);
+        MarketplaceOffer.Resolve(otherApp, null, rockhound).Should().Be(MarketplaceOfferState.GetIt);
+        MarketplaceOffer.ExternalLink(clore)!.AbsoluteUri.Should().Be(clore.StoreUrl);
+        MarketplaceOffer.ExternalLink(otherApp)!.AbsoluteUri.Should().Be(otherApp.DownloadUrl);
+        MarketplaceOffer.CanActivateHere(clore, rockhound).Should().BeFalse();
+
+        var mappedClore = clore with { LicenseProductId = LicenseProductIds.Rockhound };
+        MarketplaceOffer.Resolve(mappedClore, null, rockhound).Should().Be(MarketplaceOfferState.Buy);
+
+        var showDrafts = new MarketplaceOptions
+        {
+            HostLicenseProductId = LicenseProductIds.HeirloomUnbound,
+            HideComingSoon = false,
+            HideInactive = false
+        };
+        MarketplaceOffer.IsListed(heirloom, showDrafts).Should().BeTrue();
+        MarketplaceOffer.Resolve(heirloom, null, showDrafts).Should().Be(MarketplaceOfferState.ComingSoon);
+        MarketplaceOffer.Resolve(otherApp, null, showDrafts).Should().Be(MarketplaceOfferState.Buy);
+    }
+
+    [Fact]
+    public void FallbackListing_RockhoundDoesNotBuyCloreOrShowComingSoon()
+    {
+        var options = new MarketplaceOptions
+        {
+            HostLicenseProductId = LicenseProductIds.Rockhound,
+            LicenseProductIdByName = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
+            {
+                ["Unbound Rockhound"] = LicenseProductIds.Rockhound
+            }
+        };
+
+        var visible = MarketplaceCatalogParser.Parse(MarketplaceCatalogClient.ReadFallbackJson(), options)
+            .Where(product => MarketplaceOffer.IsListed(product, options))
+            .ToList();
+
+        visible.Select(product => product.Name).Should().BeEquivalentTo(
+            "Clore.ai Fleet Optimizer",
+            "Unbound Rockhound");
+        MarketplaceOffer.Resolve(visible.Single(product => product.Name.StartsWith("Clore", StringComparison.Ordinal)), null, options)
+            .Should().Be(MarketplaceOfferState.GetIt);
+        MarketplaceOffer.Resolve(visible.Single(product => product.Name == "Unbound Rockhound"), null, options)
+            .Should().Be(MarketplaceOfferState.Buy);
+    }
+
+    [Fact]
+    public void LicenseProductIds_MatchTheSupabaseAllowlist()
+    {
+        LicenseProductIds.Allowlist.Should().BeEquivalentTo(
+            "unbound-rockhound",
+            "heirloom-unbound",
+            "viralforge",
+            "unbound-astrology",
+            "unboundos");
     }
 
     [Fact]

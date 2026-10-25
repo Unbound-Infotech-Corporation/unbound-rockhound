@@ -29,6 +29,12 @@ public static class RockhoundMarketplace
             CheckoutFunctionUrl = string.IsNullOrWhiteSpace(checkout) ? MarketplaceDefaults.CheckoutFunctionUrl : checkout.Trim(),
             HostLicenseProductId = LicenseProductId.Canonical,
             HostProductDisplayName = AppBranding.ProductName,
+            HideComingSoon = true,
+            HideInactive = true,
+            ActivatableLicenseProductIds = new HashSet<string>(StringComparer.OrdinalIgnoreCase)
+            {
+                LicenseProductId.Canonical
+            },
             LicenseProductIdByCatalogId = new Dictionary<string, string>(StringComparer.Ordinal)
             {
                 [StoreListingId] = LicenseProductId.Canonical
@@ -68,7 +74,8 @@ public static class RockhoundMarketplace
             Checkout = sp.GetRequiredService<ICheckoutLauncher>(),
             Sessions = sp.GetRequiredService<IMarketplaceSessionClient>(),
             KeyActivator = sp.GetRequiredService<IMarketplaceKeyActivator>(),
-            Ownership = sp.GetRequiredService<IMarketplaceOwnershipSource>()
+            Ownership = sp.GetRequiredService<IMarketplaceOwnershipSource>(),
+            Browser = sp.GetRequiredService<IExternalBrowser>()
         });
         return services;
     }
